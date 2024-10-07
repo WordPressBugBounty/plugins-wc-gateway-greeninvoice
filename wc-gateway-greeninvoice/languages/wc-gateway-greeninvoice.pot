@@ -1,0 +1,474 @@
+# Copyright (C) 2024 Morning
+# This file is distributed under the GPL v3 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Morning for WooCommerce 1.5.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wc-gateway-greeninvoice\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-05-29T06:56:44+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.10.0\n"
+"X-Domain: wc-gateway-greeninvoice\n"
+
+#. Plugin Name of the plugin
+#. translators: %s Plugin Name
+#: wc-gateway-greeninvoice.php
+#: includes/class-compatibility.php:119
+msgid "Morning for WooCommerce"
+msgstr ""
+
+#. Description of the plugin
+#: wc-gateway-greeninvoice.php
+msgid "Accept payments from clients, with automated invoice production."
+msgstr ""
+
+#. Author of the plugin
+#: wc-gateway-greeninvoice.php
+msgid "Morning"
+msgstr ""
+
+#. Author URI of the plugin
+#: wc-gateway-greeninvoice.php
+msgid "https://greeninvoice.co.il"
+msgstr ""
+
+#: includes/abstracts/class-payment-gateway.php:130
+msgid "Max Number of Installments "
+msgstr ""
+
+#: includes/abstracts/class-payment-gateway.php:132
+msgid "Maximum number of installments available for the customer (leave 1 for no installments)."
+msgstr ""
+
+#: includes/abstracts/class-payment-gateway.php:174
+msgid "Enable/Disable"
+msgstr ""
+
+#. translators: %s Gateway Name
+#: includes/abstracts/class-payment-gateway.php:177
+msgid "Enable %s"
+msgstr ""
+
+#: includes/abstracts/class-payment-gateway.php:181
+msgid "Title"
+msgstr ""
+
+#: includes/abstracts/class-payment-gateway.php:183
+msgid "The title the customers will see at the checkout page."
+msgstr ""
+
+#. translators: %s Gateway Name
+#: includes/abstracts/class-payment-gateway.php:185
+msgid "Pay with %s"
+msgstr ""
+
+#: includes/abstracts/class-payment-gateway.php:189
+msgid "Description (optional)"
+msgstr ""
+
+#: includes/abstracts/class-payment-gateway.php:191
+msgid "The description will appear when selecting the payment method at the checkout page."
+msgstr ""
+
+#: includes/abstracts/class-payment-gateway.php:328
+msgctxt "Refund Order Errors"
+msgid "Unable to refund an unpaid order."
+msgstr ""
+
+#: includes/abstracts/class-payment-gateway.php:332
+msgctxt "Refund Order Errors"
+msgid "Unable to partially refund an order that was made today, please issue a full refund"
+msgstr ""
+
+#. translators: %s Refund Amount
+#: includes/abstracts/class-payment-gateway.php:345
+msgid "A refund of %s was made via payment gateway."
+msgstr ""
+
+#: includes/abstracts/class-payment-gateway.php:437
+msgid "Payment received but awaiting confirmation."
+msgstr ""
+
+#: includes/abstracts/class-payment-gateway.php:455
+msgid "Payment failed."
+msgstr ""
+
+#: includes/abstracts/class-payment-gateway.php:460
+msgid "Payment failed, please try again."
+msgstr ""
+
+#: includes/abstracts/class-payment-gateway.php:484
+msgid "IPN payment completed."
+msgstr ""
+
+#: includes/class-admin.php:56
+msgid "Syncing"
+msgstr ""
+
+#: includes/class-admin.php:57
+msgid "Synced"
+msgstr ""
+
+#: includes/class-admin.php:58
+msgid "Unable to Sync"
+msgstr ""
+
+#: includes/class-admin.php:59
+#: includes/utilities/class-settings.php:121
+msgid "Active"
+msgstr ""
+
+#: includes/class-admin.php:60
+#: includes/utilities/class-settings.php:122
+msgid "Activation Error"
+msgstr ""
+
+#: includes/class-admin.php:101
+msgctxt "Plugins Links"
+msgid "Settings"
+msgstr ""
+
+#: includes/class-checkout.php:80
+msgid "Tax ID number is invalid."
+msgstr ""
+
+#. translators: %s PHP Version
+#: includes/class-compatibility.php:72
+msgid "Morning for WooCommerce requires PHP version %s or higher to run properly."
+msgstr ""
+
+#. translators: %s WordPress Version
+#: includes/class-compatibility.php:84
+msgid "Morning for WooCommerce requires WordPress version %s or higher to run properly."
+msgstr ""
+
+#: includes/class-compatibility.php:95
+msgid "Morning for WooCommerce requires WooCommerce to be installed and active."
+msgstr ""
+
+#. translators: %s WooCommerce Version
+#: includes/class-compatibility.php:107
+msgid "Morning for WooCommerce requires WooCommerce version %s or higher to run properly."
+msgstr ""
+
+#. translators: %s Plugin Name
+#: includes/class-compatibility.php:119
+msgid "Please activate the plugin by entering your license key for %s."
+msgstr ""
+
+#. translators: %s Settings Page
+#: includes/class-compatibility.php:131
+msgid "Attention! Sandbox mode is enabled for Morning for WooCommerce. You can disable it from the %s."
+msgstr ""
+
+#. translators: %s Settings Page
+#: includes/class-compatibility.php:131
+msgid "settings page"
+msgstr ""
+
+#: includes/class-frontend.php:79
+msgctxt "My Account Orders"
+msgid "Invoice"
+msgstr ""
+
+#: includes/class-metabox.php:50
+msgctxt "Admin Meta Box"
+msgid "Morning Document Info"
+msgstr ""
+
+#: includes/class-metabox.php:82
+msgid "Document Number"
+msgstr ""
+
+#: includes/class-metabox.php:83
+msgid "Document Type"
+msgstr ""
+
+#: includes/class-metabox.php:84
+msgid "Document ID"
+msgstr ""
+
+#: includes/class-plugin.php:295
+msgid "Cloning is forbidden."
+msgstr ""
+
+#: includes/class-plugin.php:305
+msgid "Unserializing is forbidden."
+msgstr ""
+
+#: includes/enum/class-document-type.php:106
+msgctxt "Document Type"
+msgid "Price Quotation"
+msgstr ""
+
+#: includes/enum/class-document-type.php:107
+msgctxt "Document Type"
+msgid "Payment Confirmation"
+msgstr ""
+
+#: includes/enum/class-document-type.php:108
+msgctxt "Document Type"
+msgid "Order"
+msgstr ""
+
+#: includes/enum/class-document-type.php:109
+msgctxt "Document Type"
+msgid "Delivery Note"
+msgstr ""
+
+#: includes/enum/class-document-type.php:110
+msgctxt "Document Type"
+msgid "Return Delivery"
+msgstr ""
+
+#: includes/enum/class-document-type.php:111
+msgctxt "Document Type"
+msgid "Proforma Invoice"
+msgstr ""
+
+#: includes/enum/class-document-type.php:112
+msgctxt "Document Type"
+msgid "Invoice"
+msgstr ""
+
+#: includes/enum/class-document-type.php:113
+msgctxt "Document Type"
+msgid "Invoice / Receipt"
+msgstr ""
+
+#: includes/enum/class-document-type.php:114
+msgctxt "Document Type"
+msgid "Credit Note"
+msgstr ""
+
+#: includes/enum/class-document-type.php:115
+msgctxt "Document Type"
+msgid "Receipt"
+msgstr ""
+
+#: includes/enum/class-document-type.php:116
+msgctxt "Document Type"
+msgid "Donation Receipt"
+msgstr ""
+
+#: includes/enum/class-document-type.php:117
+msgctxt "Document Type"
+msgid "Purchase Order"
+msgstr ""
+
+#: includes/enum/class-document-type.php:118
+msgctxt "Document Type"
+msgid "Deposit Receipt"
+msgstr ""
+
+#: includes/enum/class-document-type.php:119
+msgctxt "Document Type"
+msgid "Deposit Withdrawal"
+msgstr ""
+
+#: includes/enum/class-payment-type.php:75
+msgid "Credit Card"
+msgstr ""
+
+#: includes/enum/class-payment-type.php:76
+msgid "PayPal"
+msgstr ""
+
+#: includes/enum/class-payment-type.php:77
+msgid "Bit"
+msgstr ""
+
+#: includes/enum/class-payment-type.php:78
+msgid "Google Pay"
+msgstr ""
+
+#: includes/enum/class-payment-type.php:79
+msgid "Apple Pay"
+msgstr ""
+
+#: includes/fields/class-gateways-sync.php:76
+msgid "Sync with Account"
+msgstr ""
+
+#: includes/gateways/class-apple-pay-gateway.php:39
+msgid "Morning - Apple Pay"
+msgstr ""
+
+#: includes/gateways/class-apple-pay-gateway.php:40
+msgid "Accept Apple Pay payments with Morning-Meshulam plugin. In order to complete the process, go to your WooCommerce plugin settings in Morning, and choose Apple Pay in the \"payment options\" section."
+msgstr ""
+
+#: includes/gateways/class-bit-gateway.php:40
+msgid "Morning - Bit"
+msgstr ""
+
+#: includes/gateways/class-bit-gateway.php:41
+msgid "Accept bit payments with Morning-Meshulam plugin. In order to complete the process, go to your WooCommerce plugin settings in Morning, and choose bit in the \"payment options\" section."
+msgstr ""
+
+#: includes/gateways/class-credit-card-gateway.php:40
+msgid "Morning - Credit Cards"
+msgstr ""
+
+#: includes/gateways/class-credit-card-gateway.php:41
+msgid "Accept credit cards with Morning plugin. In order to complete the process, go to your WooCommerce plugin settings in Morning, and choose the clearing provider in the \"payment options\" section."
+msgstr ""
+
+#: includes/gateways/class-google-pay-gateway.php:40
+msgid "Morning - Google Pay"
+msgstr ""
+
+#: includes/gateways/class-google-pay-gateway.php:41
+msgid "Accept Google Pay payments with Morning-Meshulam plugin. In order to complete the process, go to your WooCommerce plugin settings in Morning, and choose Google Pay in the \"payment options\" section."
+msgstr ""
+
+#: includes/gateways/class-paypal-gateway.php:38
+msgid "Morning - PayPal"
+msgstr ""
+
+#: includes/gateways/class-paypal-gateway.php:39
+msgid "Accept credit cards with Morning PayPal integration. In order to complete the process, go to your WooCommerce plugin settings in Greeninvoice, and choose paypal in the \"payment options\" section."
+msgstr ""
+
+#. translators: %s Gift Card Number
+#: includes/integrations/class-pw-gift-cards-integration.php:70
+msgid "Gift Card: %s"
+msgstr ""
+
+#. translators: %s Order Number
+#: includes/utilities/class-api.php:296
+msgid "Order #%s"
+msgstr ""
+
+#: includes/utilities/class-settings.php:71
+msgctxt "Settings Page Title"
+msgid "Morning Settings"
+msgstr ""
+
+#: includes/utilities/class-settings.php:72
+msgctxt "Settings Page Menu Title"
+msgid "Morning"
+msgstr ""
+
+#: includes/utilities/class-settings.php:92
+msgid "Licensing"
+msgstr ""
+
+#: includes/utilities/class-settings.php:99
+msgid "License Key"
+msgstr ""
+
+#: includes/utilities/class-settings.php:112
+msgid "License Status"
+msgstr ""
+
+#: includes/utilities/class-settings.php:120
+msgid "Inactive"
+msgstr ""
+
+#: includes/utilities/class-settings.php:129
+msgid "Allowed Gateways"
+msgstr ""
+
+#: includes/utilities/class-settings.php:136
+msgid "If you changed your settings in WooCommerce on morning, you need to sync the changes."
+msgstr ""
+
+#: includes/utilities/class-settings.php:143
+msgid "General Options"
+msgstr ""
+
+#: includes/utilities/class-settings.php:150
+msgid "Order Status"
+msgstr ""
+
+#: includes/utilities/class-settings.php:157
+msgid "Set order status after a notification of successful payment received."
+msgstr ""
+
+#: includes/utilities/class-settings.php:159
+msgid "Processing"
+msgstr ""
+
+#: includes/utilities/class-settings.php:160
+msgid "Completed"
+msgstr ""
+
+#: includes/utilities/class-settings.php:167
+msgid "Tax ID Number"
+msgstr ""
+
+#: includes/utilities/class-settings.php:181
+msgid "Debugging Options"
+msgstr ""
+
+#: includes/utilities/class-settings.php:188
+msgid "Debugging"
+msgstr ""
+
+#: includes/utilities/class-settings.php:195
+msgid "Enable logs"
+msgstr ""
+
+#: includes/utilities/class-settings.php:201
+msgid "Sandbox"
+msgstr ""
+
+#: includes/utilities/class-settings.php:208
+msgid "Enable sandbox"
+msgstr ""
+
+#. translators: %s Sandbox account
+#: includes/utilities/class-settings.php:210
+msgid "Check this to enable test mode. %s and license key are required."
+msgstr ""
+
+#. translators: %s Sandbox account
+#: includes/utilities/class-settings.php:210
+msgid "Sandbox account"
+msgstr ""
+
+#: includes/utilities/class-settings.php:216
+msgid "Debug Data"
+msgstr ""
+
+#: includes/utilities/class-settings.php:223
+msgid "Generate File"
+msgstr ""
+
+#: includes/utilities/class-settings.php:224
+msgid "Generate a debug file which includes logs and WordPress environment information."
+msgstr ""
+
+#: templates/admin/order-metabox.php:39
+msgctxt "Admin Meta Box"
+msgid "View Invoice"
+msgstr ""
+
+#: templates/admin/order-metabox.php:45
+msgctxt "Admin Meta Box"
+msgid "View Transaction"
+msgstr ""
+
+#: templates/admin/settings-page.php:24
+msgid "Changes were saved."
+msgstr ""
+
+#: templates/frontend/installments-form.php:17
+msgctxt "Installments Form"
+msgid "Select Number of Installments"
+msgstr ""
+
+#: templates/frontend/installments-form.php:20
+msgctxt "Installments Form"
+msgid "Installments"
+msgstr ""
+
+#: templates/frontend/installments-form.php:31
+msgctxt "Installments Form"
+msgid "Proceed to Payment"
+msgstr ""
