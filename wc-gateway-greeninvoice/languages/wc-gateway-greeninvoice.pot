@@ -2,16 +2,16 @@
 # This file is distributed under the GPL v3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Morning for WooCommerce 1.5.0\n"
+"Project-Id-Version: Morning for WooCommerce 1.6.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wc-gateway-greeninvoice\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-29T06:56:44+00:00\n"
+"POT-Creation-Date: 2024-12-08T14:13:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.10.0\n"
+"X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: wc-gateway-greeninvoice\n"
 
 #. Plugin Name of the plugin
@@ -36,41 +36,41 @@ msgstr ""
 msgid "https://greeninvoice.co.il"
 msgstr ""
 
-#: includes/abstracts/class-payment-gateway.php:130
+#: includes/abstracts/class-payment-gateway.php:129
 msgid "Max Number of Installments "
 msgstr ""
 
-#: includes/abstracts/class-payment-gateway.php:132
+#: includes/abstracts/class-payment-gateway.php:131
 msgid "Maximum number of installments available for the customer (leave 1 for no installments)."
 msgstr ""
 
-#: includes/abstracts/class-payment-gateway.php:174
+#: includes/abstracts/class-payment-gateway.php:173
 msgid "Enable/Disable"
 msgstr ""
 
 #. translators: %s Gateway Name
-#: includes/abstracts/class-payment-gateway.php:177
+#: includes/abstracts/class-payment-gateway.php:176
 msgid "Enable %s"
 msgstr ""
 
-#: includes/abstracts/class-payment-gateway.php:181
+#: includes/abstracts/class-payment-gateway.php:180
 msgid "Title"
 msgstr ""
 
-#: includes/abstracts/class-payment-gateway.php:183
+#: includes/abstracts/class-payment-gateway.php:182
 msgid "The title the customers will see at the checkout page."
 msgstr ""
 
 #. translators: %s Gateway Name
-#: includes/abstracts/class-payment-gateway.php:185
+#: includes/abstracts/class-payment-gateway.php:184
 msgid "Pay with %s"
 msgstr ""
 
-#: includes/abstracts/class-payment-gateway.php:189
+#: includes/abstracts/class-payment-gateway.php:188
 msgid "Description (optional)"
 msgstr ""
 
-#: includes/abstracts/class-payment-gateway.php:191
+#: includes/abstracts/class-payment-gateway.php:190
 msgid "The description will appear when selecting the payment method at the checkout page."
 msgstr ""
 
@@ -89,19 +89,19 @@ msgstr ""
 msgid "A refund of %s was made via payment gateway."
 msgstr ""
 
-#: includes/abstracts/class-payment-gateway.php:437
+#: includes/abstracts/class-payment-gateway.php:480
 msgid "Payment received but awaiting confirmation."
 msgstr ""
 
-#: includes/abstracts/class-payment-gateway.php:455
+#: includes/abstracts/class-payment-gateway.php:498
 msgid "Payment failed."
 msgstr ""
 
-#: includes/abstracts/class-payment-gateway.php:460
+#: includes/abstracts/class-payment-gateway.php:503
 msgid "Payment failed, please try again."
 msgstr ""
 
-#: includes/abstracts/class-payment-gateway.php:484
+#: includes/abstracts/class-payment-gateway.php:526
 msgid "IPN payment completed."
 msgstr ""
 
@@ -192,11 +192,11 @@ msgstr ""
 msgid "Document ID"
 msgstr ""
 
-#: includes/class-plugin.php:295
+#: includes/class-plugin.php:300
 msgid "Cloning is forbidden."
 msgstr ""
 
-#: includes/class-plugin.php:305
+#: includes/class-plugin.php:310
 msgid "Unserializing is forbidden."
 msgstr ""
 
@@ -294,43 +294,43 @@ msgstr ""
 msgid "Sync with Account"
 msgstr ""
 
-#: includes/gateways/class-apple-pay-gateway.php:39
+#: includes/gateways/class-apple-pay-gateway.php:37
 msgid "Morning - Apple Pay"
 msgstr ""
 
-#: includes/gateways/class-apple-pay-gateway.php:40
+#: includes/gateways/class-apple-pay-gateway.php:38
 msgid "Accept Apple Pay payments with Morning-Meshulam plugin. In order to complete the process, go to your WooCommerce plugin settings in Morning, and choose Apple Pay in the \"payment options\" section."
 msgstr ""
 
-#: includes/gateways/class-bit-gateway.php:40
+#: includes/gateways/class-bit-gateway.php:38
 msgid "Morning - Bit"
 msgstr ""
 
-#: includes/gateways/class-bit-gateway.php:41
+#: includes/gateways/class-bit-gateway.php:39
 msgid "Accept bit payments with Morning-Meshulam plugin. In order to complete the process, go to your WooCommerce plugin settings in Morning, and choose bit in the \"payment options\" section."
 msgstr ""
 
-#: includes/gateways/class-credit-card-gateway.php:40
+#: includes/gateways/class-credit-card-gateway.php:39
 msgid "Morning - Credit Cards"
 msgstr ""
 
-#: includes/gateways/class-credit-card-gateway.php:41
+#: includes/gateways/class-credit-card-gateway.php:40
 msgid "Accept credit cards with Morning plugin. In order to complete the process, go to your WooCommerce plugin settings in Morning, and choose the clearing provider in the \"payment options\" section."
 msgstr ""
 
-#: includes/gateways/class-google-pay-gateway.php:40
+#: includes/gateways/class-google-pay-gateway.php:38
 msgid "Morning - Google Pay"
 msgstr ""
 
-#: includes/gateways/class-google-pay-gateway.php:41
+#: includes/gateways/class-google-pay-gateway.php:39
 msgid "Accept Google Pay payments with Morning-Meshulam plugin. In order to complete the process, go to your WooCommerce plugin settings in Morning, and choose Google Pay in the \"payment options\" section."
 msgstr ""
 
-#: includes/gateways/class-paypal-gateway.php:38
+#: includes/gateways/class-paypal-gateway.php:36
 msgid "Morning - PayPal"
 msgstr ""
 
-#: includes/gateways/class-paypal-gateway.php:39
+#: includes/gateways/class-paypal-gateway.php:37
 msgid "Accept credit cards with Morning PayPal integration. In order to complete the process, go to your WooCommerce plugin settings in Greeninvoice, and choose paypal in the \"payment options\" section."
 msgstr ""
 
@@ -340,8 +340,21 @@ msgid "Gift Card: %s"
 msgstr ""
 
 #. translators: %s Order Number
-#: includes/utilities/class-api.php:296
+#: includes/utilities/class-api.php:263
 msgid "Order #%s"
+msgstr ""
+
+#: includes/utilities/class-api.php:444
+msgid "General Error"
+msgstr ""
+
+#: includes/utilities/class-api.php:454
+msgid "Could not retrieve payment url."
+msgstr ""
+
+#. translators: %s API Error Message
+#: includes/utilities/class-api.php:458
+msgid "Could not retrieve payment url: %s."
 msgstr ""
 
 #: includes/utilities/class-settings.php:71
@@ -400,6 +413,10 @@ msgstr ""
 
 #: includes/utilities/class-settings.php:167
 msgid "Tax ID Number"
+msgstr ""
+
+#: includes/utilities/class-settings.php:174
+msgid "Enable Tax ID number field in checkout"
 msgstr ""
 
 #: includes/utilities/class-settings.php:181

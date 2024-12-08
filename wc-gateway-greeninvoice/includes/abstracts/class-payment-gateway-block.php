@@ -6,7 +6,7 @@
  * @subpackage Payment_Gateway_Block
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.3.0
+ * @version    1.6.1
  * @since      1.3.0
  */
 
@@ -14,6 +14,7 @@ namespace Morning\WC\Abstracts;
 
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 use Morning\WC\Exceptions\Gateway_Exception;
+use Morning\WC\Gateways\Payment_Gateway_Factory;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -66,14 +67,16 @@ abstract class Payment_Gateway_Block extends AbstractPaymentMethodType {
 	 *
 	 * @throws Gateway_Exception
 	 *
+	 * @version 1.6.1
 	 * @since 1.3.0
 	 */
 	public function __construct() {
+		$gateways      = WC()->payment_gateways()->payment_gateways();
+		$this->gateway = $gateways[ $this->name ] ?? Payment_Gateway_Factory::init( $this->name );
+
 		if ( ! $this->gateway instanceof Payment_Gateway ) {
 			throw new Gateway_Exception( 'Gateway Block [' . self::class . '] does not have a linked gateway.' );
 		}
-
-		$this->name = $this->gateway->id;
 	}
 
 
@@ -162,5 +165,25 @@ abstract class Payment_Gateway_Block extends AbstractPaymentMethodType {
 	 */
 	public function is_active(): bool {
 		return $this->gateway->is_available();
+	}
+
+
+	/**
+	 * Retrieves gateway block dependencies.
+	 *
+	 * @param string $dependencies_file Path to block dependencies file.
+	 *
+	 * @return array|null
+	 *
+	 * @since 1.6.1
+	 */
+	public function get_block_dependencies( string $dependencies_file ): ?array {
+		if ( ! is_readable( $dependencies_file ) ) {
+			return null;
+		}
+
+		$dependencies = require $dependencies_file;
+
+		return $dependencies['dependencies'] ?? [];
 	}
 }

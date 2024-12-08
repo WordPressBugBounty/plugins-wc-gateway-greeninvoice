@@ -6,7 +6,7 @@
  * @subpackage Payment_Gateway
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.5.0
+ * @version    1.6.1
  * @since      1.0.0
  */
 
@@ -102,15 +102,12 @@ abstract class Payment_Gateway extends WC_Payment_Gateway {
 	/**
 	 * Payment_Gateway constructor.
 	 *
-	 * @param bool $init_hooks Should register hooks?
-	 *
-	 * @version 1.5.0
+	 * @version 1.6.1
 	 * @since 1.0.0
 	 */
-	public function __construct( bool $init_hooks = true ) {
+	public function __construct() {
 		$this->has_fields = true;
 
-		$this->supports[] = 'products';
 		$this->supports[] = 'refunds';
 
 		$this->init_form_fields();
@@ -140,9 +137,7 @@ abstract class Payment_Gateway extends WC_Payment_Gateway {
 
 		$this->api = API::get_instance();
 
-		if ( $init_hooks ) {
-			$this->init_hooks();
-		}
+		$this->init_hooks();
 	}
 
 

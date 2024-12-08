@@ -6,7 +6,7 @@
  * @subpackage Credit_Card_Gateway
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.2.0
+ * @version    1.6.1
  * @since      1.0.0
  */
 
@@ -30,12 +30,10 @@ class Credit_Card_Gateway extends Payment_Gateway {
 	/**
 	 * Credit_Card_Gateway constructor.
 	 *
-	 * @param bool $init_hooks Should register hooks?
-	 *
-	 * @version 1.6.0
+	 * @version 1.6.1
 	 * @since 1.0.0
 	 */
-	public function __construct( bool $init_hooks = true ) {
+	public function __construct() {
 		$this->type               = Payment_Type::CREDIT_CARD;
 		$this->id                 = MRN_WC_SLUG . '-creditcard';
 		$this->method_title       = esc_html__( 'Morning - Credit Cards', 'wc-gateway-greeninvoice' );
@@ -55,6 +53,6 @@ class Credit_Card_Gateway extends Payment_Gateway {
 			Capability::TOKENIZATION,
 		];
 
-		parent::__construct( $init_hooks );
+		parent::__construct();
 	}
 }

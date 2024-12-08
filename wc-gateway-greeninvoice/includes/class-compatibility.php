@@ -6,7 +6,7 @@
  * @subpackage Compatibility
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.5.1
+ * @version    1.6.1
  * @since      1.0.0
  */
 
@@ -69,7 +69,7 @@ class Compatibility {
 	 */
 	public static function php_version(): void {
 		/* translators: %s PHP Version */
-		$notice = sprintf( esc_html__( 'Morning for WooCommerce requires PHP version %s or higher to run properly.', 'wc-gateway-greeninvoice' ), MRN_REQUIRED_PHP );
+		$notice = sprintf( esc_html__( 'Morning for WooCommerce requires PHP version %s or higher to run properly.', 'wc-gateway-greeninvoice' ), MRN_REQUIRED_MIN_PHP );
 
 		self::admin_notice( $notice );
 	}
@@ -81,7 +81,7 @@ class Compatibility {
 	 */
 	public static function wordpress_version(): void {
 		/* translators: %s WordPress Version */
-		$notice = sprintf( esc_html__( 'Morning for WooCommerce requires WordPress version %s or higher to run properly.', 'wc-gateway-greeninvoice' ), MRN_REQUIRED_WP );
+		$notice = sprintf( esc_html__( 'Morning for WooCommerce requires WordPress version %s or higher to run properly.', 'wc-gateway-greeninvoice' ), MRN_REQUIRED_MIN_WP );
 
 		self::admin_notice( $notice );
 	}
@@ -104,7 +104,7 @@ class Compatibility {
 	 */
 	public static function woocommerce_version(): void {
 		/* translators: %s WooCommerce Version */
-		$notice = sprintf( esc_html__( 'Morning for WooCommerce requires WooCommerce version %s or higher to run properly.', 'wc-gateway-greeninvoice' ), MRN_REQUIRED_WC );
+		$notice = sprintf( esc_html__( 'Morning for WooCommerce requires WooCommerce version %s or higher to run properly.', 'wc-gateway-greeninvoice' ), MRN_REQUIRED_MIN_WC );
 
 		self::admin_notice( $notice );
 	}

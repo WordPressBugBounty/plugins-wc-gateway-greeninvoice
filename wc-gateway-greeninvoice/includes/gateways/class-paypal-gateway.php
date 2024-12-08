@@ -6,7 +6,7 @@
  * @subpackage PayPal_Gateway
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.2.0
+ * @version    1.6.1
  * @since      1.0.0
  */
 
@@ -27,17 +27,15 @@ class PayPal_Gateway extends Payment_Gateway {
 	/**
 	 * PayPal_Gateway constructor.
 	 *
-	 * @param bool $init_hooks Should register hooks?
-	 *
-	 * @version 1.3.0
+	 * @version 1.6.1
 	 * @since 1.0.0
 	 */
-	public function __construct( bool $init_hooks = true ) {
+	public function __construct() {
 		$this->type               = Payment_Type::PAYPAL;
 		$this->id                 = MRN_WC_SLUG . '-paypal';
 		$this->method_title       = esc_html__( 'Morning - PayPal', 'wc-gateway-greeninvoice' );
 		$this->method_description = esc_html__( 'Accept credit cards with Morning PayPal integration. In order to complete the process, go to your WooCommerce plugin settings in Greeninvoice, and choose paypal in the "payment options" section.', 'wc-gateway-greeninvoice' );
 
-		parent::__construct( $init_hooks );
+		parent::__construct();
 	}
 }

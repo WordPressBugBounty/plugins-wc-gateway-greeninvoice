@@ -6,7 +6,7 @@
  * @subpackage Google_Pay_Gateway
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.2.0
+ * @version    1.6.1
  * @since      1.1.5
  */
 
@@ -29,12 +29,10 @@ class Google_Pay_Gateway extends Payment_Gateway {
 	/**
 	 * Class Google_Pay_Gateway
 	 *
-	 * @param bool $init_hooks Should register hooks?
-	 *
-	 * @version 1.3.0
+	 * @version 1.6.1
 	 * @since 1.1.5
 	 */
-	public function __construct( bool $init_hooks = true ) {
+	public function __construct() {
 		$this->type               = Payment_Type::GOOGLE_PAY;
 		$this->id                 = MRN_WC_SLUG . '-google-pay';
 		$this->method_title       = esc_html__( 'Morning - Google Pay', 'wc-gateway-greeninvoice' );
@@ -47,7 +45,7 @@ class Google_Pay_Gateway extends Payment_Gateway {
 			Capability::IFRAME_FORM,
 		];
 
-		parent::__construct( $init_hooks );
+		parent::__construct();
 	}
 
 

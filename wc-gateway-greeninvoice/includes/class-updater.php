@@ -108,7 +108,7 @@ class Updater {
 	private function v1_2_2_migration(): void {
 		$options = Settings::get_options();
 
-		$options[ Setting::ORDER_STATUS ] = defined( 'MRN_WC_IPN_COMPLETED' ) && MRN_WC_IPN_COMPLETED ? 'completed' : 'processing';
+		$options[ Setting::ORDER_STATUS ] = defined( 'MRN_WC_IPN_COMPLETED' ) && MRN_WC_IPN_COMPLETED ? 'completed' : 'processing'; // @phpstan-ignore-line
 
 		update_option( Settings::OPTIONS_KEY, $options );
 

@@ -6,7 +6,7 @@
  * @subpackage Bit_Gateway
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.2.0
+ * @version    1.6.1
  * @since      1.1.0
  */
 
@@ -29,12 +29,10 @@ class Bit_Gateway extends Payment_Gateway {
 	/**
 	 * Bit_Gateway constructor.
 	 *
-	 * @param bool $init_hooks Should register hooks?
-	 *
-	 * @version 1.3.0
+	 * @version 1.6.1
 	 * @since 1.1.0
 	 */
-	public function __construct( bool $init_hooks = true ) {
+	public function __construct() {
 		$this->type               = Payment_Type::BIT;
 		$this->id                 = MRN_WC_SLUG . '-bit';
 		$this->method_title       = esc_html__( 'Morning - Bit', 'wc-gateway-greeninvoice' );
@@ -46,6 +44,6 @@ class Bit_Gateway extends Payment_Gateway {
 			Capability::IFRAME_FORM,
 		];
 
-		parent::__construct( $init_hooks );
+		parent::__construct();
 	}
 }

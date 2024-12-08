@@ -356,7 +356,7 @@ final class Site_Info {
 				'label' => 'Enabled Payment Gateways',
 				'value' => $this->parse_payment_methods( WC()->payment_gateways()->payment_gateways() ),
 			],
-			...$pages
+			...$pages,
 		];
 	}
 

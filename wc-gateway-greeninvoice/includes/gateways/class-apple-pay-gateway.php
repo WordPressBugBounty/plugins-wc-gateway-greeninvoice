@@ -6,7 +6,7 @@
  * @subpackage Apple_Pay_Gateway
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.2.1
+ * @version    1.6.1
  * @since      1.1.5
  */
 
@@ -28,12 +28,10 @@ class Apple_Pay_Gateway extends Payment_Gateway {
 	/**
 	 * Class Apple_Pay_Gateway
 	 *
-	 * @param bool $init_hooks Should register hooks?
-	 *
-	 * @version 1.3.0
+	 * @version 1.6.1
 	 * @since 1.2.1
 	 */
-	public function __construct( bool $init_hooks = true ) {
+	public function __construct() {
 		$this->type               = Payment_Type::APPLE_PAY;
 		$this->id                 = MRN_WC_SLUG . '-apple-pay';
 		$this->method_title       = esc_html__( 'Morning - Apple Pay', 'wc-gateway-greeninvoice' );
@@ -42,6 +40,6 @@ class Apple_Pay_Gateway extends Payment_Gateway {
 			Currency::ILS,
 		];
 
-		parent::__construct( $init_hooks );
+		parent::__construct();
 	}
 }

@@ -6,7 +6,7 @@
  * @subpackage API
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.5.0
+ * @version    1.6.1
  * @since      1.0.0
  */
 
@@ -135,12 +135,12 @@ class API {
 		$response = $this->request( $url, $params );
 
 		if ( ! $this->is_response_ok( $response ) ) {
-			return new WP_Error( 'morning-api', 'Could not retrieve payment url.' );
+			return new WP_Error( 'morning-api', $this->get_api_error_message( $response ) );
 		}
 
 		$response_body = $this->get_body( $response );
 
-		return $response_body['url'] ?? new WP_Error( 'morning-api', 'Could not retrieve payment url.' );
+		return $response_body['url'] ?? $this->get_api_error_message( $response );
 	}
 
 	/**
@@ -169,12 +169,12 @@ class API {
 		$response = $this->request( $url, $params );
 
 		if ( ! $this->is_response_ok( $response ) ) {
-			return new WP_Error( 'morning-api', 'Could not retrieve payment url.' );
+			return new WP_Error( 'morning-api', $this->get_api_error_message( $response ) );
 		}
 
 		$response_body = $this->get_body( $response );
 
-		return $response_body['url'] ?? new WP_Error( 'morning-api', 'Could not retrieve payment url.' );
+		return $response_body['url'] ?? $this->get_api_error_message( $response );
 	}
 
 	/**
@@ -427,5 +427,35 @@ class API {
 		}
 
 		return self::$instance;
+	}
+
+
+	/**
+	 * @param array|WP_Error $response
+	 *
+	 * @return string
+	 *
+	 * @since 1.6.1
+	 */
+	public function get_api_error_message( $response ): string {
+		$error = $this->get_body( $response );
+
+		$error_code    = $error['errorCode'] ?? 3000;
+		$error_message = $error['errorMessage'] ?? __( 'General Error', 'wc-gateway-greeninvoice' );
+
+		switch ( $error_code ) {
+			case 1006:
+			case 1012:
+			case 1015:
+			case 1118:
+			case 2001:
+			case 2122:
+			case 5001:
+				return __( 'Could not retrieve payment url.', 'wc-gateway-greeninvoice' );
+
+			default:
+				/* translators: %s API Error Message */
+				return sprintf( __( 'Could not retrieve payment url: %s.', 'wc-gateway-greeninvoice' ), $error_message );
+		}
 	}
 }
