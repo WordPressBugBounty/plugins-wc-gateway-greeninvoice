@@ -74,7 +74,7 @@ class Metabox {
 
 		$order_meta = $order->get_meta( Setting::ORDER_META );
 
-		if ( empty( $order_meta ) ) {
+		if ( empty( $order_meta ) || empty( $order_meta['document_id'] ) ) {
 			return;
 		}
 
