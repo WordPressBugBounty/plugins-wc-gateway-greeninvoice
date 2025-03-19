@@ -42,11 +42,11 @@ class Frontend {
 	 * @since 1.0.0
 	 */
 	public function register_assets(): void {
-		wp_register_style( MRN_WC_SLUG . '-frontend', MRN_WC_URL . 'assets/css/frontend.min.css', [], MRN_WC_VERSION );
+		wp_register_style( MRN_WC_SLUG . '-frontend', MRN_WC_URL . 'assets/css/frontend.css', [], MRN_WC_VERSION );
 
 		wp_register_script(
 			MRN_WC_SLUG . '-frontend',
-			MRN_WC_URL . 'assets/js/frontend.min.js',
+			MRN_WC_URL . 'assets/js/frontend.js',
 			[ 'jquery', 'wc-blocks-checkout' ],
 			MRN_WC_VERSION,
 			[ 'in_footer' => true ]

@@ -31,8 +31,8 @@ class Bit_Gateway_Block extends Payment_Gateway_Block {
 		$this->block_scripts = [
 			[
 				'id'   => MRN_WC_SLUG . '-gateway-bit',
-				'file' => MRN_WC_URL . 'assets/js/blocks/bit.min.js',
-				'deps' => $this->get_block_dependencies( MRN_WC_PATH . 'assets/js/blocks/bit.min.asset.php' ),
+				'file' => MRN_WC_URL . 'assets/js/blocks/bit.js',
+				'deps' => $this->get_block_dependencies( MRN_WC_PATH . 'assets/js/blocks/bit.asset.php' ),
 			],
 		];
 

@@ -31,8 +31,8 @@ class PayPal_Gateway_Block extends Payment_Gateway_Block {
 		$this->block_scripts = [
 			[
 				'id'   => MRN_WC_SLUG . '-gateway-paypal',
-				'file' => MRN_WC_URL . 'assets/js/blocks/paypal.min.js',
-				'deps' => $this->get_block_dependencies( MRN_WC_PATH . 'assets/js/blocks/paypal.min.asset.php' ),
+				'file' => MRN_WC_URL . 'assets/js/blocks/paypal.js',
+				'deps' => $this->get_block_dependencies( MRN_WC_PATH . 'assets/js/blocks/paypal.asset.php' ),
 			],
 		];
 

@@ -2,8 +2,8 @@
 Contributors: greeninvoice, dorzki
 Tags: greeninvoice, invoices, invoice, business management, credit cards
 Requires at least: 6.4
-Tested up to: 6.7.1
-Stable tag: 1.6.4
+Tested up to: 6.7.2
+Stable tag: 1.6.5
 Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -60,20 +60,24 @@ To install this add-on go to [the add-ons section](https://app.greeninvoice.co.i
 
 == Changelog ==
 
+= 1.6.5 | 19.03.2025 =
+[IMPROVE] Added compatability to WooCommerce v9.7.1
+[IMPROVE] Bumped minimum required WooCommerce version to 8.0
+
 = 1.6.4 | 25.02.2025 =
-[IMPROVE] Added compatability to WooCommerce v9.6.2.
+[IMPROVE] Added compatability to WooCommerce v9.6.2
 [BUGFIX] Hide document metabox for subscription order with trial.
 
 = 1.6.3 | 27.01.2025 =
-[IMPROVE] Added compatability to WooCommerce v9.6.0.
+[IMPROVE] Added compatability to WooCommerce v9.6.0
 
 = 1.6.2 | 26.12.2024 =
-[IMPROVE] Added compatability to WooCommerce v9.5.1.
+[IMPROVE] Added compatability to WooCommerce v9.5.1
 
 = 1.6.1 | 08.12.2024 =
-[BUGFIX] Fixed Site Info report exporting on WooCommerce v9.1.0.
+[BUGFIX] Fixed Site Info report exporting on WooCommerce v9.1.0
 [FEATURE] Added support for WooCommerce Subscriptions trial days.
-[IMPROVE] Added compatability to WooCommerce v9.4.3.
+[IMPROVE] Added compatability to WooCommerce v9.4.3
 [IMPROVE] Added WooCommerce a required plugin.
 [IMPROVE] Reflect payment form url error better.
 
@@ -81,8 +85,8 @@ To install this add-on go to [the add-ons section](https://app.greeninvoice.co.i
 [FEATURE] Added support for WooCommerce Subscriptions.
 
 = 1.5.1 | 25.07.2024 =
-[BUGFIX] Fixed Site Info report exporting on WooCommerce v9.0.0.
-[IMPROVE] Added compatability to WooCommerce v9.1.2.
+[BUGFIX] Fixed Site Info report exporting on WooCommerce v9.0.0
+[IMPROVE] Added compatability to WooCommerce v9.1.2
 
 = 1.5.0 | 29.05.2024 =
 [IMPROVE] Added tax settings in site info export.
@@ -132,7 +136,7 @@ To install this add-on go to [the add-ons section](https://app.greeninvoice.co.i
 
 = 1.1.5 | 04.06.2023 =
 [FEATURE] Added Google Pay support for Digital Payments plugin.
-[FEATURE] Added support for WooCommerce v7.6.
+[FEATURE] Added support for WooCommerce v7.6
 
 = 1.1.4 | 18.04.2023 =
 [FEATURE] Added compatibility with the latest WooCommerce version.

@@ -46,8 +46,8 @@ class Admin {
 	public function register_assets( string $screen ): void {
 		global $post_id;
 
-		wp_register_style( MRN_WC_SLUG . '-backend', MRN_WC_URL . 'assets/css/backend.min.css', [], MRN_WC_VERSION );
-		wp_register_script( MRN_WC_SLUG . '-backend', MRN_WC_URL . 'assets/js/backend.min.js', [ 'jquery' ], MRN_WC_VERSION, true );
+		wp_register_style( MRN_WC_SLUG . '-backend', MRN_WC_URL . 'assets/css/backend.css', [], MRN_WC_VERSION );
+		wp_register_script( MRN_WC_SLUG . '-backend', MRN_WC_URL . 'assets/js/backend.js', [ 'jquery' ], MRN_WC_VERSION, true );
 
 		wp_localize_script(
 			MRN_WC_SLUG . '-backend',

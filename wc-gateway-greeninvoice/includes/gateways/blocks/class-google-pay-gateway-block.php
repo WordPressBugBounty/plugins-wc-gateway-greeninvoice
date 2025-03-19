@@ -31,8 +31,8 @@ class Google_Pay_Gateway_Block extends Payment_Gateway_Block {
 		$this->block_scripts = [
 			[
 				'id'   => MRN_WC_SLUG . '-gateway-google-pay',
-				'file' => MRN_WC_URL . 'assets/js/blocks/google-pay.min.js',
-				'deps' => $this->get_block_dependencies( MRN_WC_PATH . 'assets/js/blocks/google-pay.min.asset.php' ),
+				'file' => MRN_WC_URL . 'assets/js/blocks/google-pay.js',
+				'deps' => $this->get_block_dependencies( MRN_WC_PATH . 'assets/js/blocks/google-pay.asset.php' ),
 			],
 		];
 

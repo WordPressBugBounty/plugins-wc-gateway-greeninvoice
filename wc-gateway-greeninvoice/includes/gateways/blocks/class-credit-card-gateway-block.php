@@ -31,8 +31,8 @@ class Credit_Card_Gateway_Block extends Payment_Gateway_Block {
 		$this->block_scripts = [
 			[
 				'id'   => MRN_WC_SLUG . '-gateway-credit-card',
-				'file' => MRN_WC_URL . 'assets/js/blocks/credit-card.min.js',
-				'deps' => $this->get_block_dependencies( MRN_WC_PATH . 'assets/js/blocks/credit-card.min.asset.php' ),
+				'file' => MRN_WC_URL . 'assets/js/blocks/credit-card.js',
+				'deps' => $this->get_block_dependencies( MRN_WC_PATH . 'assets/js/blocks/credit-card.asset.php' ),
 			],
 		];
 
