@@ -12,7 +12,7 @@
 
 namespace Morning\WC\Formatters;
 
-use Morning\WC\Abstracts\Formatter;
+use Morning\WC\Base\Base_Formatter;
 use Morning\WC\Enum\Payment_Type;
 
 defined( 'ABSPATH' ) || exit;
@@ -23,12 +23,10 @@ defined( 'ABSPATH' ) || exit;
  *
  * @package Morning\WC\Formatters
  */
-class Gateways_Response_Formatter extends Formatter {
+class Gateways_Response_Formatter extends Base_Formatter {
 	/**
-	 * Format API gateways sync response.
-	 *
-	 * @param array $value API raw gateways sync response
-	 * @param array $args Optional arguments to pass
+	 * @param array $value API raw gateways sync response.
+	 * @param array $args Optional arguments to pass.
 	 *
 	 * @return array
 	 *
@@ -42,7 +40,7 @@ class Gateways_Response_Formatter extends Formatter {
 				continue;
 			}
 
-			$gateways[ $payment_type ] = (string) $value[ $payment_type ];
+			$gateways[ $payment_type ] = 'yes';
 		}
 
 		return $gateways;

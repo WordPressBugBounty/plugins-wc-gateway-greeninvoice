@@ -22,16 +22,20 @@ defined( 'ABSPATH' ) || exit;
  */
 class Capability {
 	/**
+	 * @var string
+	 *
 	 * @since 1.2.0
 	 */
 	const INSTALLMENTS = 'installments';
-
 	/**
+	 * @var string
+	 *
 	 * @since 1.2.0
 	 */
 	const IFRAME_FORM = 'iframe_form';
-
 	/**
+	 * @var string
+	 *
 	 * @since 1.6.0
 	 */
 	const TOKENIZATION = 'tokenization';

@@ -6,14 +6,13 @@
  * @subpackage Logger
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.5.0
+ * @version    2.0.0
  * @since      1.0.0
  */
 
 namespace Morning\WC\Utilities;
 
-use Morning\WC\Enum\Setting;
-use WC_Logger_Interface;
+use WC_Log_Levels;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -25,82 +24,56 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Logger {
 	/**
-	 * Logger instance.
+	 * @param string $message Message to log.
+	 * @param array $context Log extra data.
 	 *
-	 * @var null|Logger
+	 * @return void
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
-	private static $instance = null;
+	public static function debug( string $message, array $context = [] ): void {
+		self::log( $message, $context, WC_Log_Levels::DEBUG );
+	}
 
 	/**
-	 * WC_Logger instance.
+	 * @param string $message Message to log.
+	 * @param array $context Log extra data.
 	 *
-	 * @var null|WC_Logger_Interface
+	 * @return void
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
-	private $logger = null;
+	public static function info( string $message, array $context = [] ): void {
+		self::log( $message, $context, WC_Log_Levels::INFO );
+	}
 
 	/**
-	 * Enable debugging.
+	 * @param string $message Message to log.
+	 * @param array $context Log extra data.
 	 *
-	 * @var bool
+	 * @return void
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
-	private $debug = false;
-
-
-	/**
-	 * Logger constructor.
-	 *
-	 * @since 1.0.0
-	 */
-	public function __construct() {
-		if ( is_null( $this->logger ) ) {
-			$this->logger = wc_get_logger();
-		}
-
-		$this->debug = Settings::is_enabled( Setting::DEBUGGING );
+	public static function error( string $message, array $context = [] ): void {
+		self::log( $message, $context, WC_Log_Levels::ERROR );
 	}
 
 
 	/**
-	 * Log several events to log file.
-	 *
-	 * @param mixed $message Message to log.
+	 * @param string $message Message to log.
+	 * @param array $context Log extra data.
 	 * @param string $level Log level.
 	 *
 	 * @since 1.0.0
 	 */
-	public function log( $message, string $level = 'error' ): void {
-		if ( ! $this->debug ) {
-			return;
+	public static function log( string $message, array $context = [], string $level = WC_Log_Levels::INFO ): void {
+		$log = $message;
+
+		if ( ! empty( $context ) ) {
+			$log .= ' with context:' . PHP_EOL . '---------------[START]---------------' . PHP_EOL . wc_print_r( $context, true ) . '----------------[END]----------------';
 		}
 
-		if ( ! is_scalar( $message ) ) {
-			$message = wc_print_r( $message, true );
-		}
-
-		$message = PHP_EOL . '---------------[START]---------------' . PHP_EOL . $message . PHP_EOL . '----------------[END]----------------';
-
-		$this->logger->log( $level, $message, [ 'source' => MRN_WC_SLUG ] );
-	}
-
-
-	/**
-	 * Retrieve plugin's instance.
-	 *
-	 * @return Logger
-	 *
-	 * @since 1.0.0
-	 */
-	public static function get_instance(): Logger {
-		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
+		( wc_get_logger() )->log( $level, $log, [ 'source' => MRN_WC_SLUG ] );
 	}
 }

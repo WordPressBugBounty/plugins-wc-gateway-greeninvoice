@@ -1,20 +1,19 @@
 <?php
 /**
- * Class Compatibility
+ * Class Checkout
  *
  * @package    Morning\WC
  * @subpackage Checkout
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.4.0
+ * @version    2.0.0
  * @since      1.4.0
  */
 
 namespace Morning\WC;
 
-use Morning\WC\Enum\Setting;
+use Morning\WC\Config\Settings;
 use Morning\WC\Formatters\Tax_ID_Formatter;
-use Morning\WC\Utilities\Settings;
 use WP_Error;
 
 defined( 'ABSPATH' ) || exit;
@@ -27,11 +26,33 @@ defined( 'ABSPATH' ) || exit;
  */
 class Checkout {
 	/**
+	 * @var Settings
+	 *
+	 * @since 2.0.0
+	 */
+	private Settings $settings;
+
+
+	/**
 	 * Checkout constructor.
+	 *
+	 * @param Settings $settings
 	 *
 	 * @since 1.4.0
 	 */
-	public function __construct() {
+	public function __construct( Settings $settings ) {
+		$this->settings = $settings;
+
+		$this->register_hooks();
+	}
+
+
+	/**
+	 * @return void
+	 *
+	 * @since 2.0.0
+	 */
+	private function register_hooks(): void {
 		add_action( 'woocommerce_after_checkout_validation', [ $this, 'maybe_validate_israeli_tax_id' ], 10, 2 );
 
 		add_filter( 'woocommerce_checkout_fields', [ $this, 'maybe_inject_tax_id_field' ] );
@@ -39,8 +60,6 @@ class Checkout {
 
 
 	/**
-	 * Maybe validate tax id field value.
-	 *
 	 * @param array $data Posted checkout data.
 	 * @param WP_Error $errors Validation errors object.
 	 *
@@ -83,8 +102,6 @@ class Checkout {
 
 
 	/**
-	 * Maybe inject tax id field to billing checkout form.
-	 *
 	 * @param array $fields List of registered checkout fields.
 	 *
 	 * @return array
@@ -92,7 +109,9 @@ class Checkout {
 	 * @since 1.4.0
 	 */
 	public function maybe_inject_tax_id_field( array $fields ): array {
-		if ( Settings::is_enabled( Setting::SHOW_TAX_ID_FIELD ) ) {
+		$options = $this->settings->get_options();
+
+		if ( $options->is_show_tax_id_field() ) {
 			$fields['billing']['billing_tax_id'] = [
 				'label'    => esc_html__( 'Tax ID', 'wc_gateway_greeninvoice' ),
 				'priority' => 29,

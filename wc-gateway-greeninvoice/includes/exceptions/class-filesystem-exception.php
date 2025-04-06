@@ -23,5 +23,4 @@ defined( 'ABSPATH' ) || exit;
  * @package Morning\WC\Exceptions
  */
 class FileSystem_Exception extends Exception {
-
 }

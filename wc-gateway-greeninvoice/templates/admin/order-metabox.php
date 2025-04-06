@@ -5,21 +5,25 @@
  * @package    Morning\WC
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.4.1
+ * @version    2.0.0
  * @since      1.0.0
  */
 
-use Morning\WC\Enum\Setting;
-use Morning\WC\Utilities\Settings;
+use Morning\WC\Config\Settings;
 
 $order_meta_labels = $order_meta_labels ?? [];
 $order_meta        = $order_meta ?? [];
 
-$document_view_link = Settings::is_enabled( Setting::SANDBOX ) ?
+$container = mrn_get_container();
+$settings  = $container->get( Settings::class );
+$options   = $settings->get_options();
+
+
+$document_view_link = $options->is_sandbox_mode() ?
 	"https://app.sandbox.d.greeninvoice.co.il/incomes/documents/${order_meta['id']}" :
 	"https://app.greeninvoice.co.il/incomes/documents/${order_meta['id']}";
 
-$transaction_view_link = Settings::is_enabled( Setting::SANDBOX ) ?
+$transaction_view_link = $options->is_sandbox_mode() ?
 	"https://app.sandbox.d.greeninvoice.co.il/incomes/transactions/${order_meta['transaction_id']}" :
 	"https://app.greeninvoice.co.il/incomes/transactions/${order_meta['transaction_id']}";
 ?>

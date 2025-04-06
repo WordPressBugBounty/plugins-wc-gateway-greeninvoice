@@ -6,14 +6,16 @@
  * @subpackage Exporter
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.5.0
+ * @version    2.0.0
  * @since      1.4.0
  */
 
 namespace Morning\WC\Utilities;
 
 use Morning\WC\Enum\Report_Format;
+use Morning\WC\Exceptions\Container_Exception;
 use Morning\WC\Exceptions\FileSystem_Exception;
+use Morning\WC\Site_Info;
 use WP_Filesystem_Base;
 use ZipArchive;
 
@@ -33,7 +35,7 @@ final class Exporter {
 	 *
 	 * @since 1.4.0
 	 */
-	private $filesystem;
+	private WP_Filesystem_Base $filesystem;
 
 
 	/**
@@ -51,9 +53,9 @@ final class Exporter {
 
 
 	/**
-	 * Run exporter.
-	 *
 	 * @return void
+	 *
+	 * @throws Container_Exception
 	 *
 	 * @since 1.4.0
 	 */
@@ -69,8 +71,6 @@ final class Exporter {
 
 
 	/**
-	 * Send file streaming headers.
-	 *
 	 * @param string $file File path and name.
 	 *
 	 * @return void
@@ -89,8 +89,6 @@ final class Exporter {
 	}
 
 	/**
-	 * Stream file contents.
-	 *
 	 * @param string $file File path and name.
 	 *
 	 * @return void
@@ -107,8 +105,6 @@ final class Exporter {
 
 
 	/**
-	 * Copy relevant log files from WooCommerce logs directory.
-	 *
 	 * @return void
 	 *
 	 * @since 1.4.0
@@ -130,22 +126,20 @@ final class Exporter {
 	}
 
 	/**
-	 * Generate site report file.
-	 *
 	 * @return void
+	 *
+	 * @throws Container_Exception
 	 *
 	 * @since 1.4.0
 	 */
 	private function generate_site_info(): void {
-		$site_info = new Site_Info();
+		$site_info = ( mrn_get_container() )->get( Site_Info::class );
 
 		$this->filesystem->put_contents( "{$this->get_working_directory()}/site-report.md", $site_info->output( Report_Format::MARKDOWN ) );
 		$this->filesystem->put_contents( "{$this->get_working_directory()}/site-report.json", $site_info->output( Report_Format::JSON ) );
 	}
 
 	/**
-	 * Create a zip file.
-	 *
 	 * @return string
 	 *
 	 * @since 1.4.0
@@ -180,8 +174,6 @@ final class Exporter {
 
 
 	/**
-	 * Get exporter working directory dir path.
-	 *
 	 * @return string
 	 *
 	 * @since 1.4.0
@@ -193,8 +185,6 @@ final class Exporter {
 	}
 
 	/**
-	 * Initialize filesystem class if not initiated.
-	 *
 	 * @return void
 	 * @throws FileSystem_Exception
 	 *
@@ -217,8 +207,6 @@ final class Exporter {
 	}
 
 	/**
-	 * Create working directory and set security.
-	 *
 	 * @return void
 	 * @throws FileSystem_Exception
 	 *
@@ -251,8 +239,6 @@ final class Exporter {
 	}
 
 	/**
-	 * Remove old files.
-	 *
 	 * @return void
 	 *
 	 * @since 1.4.0

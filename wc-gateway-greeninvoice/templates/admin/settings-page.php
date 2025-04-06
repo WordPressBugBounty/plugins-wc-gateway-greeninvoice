@@ -5,11 +5,11 @@
  * @package    Morning\WC
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.2.0
+ * @version    2.0.0
  * @since      1.0.0
  */
 
-use Morning\WC\Utilities\Settings;
+use Morning\WC\Config\Options;
 
 if ( ! current_user_can( 'manage_options' ) ) {
 	return;
@@ -19,7 +19,7 @@ if ( ! current_user_can( 'manage_options' ) ) {
 if ( isset( $_GET['settings-updated'] ) ) {
 
 	add_settings_error(
-		Settings::OPTIONS_KEY,
+		Options::OPTIONS_KEY,
 		MRN_WC_SLUG . '_notice',
 		esc_html__( 'Changes were saved.', 'wc-gateway-greeninvoice' ),
 		'updated'

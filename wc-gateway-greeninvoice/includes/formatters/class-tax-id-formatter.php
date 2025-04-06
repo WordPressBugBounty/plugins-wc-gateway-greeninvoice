@@ -12,7 +12,7 @@
 
 namespace Morning\WC\Formatters;
 
-use Morning\WC\Abstracts\Formatter;
+use Morning\WC\Base\Base_Formatter;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -22,12 +22,10 @@ defined( 'ABSPATH' ) || exit;
  *
  * @package Morning\WC\Formatters
  */
-class Tax_ID_Formatter extends Formatter {
+class Tax_ID_Formatter extends Base_Formatter {
 	/**
-	 * Format value to a valid Israeli Tax ID number.
-	 *
 	 * @param string|integer $value Value to format.
-	 * @param array $args Optional arguments to pass
+	 * @param array $args Optional arguments to pass.
 	 *
 	 * @return string
 	 *

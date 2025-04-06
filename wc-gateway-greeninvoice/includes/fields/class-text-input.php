@@ -6,13 +6,13 @@
  * @subpackage Text_Input
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.2.0
+ * @version    2.0.0
  * @since      1.2.0
  */
 
 namespace Morning\WC\Fields;
 
-use Morning\WC\Abstracts\Settings_Field;
+use Morning\WC\Base\Base_Settings_Field;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -22,35 +22,13 @@ defined( 'ABSPATH' ) || exit;
  *
  * @package Morning\WC\Fields
  */
-final class Text_Input extends Settings_Field {
-	/**
-	 * @inheritDoc
-	 */
-	protected $type = 'text';
-
-	/**
-	 * Allowed input types.
-	 *
-	 * @var string[]
-	 *
-	 * @since 1.2.0
-	 */
-	private $allowed_types = [
-		'text',
-		'password',
-		'email',
-		'tel',
-		'url',
-		'search',
-		'date',
-		'color',
-	];
-
-
+final class Text_Input extends Base_Settings_Field {
 	/**
 	 * Text_Input constructor.
 	 *
+	 * @param string $section_id Section id.
 	 * @param string $id Field id.
+	 * @param string $label Field label.
 	 * @param string $type Field type.
 	 * @param string|null $value Field value.
 	 * @param string|null $name Field name.
@@ -58,14 +36,14 @@ final class Text_Input extends Settings_Field {
 	 *
 	 * @since 1.2.0
 	 */
-	public function __construct( string $id, string $type = 'text', ?string $value = null, ?string $name = null, array $options = [] ) {
+	public function __construct( string $section_id, string $id, string $label, string $type = 'text', ?string $value = null, ?string $name = null, array $options = [] ) {
 		if ( $this->is_valid_type( $type ) ) {
 			$this->type = $type;
 		}
 
-		$this->css_classes = [ 'regular-text' ];
+		$this->css_classes[] = 'regular-text';
 
-		parent::__construct( $id, $value, $name, $options );
+		parent::__construct( $section_id, $id, $label, $value, $name, $options );
 	}
 
 
@@ -87,8 +65,6 @@ final class Text_Input extends Settings_Field {
 
 
 	/**
-	 * Check if this is a valid input type.
-	 *
 	 * @param string $type Input type.
 	 *
 	 * @return bool
@@ -96,6 +72,6 @@ final class Text_Input extends Settings_Field {
 	 * @since 1.2.0
 	 */
 	private function is_valid_type( string $type ): bool {
-		return in_array( $type, $this->allowed_types, true );
+		return in_array( $type, [ 'text', 'password', 'email', 'tel', 'url', 'search', 'date', 'color' ], true );
 	}
 }

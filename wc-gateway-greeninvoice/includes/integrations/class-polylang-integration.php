@@ -6,11 +6,13 @@
  * @subpackage Polylang_Integration
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.5.0
+ * @version    2.0.0
  * @since      1.4.0
  */
 
 namespace Morning\WC\Integrations;
+
+use Morning\WC\Base\Base_Integration;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -20,20 +22,20 @@ defined( 'ABSPATH' ) || exit;
  *
  * @package Morning\WC\Integrations
  */
-class Polylang_Integration {
+final class Polylang_Integration extends Base_Integration {
 	/**
-	 * Polylang_Integration constructor.
+	 * @return void
 	 *
-	 * @since 1.4.0
+	 * @since 2.0.0
 	 */
-	public function __construct() {
+	protected function register_hooks(): void {
+		parent::register_hooks();
+
 		add_filter( 'morning/wc/get_gateway_url_params', [ $this, 'inject_lang_param' ] );
 	}
 
 
 	/**
-	 * Inject language parameter to gateway return url.
-	 *
 	 * @param array $params List of parameters.
 	 *
 	 * @return array
@@ -46,5 +48,24 @@ class Polylang_Integration {
 		}
 
 		return $params;
+	}
+
+
+	/**
+	 * @return bool
+	 *
+	 * @since 2.0.0
+	 */
+	protected function is_compatible(): bool {
+		return $this->is_plugin_active( 'polylang-pro/polylang.php' );
+	}
+
+	/**
+	 * @return string
+	 *
+	 * @since 2.0.0
+	 */
+	protected function get_integration_name(): string {
+		return 'Polylang';
 	}
 }

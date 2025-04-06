@@ -6,13 +6,13 @@
  * @subpackage Status_Indicator
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.2.0
+ * @version    2.0.0
  * @since      1.2.0
  */
 
 namespace Morning\WC\Fields;
 
-use Morning\WC\Abstracts\Settings_Field;
+use Morning\WC\Base\Base_Settings_Field;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @package Morning\WC\Fields
  */
-final class Status_Indicator extends Settings_Field {
+final class Status_Indicator extends Base_Settings_Field {
 	/**
 	 * Field statuses.
 	 *
@@ -36,23 +36,26 @@ final class Status_Indicator extends Settings_Field {
 	/**
 	 * Status_Indicator constructor.
 	 *
+	 * @param string $section_id Section id.
 	 * @param string $id Field id.
+	 * @param string $label Field label.
 	 * @param string|null $value Field value.
 	 * @param string|null $name Field name.
 	 * @param array $options Field additional options.
 	 *
 	 * @since 1.2.0
 	 */
-	public function __construct( string $id, ?string $value = null, ?string $name = null, array $options = [] ) {
-		$this->statuses    = $options['status_list'] ?? [];
-		$this->type        = 'hidden';
-		$this->css_classes = [ 'morning-status-indicator' ];
+	public function __construct( string $section_id, string $id, string $label, ?string $value = null, ?string $name = null, array $options = [] ) {
+		$this->statuses = $options['status_list'] ?? [];
+		$this->type     = 'hidden';
+
+		$this->css_classes[] = 'morning-status-indicator';
 
 		if ( empty( $value ) ) {
-			$value = 'empty';
+			$value = 'no';
 		}
 
-		parent::__construct( $id, $value, $name, $options );
+		parent::__construct( $section_id, $id, $label, $value, $name, $options );
 	}
 
 
@@ -74,8 +77,6 @@ final class Status_Indicator extends Settings_Field {
 
 
 	/**
-	 * Retrieve status label text.
-	 *
 	 * @param string $status Status code.
 	 *
 	 * @return string|null

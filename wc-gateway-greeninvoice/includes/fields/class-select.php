@@ -6,13 +6,13 @@
  * @subpackage Select
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.2.2
+ * @version    2.0.0
  * @since      1.2.2
  */
 
 namespace Morning\WC\Fields;
 
-use Morning\WC\Abstracts\Settings_Field;
+use Morning\WC\Base\Base_Settings_Field;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -22,12 +22,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @package Morning\WC\Fields
  */
-final class Select extends Settings_Field {
-	/**
-	 * @inheritDoc
-	 */
-	protected $type = 'select';
-
+final class Select extends Base_Settings_Field {
 	/**
 	 * Field value options list.
 	 *
@@ -41,17 +36,20 @@ final class Select extends Settings_Field {
 	/**
 	 * Text_Input constructor.
 	 *
+	 * @param string $section_id Section id.
 	 * @param string $id Field id.
+	 * @param string $label Field label.
 	 * @param string|null $value Field value.
 	 * @param string|null $name Field name.
 	 * @param array $options Field additional options.
 	 *
 	 * @since 1.2.0
 	 */
-	public function __construct( string $id, ?string $value = null, ?string $name = null, array $options = [] ) {
+	public function __construct( string $section_id, string $id, string $label, ?string $value = null, ?string $name = null, array $options = [] ) {
+		$this->type    = 'select';
 		$this->options = $options['values'];
 
-		parent::__construct( $id, $value, $name, $options );
+		parent::__construct( $section_id, $id, $label, $value, $name, $options );
 	}
 
 
@@ -73,8 +71,6 @@ final class Select extends Settings_Field {
 
 
 	/**
-	 * Generates field options HTML.
-	 *
 	 * @param array $options Field options.
 	 * @param string|null $selected_value Selected value.
 	 *

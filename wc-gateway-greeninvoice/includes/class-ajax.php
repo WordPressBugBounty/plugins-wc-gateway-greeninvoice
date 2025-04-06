@@ -1,45 +1,72 @@
 <?php
 /**
- * Class AJAX
+ * Class Ajax
  *
  * @package    Morning\WC
- * @subpackage AJAX
+ * @subpackage Ajax
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.4.0
+ * @version    2.0.0
  * @since      1.2.0
  */
 
 namespace Morning\WC;
 
-use Morning\WC\Enum\HTTP_Code;
-use Morning\WC\Exceptions\FileSystem_Exception;
-use Morning\WC\Utilities\API;
+use Morning\WC\Exceptions\Container_Exception;
+use Morning\WC\Utilities\Auth;
 use Morning\WC\Utilities\Exporter;
 
 defined( 'ABSPATH' ) || exit;
 
 
 /**
- * Class AJAX
+ * Class Ajax
  *
  * @package Morning\WC
  */
-class AJAX {
+class Ajax {
+	/**
+	 * @var Auth
+	 *
+	 * @since 2.0.0
+	 */
+	private Auth $auth;
+	/**
+	 * @var Exporter
+	 *
+	 * @since 2.0.0
+	 */
+	private Exporter $exporter;
+
+
 	/**
 	 * AJAX constructor.
 	 *
+	 * @param Auth $auth
+	 * @param Exporter $exporter
+	 *
 	 * @since 1.2.0
 	 */
-	public function __construct() {
+	public function __construct( Auth $auth, Exporter $exporter ) {
+		$this->auth     = $auth;
+		$this->exporter = $exporter;
+
+		$this->register_hooks();
+	}
+
+
+	/**
+	 * @return void
+	 *
+	 * @since 2.0.0
+	 */
+	private function register_hooks(): void {
 		add_action( 'wp_ajax_morning_sync_gateways', [ $this, 'sync_gateways' ] );
 		add_action( 'wp_ajax_greeninvoice_generate_debug_file', [ $this, 'generate_debug_file' ] );
 	}
 
 
 	/**
-	 * Send sync request to get recent changes.
-	 *
 	 * @return void
 	 *
 	 * @since 1.2.0
@@ -49,22 +76,19 @@ class AJAX {
 			wp_die( 'Invalid nonce' );
 		}
 
-		$api      = API::get_instance();
-		$response = $api->connect_store();
+		$response = $this->auth->authorize_store();
 
-		$json = json_decode( wp_remote_retrieve_body( $response ) );
-
-		if ( HTTP_Code::OK === wp_remote_retrieve_response_code( $response ) ) {
-			wp_send_json_success( $json );
+		if ( $response->is_ok() ) {
+			wp_send_json_success( $response->json_body() );
 		} else {
-			wp_send_json_error( $json );
+			wp_send_json_error( $response->json_body() );
 		}
 	}
 
 	/**
-	 * Generate and stream a debugging file including logs and environment data.
-	 *
 	 * @return void
+	 *
+	 * @throws Container_Exception
 	 *
 	 * @since 1.4.0
 	 */
@@ -73,10 +97,6 @@ class AJAX {
 			wp_die( 'Invalid nonce' );
 		}
 
-		try {
-			( new Exporter() )->stream();
-		} catch ( FileSystem_Exception $ex ) {
-			wp_send_json_error();
-		}
+		$this->exporter->stream();
 	}
 }

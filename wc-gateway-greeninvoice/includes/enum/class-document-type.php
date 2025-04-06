@@ -6,7 +6,7 @@
  * @subpackage Document_Type
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.2.0
+ * @version    2.0.0
  * @since      1.0.0
  */
 
@@ -22,71 +22,92 @@ defined( 'ABSPATH' ) || exit;
  */
 class Document_Type {
 	/**
+	 * @var int
+	 *
 	 * @since 1.0.0
 	 */
 	const PRICE_QUOTE = 10;
-
 	/**
+	 * @var int
+	 *
 	 * @since 1.0.0
 	 */
 	const PAYMENT_CONFIRM = 20;
-
 	/**
+	 * @var int
+	 *
 	 * @since 1.0.0
 	 */
 	const ORDER = 100;
-
 	/**
+	 * @var int
+	 *
 	 * @since 1.0.0
 	 */
 	const DELIVERY_NOTE = 200;
-
 	/**
+	 * @var int
+	 *
 	 * @since 1.0.0
 	 */
 	const RETURN_DELIVERY = 210;
-
 	/**
+	 * @var int
+	 *
 	 * @since 1.0.0
 	 */
 	const PROFORMA_INVOICE = 300;
-
 	/**
+	 * @var int
+	 *
 	 * @since 1.0.0
 	 */
 	const INVOICE = 305;
-
 	/**
+	 * @var int
+	 *
 	 * @since 1.0.0
 	 */
 	const INVOICE_RECEIPT = 320;
-
 	/**
+	 * @var int
+	 *
 	 * @since 1.0.0
 	 */
 	const CREDIT_NOTE = 330;
-
 	/**
+	 * @var int
+	 *
 	 * @since 1.0.0
 	 */
 	const RECEIPT = 400;
-
 	/**
+	 * @var int
+	 *
 	 * @since 1.0.0
 	 */
 	const DONATE_RECEIPT = 405;
-
 	/**
+	 * @var int
+	 *
+	 * @since 2.0.0
+	 */
+	const DONATE_CANCEL = 410;
+	/**
+	 * @var int
+	 *
 	 * @since 1.0.0
 	 */
 	const PURCHASE_ORDER = 500;
-
 	/**
+	 * @var int
+	 *
 	 * @since 1.0.0
 	 */
 	const DEPOSIT_RECEIPT = 600;
-
 	/**
+	 * @var int
+	 *
 	 * @since 1.0.0
 	 */
 	const DEPOSIT_WITHDRAWAL = 610;
@@ -114,6 +135,7 @@ class Document_Type {
 			self::CREDIT_NOTE        => esc_html_x( 'Credit Note', 'Document Type', 'wc-gateway-greeninvoice' ),
 			self::RECEIPT            => esc_html_x( 'Receipt', 'Document Type', 'wc-gateway-greeninvoice' ),
 			self::DONATE_RECEIPT     => esc_html_x( 'Donation Receipt', 'Document Type', 'wc-gateway-greeninvoice' ),
+			self::DONATE_CANCEL      => esc_html_x( 'Cancel Donation', 'Document Type', 'wc-gateway-greeninvoice' ),
 			self::PURCHASE_ORDER     => esc_html_x( 'Purchase Order', 'Document Type', 'wc-gateway-greeninvoice' ),
 			self::DEPOSIT_RECEIPT    => esc_html_x( 'Deposit Receipt', 'Document Type', 'wc-gateway-greeninvoice' ),
 			self::DEPOSIT_WITHDRAWAL => esc_html_x( 'Deposit Withdrawal', 'Document Type', 'wc-gateway-greeninvoice' ),

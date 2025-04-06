@@ -6,12 +6,13 @@
  * @subpackage Document_Shipping_Rows_Mapper
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.6.0
+ * @version    2.0.0
  * @since      1.6.0
  */
 
 namespace Morning\WC\Mappers;
 
+use Morning\WC\Base\Base_Mapper;
 use WC_Order;
 
 defined( 'ABSPATH' ) || exit;
@@ -22,9 +23,9 @@ defined( 'ABSPATH' ) || exit;
  *
  * @package Morning\WC\Mappers
  */
-class Document_Shipping_Rows_Mapper {
+class Document_Shipping_Rows_Mapper implements Base_Mapper {
 	/**
-	 * @param WC_Order $order
+	 * @param WC_Order $order Order details
 	 *
 	 * @return array
 	 *

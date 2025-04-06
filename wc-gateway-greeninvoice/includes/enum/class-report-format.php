@@ -14,13 +14,22 @@ namespace Morning\WC\Enum;
 
 defined( 'ABSPATH' ) || exit;
 
+
+/**
+ * Class Report_Format
+ *
+ * @package Morning\WC\Enum
+ */
 final class Report_Format {
 	/**
+	 * @var string
+	 *
 	 * @since 1.4.0
 	 */
 	const MARKDOWN = 'markdown';
-
 	/**
+	 * @var string
+	 *
 	 * @since 1.4.0
 	 */
 	const JSON = 'json';

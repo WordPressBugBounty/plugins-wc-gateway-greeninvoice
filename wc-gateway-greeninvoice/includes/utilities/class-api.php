@@ -6,21 +6,26 @@
  * @subpackage API
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.6.1
+ * @version    2.0.0
  * @since      1.0.0
  */
 
 namespace Morning\WC\Utilities;
 
-use Morning\WC\Abstracts\Payment_Gateway;
-use Morning\WC\Enum\Setting;
-use Morning\WC\Enum\HTTP_Code;
-use Morning\WC\Formatters\Gateways_Response_Formatter;
+use DateTime;
+use Morning\WC\Base\Base_Payment_Gateway;
+use Morning\WC\Enum\Payment_Method;
+use Morning\WC\Enum\Request_Flow;
+use Morning\WC\Exceptions\Container_Exception;
+use Morning\WC\Http\HTTP_Client;
+use Morning\WC\Http\Http_Request;
+use Morning\WC\Http\Http_Response;
 use Morning\WC\Mappers\Document_Client_Mapper;
 use Morning\WC\Mappers\Document_Coupons_Rows_Mapper;
 use Morning\WC\Mappers\Document_Income_Rows_Mapper;
 use Morning\WC\Mappers\Document_Shipping_Rows_Mapper;
 use WC_Order;
+use WC_Payment_Gateway_CC;
 use WP_Error;
 
 defined( 'ABSPATH' ) || exit;
@@ -31,353 +36,177 @@ defined( 'ABSPATH' ) || exit;
  *
  * @package Morning\WC\Utilities
  */
-class API {
+class Api {
 	/**
-	 * Plugin instance.
+	 * @var HTTP_Client
 	 *
-	 * @var null|API
-	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
-	private static $instance = null;
-
-
+	private Http_Client $client;
 	/**
-	 * Client license key.
+	 * @var Auth
 	 *
-	 * @var null|string
-	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
-	protected $license_key = null;
-
-	/**
-	 * Use sandbox API.
-	 *
-	 * @var bool
-	 *
-	 * @since 1.0.0
-	 */
-	protected $sandbox = false;
+	private Auth $auth;
 
 
 	/**
-	 * API constructor.
+	 * Api constructor.
+	 *
+	 * @param HTTP_Client $client
+	 * @param Auth $auth
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct() {
-		$options = Settings::get_options();
-
-		if ( ! empty( $options[ Setting::SANDBOX ] ) ) {
-			$this->sandbox = (bool) $options[ Setting::SANDBOX ];
-		}
-
-		if ( ! empty( $options[ Setting::LICENSE_KEY ] ) ) {
-			$this->set_license_key( $options[ Setting::LICENSE_KEY ] );
-		}
+	public function __construct( HTTP_Client $client, Auth $auth ) {
+		$this->client = $client;
+		$this->auth   = $auth;
 	}
 
 
 	/**
-	 * Connect the store to Morning.
-	 *
-	 * @return array|WP_Error
-	 *
-	 * @since 1.0.0
-	 */
-	public function connect_store() {
-		if ( empty( $this->license_key ) ) {
-			return new WP_Error( 'morning-api', 'License key is missing.' );
-		}
-
-		$url = $this->get_request_url( 'api/v1/plugins/woocommerce/auth' );
-
-		$response = $this->request( $url );
-
-		$options = Settings::get_options();
-
-		if ( $this->is_response_ok( $response ) ) {
-			$body = $this->get_body( $response );
-
-			$options[ Setting::ACTIVATED ] = 'yes';
-			$options[ Setting::GATEWAYS ]  = Gateways_Response_Formatter::format( $body['gateways'] );
-		} else {
-			$options[ Setting::ACTIVATED ] = 'no';
-			$options[ Setting::GATEWAYS ]  = null;
-		}
-
-		update_option( Settings::OPTIONS_KEY, $options );
-
-		return $response;
-	}
-
-	/**
-	 * Request a new payment url.
-	 *
 	 * @param int $payment_method Desired payment method.
 	 * @param WC_Order $order Current order.
 	 * @param int $installments Amount of split payments.
 	 *
 	 * @return string|WP_Error
 	 *
+	 * @throws Container_Exception
+	 *
 	 * @since 1.0.0
 	 */
-	public function request_payment_url( int $payment_method, WC_Order $order, int $installments = 1 ) {
-		$params = [
-			'body' => $this->build_order_document_data( $payment_method, $order, $installments ),
-		];
+	public function request_payment_form_url( int $payment_method, WC_Order $order, int $installments = 1 ) {
+		$request = new Http_Request( self::get_request_url( '/api/v1/plugins/woocommerce/pay/url' ) );
+		$request->set_body( $this->build_order_document_data( $order, Request_Flow::SINGLE_PAYMENT, $payment_method, $installments ) );
+		$request->add_header( 'Authorization', $this->auth->get_authorization_token() );
 
-		$params = apply_filters( 'morning/wc/order_invoice_params', $params, $order );
+		$response = $this->client->post( $request );
 
-		$url = $this->get_request_url( 'api/v1/plugins/woocommerce/pay/url' );
-
-		$response = $this->request( $url, $params );
-
-		if ( ! $this->is_response_ok( $response ) ) {
+		if ( ! $response->is_ok() ) {
 			return new WP_Error( 'morning-api', $this->get_api_error_message( $response ) );
 		}
 
-		$response_body = $this->get_body( $response );
-
-		return $response_body['url'] ?? $this->get_api_error_message( $response );
+		return $response->json_body()['url'] ?? '';
 	}
 
 	/**
-	 * Request a new token creation url.
-	 *
 	 * @param int $payment_method Desired payment method.
 	 * @param WC_Order $order Current order.
 	 *
 	 * @return string|WP_Error
+	 *
+	 * @throws Container_Exception
 	 *
 	 * @since 1.6.0
 	 */
 	public function request_payment_token_url( int $payment_method, WC_Order $order ) {
-		$params = [
-			'body' => $this->build_order_document_data( $payment_method, $order ),
-		];
+		$request = new Http_Request( self::get_request_url( '/api/v1/plugins/woocommerce/token/url' ) );
+		$request->set_body( $this->build_order_document_data( $order, Request_Flow::CREATE_TOKEN, $payment_method ) );
+		$request->add_header( 'Authorization', $this->auth->get_authorization_token() );
 
-		unset( $params['body']['amount'] );
+		$response = $this->client->post( $request );
 
-		$params['body']['initialAmount'] = $order->get_total();
-
-		$params = apply_filters( 'morning/wc/order_invoice_params', $params, $order );
-
-		$url = $this->get_request_url( 'api/v1/plugins/woocommerce/token/url' );
-
-		$response = $this->request( $url, $params );
-
-		if ( ! $this->is_response_ok( $response ) ) {
+		if ( ! $response->is_ok() ) {
 			return new WP_Error( 'morning-api', $this->get_api_error_message( $response ) );
 		}
 
-		$response_body = $this->get_body( $response );
-
-		return $response_body['url'] ?? $this->get_api_error_message( $response );
+		return $response->json_body()['url'] ?? '';
 	}
 
 	/**
-	 * Request a partial or full refund for a specific order.
-	 *
 	 * @param WC_Order $order Order to refund.
 	 * @param float $amount Amount to refund.
 	 * @param string $reason Refund reason.
 	 *
-	 * @return mixed|WP_Error
+	 * @return array|WP_Error
+	 *
+	 * @throws Container_Exception
 	 *
 	 * @since 1.5.0
 	 */
-	public function request_transaction_refund( WC_Order $order, float $amount, string $reason ) {
-		$params = [
-			'body' => [
+	public function request_refund( WC_Order $order, float $amount, string $reason ) {
+		$request = new Http_Request( self::get_request_url( '/api/v1/plugins/woocommerce/transactions/{id}/refund', [ '{id}' => $order->get_transaction_id() ] ) );
+		$request->set_body(
+			[
 				'amount' => $amount,
 				'reason' => empty( $reason ) ? null : $reason,
-			],
-		];
+			]
+		);
+		$request->add_header( 'Authorization', $this->auth->get_authorization_token() );
 
-		$url = $this->get_request_url( 'api/v1/plugins/woocommerce/transaction/{id}/refund', [ '{id}' => $order->get_transaction_id() ] );
+		$response = $this->client->post( $request );
 
-		$response = $this->request( $url, $params );
-
-		if ( ! $this->is_response_ok( $response ) ) {
-			return new WP_Error( 'morning-api', 'Could not issue refund.' );
+		if ( ! $response->is_ok() ) {
+			return new WP_Error( 'morning-api', $this->get_api_error_message( $response ) );
 		}
 
-		return json_decode( wp_remote_retrieve_body( $response ), true );
+		return $response->json_body();
 	}
 
 	/**
-	 * Charge saved token.
-	 *
 	 * @param string $token_id Token id.
 	 * @param int $payment_method Desired payment method.
 	 * @param WC_Order $order Current order.
 	 *
-	 * @return mixed|WP_Error
+	 * @return string|WP_Error
+	 *
+	 * @throws Container_Exception
 	 *
 	 * @string 1.6.0
 	 */
-	public function request_token_charge( string $token_id, int $payment_method, WC_Order $order ) {
-		$params = [
-			'body' => $this->build_order_document_data( $payment_method, $order ),
-		];
+	public function charge_token( string $token_id, int $payment_method, WC_Order $order ) {
+		$request = new Http_Request( self::get_request_url( '/api/v1/plugins/woocommerce/token/{id}/charge', [ '{id}' => $token_id ] ) );
+		$request->set_body( $this->build_order_document_data( $order, Request_Flow::CHARGE_TOKEN, $payment_method ) );
+		$request->add_header( 'Authorization', $this->auth->get_authorization_token() );
 
-		$params = apply_filters( 'morning/wc/order_invoice_params', $params, $order );
+		$response = $this->client->post( $request );
 
-		$url = $this->get_request_url( 'api/v1/plugins/woocommerce/token/{id}/charge', [ '{id}' => $token_id ] );
-
-		$response = $this->request( $url, $params );
-
-		if ( ! $this->is_response_ok( $response ) ) {
-			return new WP_Error( 'morning-api', 'Could not charge token.' );
+		if ( ! $response->is_ok() ) {
+			return new WP_Error( 'morning-api', $this->get_api_error_message( $response ) );
 		}
 
-		$response_body = $this->get_body( $response );
-
-		return $response_body['url'] ?? new WP_Error( 'morning-api', 'Could not charge token.' );
+		return $response->json_body()['url'];
 	}
 
-
 	/**
-	 * Build document data.
-	 *
-	 * @param int $payment_method Desired payment method.
-	 * @param WC_Order $order Current order.
-	 * @param int $installments Amount of split payments.
-	 *
-	 * @return array
-	 *
-	 * @since 1.6.0
-	 */
-	public function build_order_document_data( int $payment_method, WC_Order $order, int $installments = 1 ): array {
-		return [
-			'type'        => $payment_method,
-			'device'      => Device::get_type(),
-			'maxPayments' => $installments,
-			'taxable'     => wc_tax_enabled(),
-			'amount'      => $order->get_total(),
-			'currency'    => $order->get_currency(),
-			'lang'        => ( 'he_IL' === get_locale() ) ? 'he' : 'en',
-			/* translators: %s Order Number */
-			'description' => sprintf( esc_html__( 'Order #%s', 'wc-gateway-greeninvoice' ), $order->get_id() ),
-			'successUrl'  => Payment_Gateway::get_gateway_url( 'success', $order ),
-			'failureUrl'  => Payment_Gateway::get_gateway_url( 'failure', $order ),
-			'notifyUrl'   => Payment_Gateway::get_gateway_url( 'ipn', $order ),
-			'client'      => Document_Client_Mapper::map( $order ),
-			'items'       => Document_Income_Rows_Mapper::map( $order ),
-			'shipping'    => Document_Shipping_Rows_Mapper::map( $order ),
-			'coupons'     => Document_Coupons_Rows_Mapper::map( $order ),
-		];
-	}
-
-
-	/**
-	 * Make an API call to Morning.
-	 *
-	 * @param string $url API call endpoint.
-	 * @param array $params API call params.
-	 * @param string $method API call method.
+	 * @param WC_Order $order Order details.
 	 *
 	 * @return array|WP_Error
 	 *
-	 * @since 1.0.0
+	 * @throws Container_Exception
+	 *
+	 * @since 2.0.0
 	 */
-	public function request( string $url, array $params = [], string $method = 'POST' ) {
-		if ( empty( $url ) ) {
-			return new WP_Error( 'morning-api', 'Endpoint is invalid.' );
+	public function create_document( WC_Order $order ) {
+		$request = new Http_Request( self::get_request_url( '/api/v1/plugins/woocommerce/documents' ) );
+		$request->set_body( $this->build_order_document_data( $order, Request_Flow::CREATE_DOCUMENT ) );
+		$request->add_header( 'Authorization', $this->auth->get_authorization_token() );
+
+		$response = $this->client->post( $request );
+
+		if ( ! $response->is_ok() ) {
+			return new WP_Error( 'morning-api', $this->get_api_error_message( $response ) );
 		}
 
-		$payload = [
-			'method'      => $method,
-			'timeout'     => 60,
-			'httpversion' => '1.1',
-			'user-agent'  => 'WooCommerce/' . WC()->version,
-			'headers'     => [
-				'Content-Type'  => 'application/json',
-				'Authorization' => $this->get_authorization_token(),
-			],
-		];
-
-		if ( ! empty( $params['body'] ) ) {
-			$payload['body'] = wp_json_encode( $params['body'] );
-		}
-
-		if ( ! empty( $params['headers'] ) ) {
-			$payload['headers'] = array_merge( $payload['headers'], $params['headers'] );
-		}
-
-		$response = wp_safe_remote_request(
-			$url,
-			apply_filters(
-				'morning/wc/api_payload',
-				$payload,
-				$params,
-				$url,
-				$method
-			)
-		);
-
-		Logger::get_instance()->log(
-			[
-				'url'      => $url,
-				'request'  => $payload,
-				'response' => $response,
-			],
-			'debug'
-		);
-
-		return $response;
+		return $response->json_body();
 	}
 
 
 	/**
-	 * Returns whether the response is ok.
-	 *
-	 * @param array|WP_Error $response API call response.
-	 *
-	 * @return bool
-	 *
-	 * @since 1.6.0
-	 */
-	public function is_response_ok( $response ): bool {
-		return HTTP_Code::OK === wp_remote_retrieve_response_code( $response );
-	}
-
-
-	/**
-	 * Return authorization header.
+	 * @param string $endpoint Request endpoint.
+	 * @param array $params Endpoint params.
 	 *
 	 * @return string
 	 *
-	 * @since 1.0.0
-	 */
-	public function get_authorization_token(): string {
-		$shop_url = str_replace( [ 'https://', 'http://' ], '', untrailingslashit( site_url() ) );
-
-		// @phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-		return 'Basic ' . base64_encode( "{$shop_url}:{$this->license_key}" );
-		// @phpcs:enable
-	}
-
-	/**
-	 * Retrieve full endpoint uri, including params.
-	 *
-	 * @param string $endpoint Endpoint with placeholders.
-	 * @param string[] $params Endpoint params to replace.
-	 *
-	 * @return string
+	 * @throws Container_Exception
 	 *
 	 * @since 1.4.0
 	 */
-	public function get_request_url( string $endpoint, array $params = [] ): string {
-		$base_api = $this->sandbox ? 'https://sandbox.d.greeninvoice.co.il' : 'https://api.greeninvoice.co.il';
+	public static function get_request_url( string $endpoint, array $params = [] ): string {
+		$options = ( mrn_get_container()->get_settings() )->get_options();
 
-		if ( defined( 'MRN_API_BASE' ) && MRN_API_BASE ) {
-			$base_api = MRN_API_BASE;
-		}
-
-		$base_api = trailingslashit( $base_api );
+		$base_api = self::get_base_url( $options->is_sandbox_mode() );
 
 		$endpoint = str_replace( array_keys( $params ), array_values( $params ), $endpoint );
 
@@ -385,63 +214,157 @@ class API {
 	}
 
 	/**
-	 * Retrieve API response body.
+	 * @param bool $sandbox_mode Is sandbox mode enabled?
 	 *
-	 * @param array|WP_Error $response API call response.
+	 * @return string
 	 *
-	 * @return null|array
-	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
-	public function get_body( $response ): ?array {
-		return json_decode( wp_remote_retrieve_body( $response ), true );
-	}
-
-
-	/**
-	 * Set client license key.
-	 *
-	 * @param string $license_key Client license key.
-	 *
-	 * @since 1.0.0
-	 */
-	public function set_license_key( string $license_key ): void {
-		if ( empty( $license_key ) ) {
-			return;
+	public static function get_base_url( bool $sandbox_mode = false ): string {
+		if ( defined( 'MRN_API_BASE' ) ) {
+			$base_url = MRN_API_BASE;
+		} else {
+			$base_url = $sandbox_mode ? 'https://sandbox.d.greeninvoice.co.il' : 'https://api.greeninvoice.co.il';
 		}
 
-		$this->license_key = $license_key;
+		return untrailingslashit( $base_url );
 	}
 
 
 	/**
-	 * Retrieve plugin's instance.
+	 * @param WC_Order $order Current order.
+	 * @param int $flow Request flow.
+	 * @param int|null $payment_method Desired payment method.
+	 * @param int $installments Amount of split payments.
 	 *
-	 * @return API
+	 * @return array
 	 *
-	 * @since 1.0.0
+	 * @since 1.6.0
 	 */
-	public static function get_instance(): API {
-		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
+	public function build_order_document_data( WC_Order $order, int $flow, int $payment_method = null, int $installments = 1 ): array {
+		$doc = [
+			'type'        => $payment_method,
+			'maxPayments' => $installments,
+			'taxable'     => wc_tax_enabled(),
+			'amount'      => $order->get_total(),
+			'currency'    => $order->get_currency(),
+			'lang'        => ( 'he_IL' === get_locale() ) ? 'he' : 'en',
+			/* translators: %s Order Number */
+			'description' => sprintf( esc_html__( 'Order #%s', 'wc-gateway-greeninvoice' ), $order->get_id() ),
+			'successUrl'  => Base_Payment_Gateway::get_gateway_url( 'success', $order ),
+			'failureUrl'  => Base_Payment_Gateway::get_gateway_url( 'failure', $order ),
+			'notifyUrl'   => Base_Payment_Gateway::get_gateway_url( 'ipn', $order ),
+			'client'      => Document_Client_Mapper::map( $order ),
+			'items'       => Document_Income_Rows_Mapper::map( $order ),
+			'shipping'    => Document_Shipping_Rows_Mapper::map( $order ),
+			'coupons'     => Document_Coupons_Rows_Mapper::map( $order ),
+		];
+
+		switch ( $flow ) {
+			case Request_Flow::CREATE_TOKEN:
+				unset( $doc['amount'] );
+
+				$doc['initialAmount'] = $order->get_total();
+				break;
+
+			case Request_Flow::CREATE_DOCUMENT:
+				unset( $doc['successUrl'], $doc['failureUrl'], $doc['notifyUrl'] );
+
+				$method = $this->identify_payment_method( $order );
+
+				$doc['date']          = ( $order->get_date_paid() ?? new DateTime() )->format( 'Y-m-d' );
+				$doc['transactionId'] = $this->generate_transaction_id( $order );
+				$doc['paymentMethod'] = $method;
+
+				if ( Payment_Method::CREDIT_CARD === $method ) {
+					if ( method_exists( $order, 'get_payment_card_info' ) ) {
+						$cc_details = $order->get_payment_card_info();
+
+						$doc['cardNumber'] = $cc_details['last4'];
+					}
+				}
+				break;
 		}
 
-		return self::$instance;
+		return apply_filters( 'morning/wc/order_invoice_params', $doc, $order, $payment_method, $installments );
 	}
 
+	/**
+	 * @param WC_Order $order Order details.
+	 *
+	 * @return int
+	 *
+	 * @since 2.0.0
+	 */
+	public function identify_payment_method( WC_Order $order ): int {
+		$payment_method = Payment_Method::CREDIT_CARD;
+
+		$gateways        = WC()->payment_gateways()->payment_gateways();
+		$payment_gateway = $gateways[ $order->get_payment_method() ] ?? null;
+
+		switch ( $order->get_payment_method() ) {
+			case 'cod':
+				$payment_method = Payment_Method::CASH;
+				break;
+			case 'paypal':
+				$payment_method = Payment_Method::PAYPAL;
+				break;
+			case 'bacs':
+				$payment_method = Payment_Method::WIRE_TRANSFER;
+				break;
+		}
+
+		if ( false !== strpos( $order->get_payment_method(), 'paypal' ) ) {
+			$payment_method = Payment_Method::PAYPAL;
+		}
+
+		if ( false !== strpos( $order->get_payment_method(), 'bit' ) ) {
+			$payment_method = Payment_Method::BIT;
+		}
+
+		if (
+			false !== strpos( $order->get_payment_method(), 'cc' ) ||
+			false !== strpos( $order->get_payment_method(), 'credit' ) ||
+			false !== strpos( $order->get_payment_method(), 'card' ) ||
+			$payment_gateway instanceof WC_Payment_Gateway_CC
+		) {
+			$payment_method = Payment_Method::CREDIT_CARD;
+		}
+
+		if ( false !== strpos( $order->get_payment_method(), 'google' ) ) {
+			$payment_method = Payment_Method::GOOGLE_PAY;
+		}
+
+		if ( false !== strpos( $order->get_payment_method(), 'apple' ) ) {
+			$payment_method = Payment_Method::APPLE_PAY;
+		}
+
+		return $payment_method;
+	}
 
 	/**
-	 * @param array|WP_Error $response
+	 * @param WC_Order $order
+	 *
+	 * @return string
+	 *
+	 * @since 2.0.0
+	 */
+	public function generate_transaction_id( WC_Order $order ): string {
+		$hash = md5( "{$order->get_id()}/{$order->get_order_key()}/{$order->get_order_number()}" );
+
+		return vsprintf( 'WC-%s%s-%s-%s-%s-%s%s%s', str_split( $hash, 4 ) );
+	}
+
+	/**
+	 * @param Http_Response $response Http response.
 	 *
 	 * @return string
 	 *
 	 * @since 1.6.1
 	 */
-	public function get_api_error_message( $response ): string {
-		$error = $this->get_body( $response );
-
-		$error_code    = $error['errorCode'] ?? 3000;
-		$error_message = $error['errorMessage'] ?? __( 'General Error', 'wc-gateway-greeninvoice' );
+	public function get_api_error_message( Http_Response $response ): string {
+		$error_code    = $response->get_error_code() ?? 3000;
+		$error_message = $response->get_error_message() ?? __( 'General Error', 'wc-gateway-greeninvoice' );
 
 		switch ( $error_code ) {
 			case 1006:
@@ -450,12 +373,12 @@ class API {
 			case 1118:
 			case 2001:
 			case 2122:
+			case 2814:
 			case 5001:
-				return __( 'Could not retrieve payment url.', 'wc-gateway-greeninvoice' );
+				return __( 'General Error', 'wc-gateway-greeninvoice' );
 
 			default:
-				/* translators: %s API Error Message */
-				return sprintf( __( 'Could not retrieve payment url: %s.', 'wc-gateway-greeninvoice' ), $error_message );
+				return $error_message;
 		}
 	}
 }

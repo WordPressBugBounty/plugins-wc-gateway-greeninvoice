@@ -22,37 +22,40 @@ defined( 'ABSPATH' ) || exit;
  */
 class Payment_Type {
 	/**
+	 * @var int
+	 *
 	 * @since 1.0.0
 	 */
 	const CREDIT_CARD = 100;
-
 	/**
+	 * @var int
+	 *
 	 * @since 1.0.0
 	 */
 	const PAYPAL = 110;
-
 	/**
+	 * @var int
+	 *
 	 * @since 1.0.0
 	 */
 	const BIT = 120;
-
 	/**
+	 * @var int
+	 *
 	 * @since 1.1.5
 	 */
 	const GOOGLE_PAY = 150;
-
 	/**
+	 * @var int
+	 *
 	 * @since 1.2.1
 	 */
 	const APPLE_PAY = 160;
 
 
 	/**
-	 * Get all supported payment types.
-	 *
 	 * @return int[]
 	 *
-	 * @version 1.2.1
 	 * @since 1.2.0
 	 */
 	public static function get_all(): array {
@@ -61,13 +64,10 @@ class Payment_Type {
 
 
 	/**
-	 * Retrieve enum type label.
-	 *
 	 * @param int $type Type value.
 	 *
 	 * @return string
 	 *
-	 * @version 1.2.1
 	 * @since 1.2.0
 	 */
 	public static function get_label( int $type ): string {
