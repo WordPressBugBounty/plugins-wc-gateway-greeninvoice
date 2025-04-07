@@ -6,7 +6,7 @@
  * @subpackage Updater
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    1.4.0
+ * @version    2.0.1
  * @since      1.2.0
  */
 
@@ -151,11 +151,26 @@ class Updater {
 		$options = get_option( MRN_WC_SLUG . '_options' );
 
 		$new_options = new Options();
-		$new_options->set_license_key( $options['greeninvoice_license_key'] );
-		$new_options->set_activated( $options['greeninvoice_activated'] );
-		$new_options->set_order_status( $options['greeninvoice_order_status'] );
-		$new_options->set_show_tax_id_field( '1' === $options['greeninvoice_tax_id_field'] );
-		$new_options->set_sandbox_mode( '1' === $options['greeninvoice_sandbox'] );
+
+		if ( ! empty( $options['greeninvoice_license_key'] ) ) {
+			$new_options->set_license_key( $options['greeninvoice_license_key'] );
+		}
+
+		if ( ! empty( $options['greeninvoice_activated'] ) ) {
+			$new_options->set_activated( $options['greeninvoice_activated'] );
+		}
+
+		if ( ! empty( $options['greeninvoice_order_status'] ) ) {
+			$new_options->set_order_status( $options['greeninvoice_order_status'] );
+		}
+
+		if ( ! empty( $options['greeninvoice_tax_id_field'] ) ) {
+			$new_options->set_show_tax_id_field( '1' === $options['greeninvoice_tax_id_field'] );
+		}
+
+		if ( ! empty( $options['greeninvoice_sandbox'] ) ) {
+			$new_options->set_sandbox_mode( '1' === $options['greeninvoice_sandbox'] );
+		}
 
 		$gateways = [];
 		if ( ! empty( $options['greeninvoice_gateways'] ) ) {

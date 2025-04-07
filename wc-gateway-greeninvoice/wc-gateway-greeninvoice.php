@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Morning for WooCommerce
  * Description: Accept payments from clients, with automated invoice production.
- * Version: 2.0.0
+ * Version: 2.0.1
  * Requires at least: 6.6
  * Requires PHP: 7.4
  * Requires Plugins: woocommerce
