@@ -6,7 +6,7 @@
  * @subpackage Container
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.0.2
  * @since      2.0.0
  */
 
@@ -102,7 +102,7 @@ class Container {
 		// Integrations
 		$this->add( Polylang_Integration::class );
 		$this->add( PW_Gift_Cards_Integration::class );
-		$this->add( Woo_Subscriptions_Integration::class, [ Settings::class ] );
+		$this->add( Woo_Subscriptions_Integration::class );
 
 		$this->add( Integration_Manager::class );
 

@@ -6,7 +6,7 @@
  * @subpackage Woo_Subscriptions_Integration
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.0.2
  * @since      1.6.0
  */
 
@@ -14,7 +14,6 @@ namespace Morning\WC\Integrations;
 
 use Morning\WC\Base\Base_Integration;
 use Morning\WC\Base\Base_Payment_Gateway;
-use Morning\WC\Config\Settings;
 use Morning\WC\Enum\Capability;
 
 defined( 'ABSPATH' ) || exit;
@@ -26,28 +25,6 @@ defined( 'ABSPATH' ) || exit;
  * @package Morning\WC\Integrations
  */
 final class Woo_Subscriptions_Integration extends Base_Integration {
-	/**
-	 * @var Settings
-	 *
-	 * @since 2.0.0
-	 */
-	private Settings $settings;
-
-
-	/**
-	 * Woo_Subscriptions_Integration constructor.
-	 *
-	 * @param Settings $settings
-	 *
-	 * @since 2.0.0
-	 */
-	public function __construct( Settings $settings ) {
-		$this->settings = $settings;
-
-		parent::__construct();
-	}
-
-
 	/**
 	 * @return void
 	 *
@@ -96,9 +73,7 @@ final class Woo_Subscriptions_Integration extends Base_Integration {
 	 * @since 2.0.0
 	 */
 	protected function is_compatible(): bool {
-		$options = $this->settings->get_options();
-
-		return $this->is_plugin_active( 'woocommerce-subscriptions/woocommerce-subscriptions.php' ) && ! $options->is_basic_mode();
+		return $this->is_plugin_active( 'woocommerce-subscriptions/woocommerce-subscriptions.php' );
 	}
 
 	/**
