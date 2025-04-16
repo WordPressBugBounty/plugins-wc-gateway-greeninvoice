@@ -6,7 +6,7 @@
  * @subpackage API
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.0.3
  * @since      1.0.0
  */
 
@@ -25,6 +25,7 @@ use Morning\WC\Mappers\Document_Coupons_Rows_Mapper;
 use Morning\WC\Mappers\Document_Income_Rows_Mapper;
 use Morning\WC\Mappers\Document_Shipping_Rows_Mapper;
 use WC_Order;
+use WC_Order_Refund;
 use WC_Payment_Gateway_CC;
 use WP_Error;
 
@@ -72,12 +73,15 @@ class Api {
 	 *
 	 * @return string|WP_Error
 	 *
-	 * @throws Container_Exception
-	 *
 	 * @since 1.0.0
 	 */
 	public function request_payment_form_url( int $payment_method, WC_Order $order, int $installments = 1 ) {
-		$request = new Http_Request( self::get_request_url( '/api/v1/plugins/woocommerce/pay/url' ) );
+		try {
+			$request = new Http_Request( self::get_request_url( '/api/v1/plugins/woocommerce/pay/url' ) );
+		} catch ( Container_Exception $ex ) {
+			return new WP_Error( 'morning-api', $ex->getMessage() );
+		}
+
 		$request->set_body( $this->build_order_document_data( $order, Request_Flow::SINGLE_PAYMENT, $payment_method, $installments ) );
 		$request->add_header( 'Authorization', $this->auth->get_authorization_token() );
 
@@ -96,12 +100,15 @@ class Api {
 	 *
 	 * @return string|WP_Error
 	 *
-	 * @throws Container_Exception
-	 *
 	 * @since 1.6.0
 	 */
 	public function request_payment_token_url( int $payment_method, WC_Order $order ) {
-		$request = new Http_Request( self::get_request_url( '/api/v1/plugins/woocommerce/token/url' ) );
+		try {
+			$request = new Http_Request( self::get_request_url( '/api/v1/plugins/woocommerce/token/url' ) );
+		} catch ( Container_Exception $ex ) {
+			return new WP_Error( 'morning-api', $ex->getMessage() );
+		}
+
 		$request->set_body( $this->build_order_document_data( $order, Request_Flow::CREATE_TOKEN, $payment_method ) );
 		$request->add_header( 'Authorization', $this->auth->get_authorization_token() );
 
@@ -121,12 +128,15 @@ class Api {
 	 *
 	 * @return array|WP_Error
 	 *
-	 * @throws Container_Exception
-	 *
 	 * @since 1.5.0
 	 */
 	public function request_refund( WC_Order $order, float $amount, string $reason ) {
-		$request = new Http_Request( self::get_request_url( '/api/v1/plugins/woocommerce/transactions/{id}/refund', [ '{id}' => $order->get_transaction_id() ] ) );
+		try {
+			$request = new Http_Request( self::get_request_url( '/api/v1/plugins/woocommerce/transactions/{id}/refund', [ '{id}' => $order->get_transaction_id() ] ) );
+		} catch ( Container_Exception $ex ) {
+			return new WP_Error( 'morning-api', $ex->getMessage() );
+		}
+
 		$request->set_body(
 			[
 				'amount' => $amount,
@@ -151,12 +161,15 @@ class Api {
 	 *
 	 * @return string|WP_Error
 	 *
-	 * @throws Container_Exception
-	 *
 	 * @string 1.6.0
 	 */
 	public function charge_token( string $token_id, int $payment_method, WC_Order $order ) {
-		$request = new Http_Request( self::get_request_url( '/api/v1/plugins/woocommerce/token/{id}/charge', [ '{id}' => $token_id ] ) );
+		try {
+			$request = new Http_Request( self::get_request_url( '/api/v1/plugins/woocommerce/token/{id}/charge', [ '{id}' => $token_id ] ) );
+		} catch ( Container_Exception $ex ) {
+			return new WP_Error( 'morning-api', $ex->getMessage() );
+		}
+
 		$request->set_body( $this->build_order_document_data( $order, Request_Flow::CHARGE_TOKEN, $payment_method ) );
 		$request->add_header( 'Authorization', $this->auth->get_authorization_token() );
 
@@ -174,13 +187,43 @@ class Api {
 	 *
 	 * @return array|WP_Error
 	 *
-	 * @throws Container_Exception
-	 *
 	 * @since 2.0.0
 	 */
 	public function create_document( WC_Order $order ) {
-		$request = new Http_Request( self::get_request_url( '/api/v1/plugins/woocommerce/documents' ) );
+		try {
+			$request = new Http_Request( self::get_request_url( '/api/v1/plugins/woocommerce/documents' ) );
+		} catch ( Container_Exception $ex ) {
+			return new WP_Error( 'morning-api', $ex->getMessage() );
+		}
+
 		$request->set_body( $this->build_order_document_data( $order, Request_Flow::CREATE_DOCUMENT ) );
+		$request->add_header( 'Authorization', $this->auth->get_authorization_token() );
+
+		$response = $this->client->post( $request );
+
+		if ( ! $response->is_ok() ) {
+			return new WP_Error( 'morning-api', $this->get_api_error_message( $response ) );
+		}
+
+		return $response->json_body();
+	}
+
+	/**
+	 * @param WC_Order_Refund $order Order details.
+	 * @param string $transaction_id Transaction id.
+	 *
+	 * @return array|WP_Error
+	 *
+	 * @since 2.0.3
+	 */
+	public function create_refund_document( WC_Order_Refund $order, string $transaction_id ) {
+		try {
+			$request = new Http_Request( self::get_request_url( '/api/v1/plugins/woocommerce/transactions/{id}/cancel', [ '{id}' => $transaction_id ] ) );
+		} catch ( Container_Exception $ex ) {
+			return new WP_Error( 'morning-api', $ex->getMessage() );
+		}
+
+		$request->set_body( $this->build_refund_document_data( $order, Request_Flow::CANCEL_DOCUMENT ) );
 		$request->add_header( 'Authorization', $this->auth->get_authorization_token() );
 
 		$response = $this->client->post( $request );
@@ -287,6 +330,32 @@ class Api {
 		}
 
 		return apply_filters( 'morning/wc/order_invoice_params', $doc, $order, $payment_method, $installments );
+	}
+
+	/**
+	 * @param WC_Order_Refund $refund Current refund.
+	 * @param int $flow Request flow.
+	 *
+	 * @return array
+	 *
+	 * @since 2.0.3
+	 */
+	public function build_refund_document_data( WC_Order_Refund $refund, int $flow ): array {
+		$doc = [
+			'taxable'     => wc_tax_enabled(),
+			'amount'      => $refund->get_total(),
+			'currency'    => $refund->get_currency(),
+			'lang'        => ( 'he_IL' === get_locale() ) ? 'he' : 'en',
+			/* translators: %s Order Number */
+			'description' => sprintf( esc_html__( 'Order #%s', 'wc-gateway-greeninvoice' ), $refund->get_parent_id() ),
+		];
+
+		if ( Request_Flow::CANCEL_DOCUMENT === $flow ) {
+			$doc['reason'] = $refund->get_reason();
+			$doc['amount'] = floatval( $refund->get_amount() );
+		}
+
+		return $doc;
 	}
 
 	/**

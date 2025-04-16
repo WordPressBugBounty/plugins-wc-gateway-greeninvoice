@@ -6,7 +6,7 @@
  * @subpackage Request_Flow
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.0.3
  * @since      2.0.0
  */
 
@@ -45,4 +45,10 @@ class Request_Flow {
 	 * @since 2.0.0
 	 */
 	const CREATE_DOCUMENT = 4;
+	/**
+	 * @var int
+	 *
+	 * @since 2.0.3
+	 */
+	const CANCEL_DOCUMENT = 5;
 }

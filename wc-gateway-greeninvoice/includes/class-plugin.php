@@ -6,7 +6,7 @@
  * @subpackage Plugin
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.0.3
  * @since      1.0.0
  */
 
@@ -100,6 +100,7 @@ final class Plugin {
 
 		if ( $options->is_invoicing_mode() ) {
 			add_action( 'woocommerce_order_status_changed', [ $this, 'maybe_create_document' ], PHP_INT_MAX );
+			add_action( 'woocommerce_order_refunded', [ $this, 'maybe_create_refund_document' ], PHP_INT_MAX, 2 );
 		}
 
 		// Load crucial classes.
@@ -202,6 +203,60 @@ final class Plugin {
 			);
 			$order->add_meta_data( MRN_WC_SLUG . '_data', $ipn_data, true );
 		}
+		$order->save();
+	}
+
+	/**
+	 * @param int $order_id Order id.
+	 * @param int $refund_id Refund id.
+	 *
+	 * @return void
+	 *
+	 * @since 2.0.3
+	 */
+	public function maybe_create_refund_document( int $order_id, int $refund_id ): void {
+		$options = $this->settings->get_options();
+
+		if ( ! $options->is_invoicing_mode() ) {
+			Logger::info( "Skipping refund document creation for order #{$order_id} because invoicing mode is disabled." );
+
+			return;
+		}
+
+		$order      = wc_get_order( $order_id );
+		$order_data = $order->get_meta( MRN_WC_SLUG . '_data' );
+
+		if ( empty( $order_data ) || empty( $order_data['transaction_id'] ) ) {
+			Logger::info( "Skipping refund document creation for order #{$order_id} because not transaction id was found." );
+
+			return;
+		}
+
+		$refund = wc_get_order( $refund_id );
+
+		$response = $this->api->create_refund_document( $refund, $order_data['transaction_id'] );
+
+		if ( is_wp_error( $response ) ) {
+			$order->add_order_note(
+				sprintf(
+				/* translators: %1$s Morning Brand, %2$s Error Message */
+					__( '%1$s: Failed to create a refund document with error: `%2$s`', 'wc-gateway-greeninvoice' ),
+					'<strong>' . __( 'Morning', 'wc-gateway-greeninvoice' ) . '</strong>',
+					$response->get_error_message()
+				)
+			);
+		} else {
+			$order->add_meta_data( MRN_WC_SLUG . '_refund_data', (array) $response, true );
+
+			$order->add_order_note(
+				sprintf(
+				/* translators: %s Morning Brand */
+					__( '%s: Refund document created successfully.', 'wc-gateway-greeninvoice' ),
+					'<strong>' . __( 'Morning', 'wc-gateway-greeninvoice' ) . '</strong>'
+				)
+			);
+		}
+
 		$order->save();
 	}
 

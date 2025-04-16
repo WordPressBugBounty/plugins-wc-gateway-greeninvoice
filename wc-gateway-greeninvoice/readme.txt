@@ -3,7 +3,7 @@ Contributors: greeninvoice, dorzki
 Tags: greeninvoice, invoices, invoice, business management, credit cards
 Requires at least: 6.6
 Tested up to: 6.7.2
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -60,6 +60,10 @@ To install this add-on go to [the add-ons section](https://app.greeninvoice.co.i
 
 == Changelog ==
 
+= 2.0.3 | 16.04.2025 =
+[FEATURE] Added refund documents creation for invoicing mode.
+[IMPROVE] Added compatibility for WooCommerce v9.8.1
+
 = 2.0.2 | 09.04.2025 =
 [IMPROVE] Reverted WooCommerce Subscriptions limitation.
 
@@ -74,23 +78,23 @@ To install this add-on go to [the add-ons section](https://app.greeninvoice.co.i
 [IMPROVE] Bumped minimum required WordPress version to 6.6
 
 = 1.6.5 | 19.03.2025 =
-[IMPROVE] Added compatability to WooCommerce v9.7.1
+[IMPROVE] Added compatibility for WooCommerce v9.7.1
 [IMPROVE] Bumped minimum required WooCommerce version to 8.0
 
 = 1.6.4 | 25.02.2025 =
-[IMPROVE] Added compatability to WooCommerce v9.6.2
 [BUGFIX] Hide document metabox for subscription order with trial.
+[IMPROVE] Added compatibility for WooCommerce v9.6.2
 
 = 1.6.3 | 27.01.2025 =
-[IMPROVE] Added compatability to WooCommerce v9.6.0
+[IMPROVE] Added compatibility for WooCommerce v9.6.0
 
 = 1.6.2 | 26.12.2024 =
-[IMPROVE] Added compatability to WooCommerce v9.5.1
+[IMPROVE] Added compatibility for WooCommerce v9.5.1
 
 = 1.6.1 | 08.12.2024 =
 [BUGFIX] Fixed Site Info report exporting on WooCommerce v9.1.0
 [FEATURE] Added support for WooCommerce Subscriptions trial days.
-[IMPROVE] Added compatability to WooCommerce v9.4.3
+[IMPROVE] Added compatibility for WooCommerce v9.4.3
 [IMPROVE] Added WooCommerce a required plugin.
 [IMPROVE] Reflect payment form url error better.
 
@@ -99,92 +103,87 @@ To install this add-on go to [the add-ons section](https://app.greeninvoice.co.i
 
 = 1.5.1 | 25.07.2024 =
 [BUGFIX] Fixed Site Info report exporting on WooCommerce v9.0.0
-[IMPROVE] Added compatability to WooCommerce v9.1.2
+[IMPROVE] Added compatibility for WooCommerce v9.1.2
 
 = 1.5.0 | 29.05.2024 =
-[IMPROVE] Added tax settings in site info export.
 [FEATURE] Added the ability to perform refunds via order screen.
 [FEATURE] Added integration with Pimwick Gift Cards.
 [FEATURE] Added support for WooCommerce fees.
+[IMPROVE] Added tax settings in site info export.
 
 = 1.4.2 | 13.05.2024 =
 [BUGFIX] Fixed plugin crash for incompatible WooCommerce version.
 
 = 1.4.1 | 13.05.2024 =
+[BUGFIX] Fixed missing order screen metabox.
+[FEATURE] Added links to view Document and Transaction to order screen.
 [IMPROVE] Bumped minimum required WordPress version to 6.4
 [IMPROVE] Bumped minimum required PHP version to 7.4
 [IMPROVE] Bumped minimum required WooCommerce version to 6.9
-[FEATURE] Added links to view Document and Transaction to order screen.
-[BUGFIX] Fixed missing order screen metabox.
 
 = 1.4.0 | 29.05.2024 =
+[BUGFIX] Fixed issue with installments form and Polylang.
+[BUGFIX] Fixed issue with gateways disappearing when saving settings.
 [FEATURE] Added billing company name field support.
 [FEATURE] Added the ability to inject tax id number field.
 [FEATURE] Added new export site data and logs button.
-[BUGFIX] Fixed issue with installments form and Polylang.
-[BUGFIX] Fixed issue with gateways disappearing when saving settings.
 
 = 1.3.1 | 25.12.2023 =
 [BUGFIX] Fixed double payment form on checkout page.
 
 = 1.3.0 | 24.12.2023 =
-[FEATURE] Added support for WooCommerce Blocks (Cart & Checkout).
 [BUGFIX] Added missing assets.
+[FEATURE] Added support for WooCommerce Blocks (Cart & Checkout).
 
 = 1.2.3 | 20.12.2023 =
 [FEATURE] Added support for HPOS (High-Performance Order Storage).
 
 = 1.2.2 | 13.12.2023 =
-[FEATURE] Added the ability to choose order status after IPN.
 [BUGFIX] Fixed gateways sync.
+[FEATURE] Added the ability to choose order status after IPN.
 
 = 1.2.1 | 25.10.2023 =
 [FEATURE] Added Apple Pay payment gateway.
 
 = 1.2.0 | 08.08.2023 =
-[FEATURE] Revamped plugin settings pages.
-[FEATURE] Added dynamic gateways according to account plugin configuration.
 [BUGFIX] Fixed order status changes to on-hold or failed after payment is done.
 [BUGFIX] Fixed stock being reduced twice after payment.
+[FEATURE] Revamped plugin settings pages.
+[FEATURE] Added dynamic gateways according to account plugin configuration.
 
 = 1.1.5 | 04.06.2023 =
 [FEATURE] Added Google Pay support for Digital Payments plugin.
 [FEATURE] Added support for WooCommerce v7.6
 
 = 1.1.4 | 18.04.2023 =
-[FEATURE] Added compatibility with the latest WooCommerce version.
 [BUGFIX] Fixed order status changes after purchase.
+[FEATURE] Added compatibility with the latest WooCommerce version.
 
 = 1.1.3 | 23.06.2021 =
+[BUGFIX] Fixed credit card gateway issue upon returning to cart without error.
 [FEATURE] Added support for WPML and Polylang.
 [FEATURE] Added the ability to change order status to "completed" instead or "processing".
-[BUGFIX] Fixed credit card gateway issue upon returning to cart without error.
 
 = 1.1.2 | 11.05.2021 =
 [BUGFIX] Fixed Bit back button functionality.
 [BUGFIX] Added credit card loader for Meshulam.
 
 = 1.1.1 | 24.02.2021 =
-[FEATURE] Added support for WooCommerce 5.*.
 [BUGFIX] Added default country if country field is missing.
+[FEATURE] Added support for WooCommerce 5.*.
 
 = 1.1.0 | 13.01.2021 =
-
 [FEATURE] Added the options to activate and choose installments.
 [FEATURE] Added the ability to pay via Bit.
 
 = 1.0.2 | 14.10.2020 =
-
 [BUGFIX] Fixed domain path issue.
 
 = 1.0.1 | 20.08.2020 =
-
 [BUGFIX] Ignore shipping if there isn't any.
 [BUGFIX] Better handling of tax value.
 
 = 1.0.0 | 06.08.2020 =
-
 First version!
 
 == Upgrade Notice ==
-
