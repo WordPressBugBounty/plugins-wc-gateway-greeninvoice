@@ -6,7 +6,7 @@
  * @subpackage Settings
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.0.4
  * @since      1.0.0
  */
 
@@ -54,7 +54,6 @@ class Settings {
 		$this->options = new Options();
 
 		$this->register_hooks();
-		$this->register_fields();
 	}
 
 
@@ -64,6 +63,7 @@ class Settings {
 	 * @since 2.0.0
 	 */
 	private function register_hooks(): void {
+		add_action( 'admin_init', [ $this, 'register_fields' ] );
 		add_action( 'admin_init', [ $this, 'register_settings' ] );
 
 		add_filter( 'pre_update_option_' . Options::OPTIONS_KEY, [ $this, 'maybe_change_license_status' ] );
@@ -75,7 +75,7 @@ class Settings {
 	 *
 	 * @since 2.0.0
 	 */
-	private function register_fields(): void {
+	public function register_fields(): void {
 		$this->register_licensing_fields();
 
 		if ( $this->options->is_license_valid() ) {

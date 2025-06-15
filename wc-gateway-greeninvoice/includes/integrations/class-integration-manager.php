@@ -6,7 +6,7 @@
  * @subpackage Integration_Manager
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.0.4
  * @since      2.0.0
  */
 
@@ -70,6 +70,7 @@ final class Integration_Manager {
 		$container->get( Polylang_Integration::class );
 		$container->get( PW_Gift_Cards_Integration::class );
 		$container->get( Woo_Subscriptions_Integration::class );
+		$container->get( PayPlus_Integration::class );
 
 		$this->registered = apply_filters( 'morning/wc/registered_integrations', [] );
 		$this->loaded     = apply_filters( 'morning/wc/loaded_integrations', [] );

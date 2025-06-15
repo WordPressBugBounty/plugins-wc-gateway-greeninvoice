@@ -6,7 +6,7 @@
  * @subpackage Container
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.2
+ * @version    2.0.4
  * @since      2.0.0
  */
 
@@ -27,6 +27,7 @@ use Morning\WC\Gateways\Payment_Gateway_Manager;
 use Morning\WC\Gateways\PayPal_Gateway;
 use Morning\WC\Http\HTTP_Client;
 use Morning\WC\Integrations\Integration_Manager;
+use Morning\WC\Integrations\PayPlus_Integration;
 use Morning\WC\Integrations\Polylang_Integration;
 use Morning\WC\Integrations\PW_Gift_Cards_Integration;
 use Morning\WC\Integrations\Woo_Subscriptions_Integration;
@@ -103,6 +104,7 @@ class Container {
 		$this->add( Polylang_Integration::class );
 		$this->add( PW_Gift_Cards_Integration::class );
 		$this->add( Woo_Subscriptions_Integration::class );
+		$this->add( PayPlus_Integration::class );
 
 		$this->add( Integration_Manager::class );
 

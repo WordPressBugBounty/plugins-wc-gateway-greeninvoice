@@ -6,7 +6,7 @@
  * @subpackage API
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.3
+ * @version    2.0.4
  * @since      1.0.0
  */
 
@@ -329,7 +329,7 @@ class Api {
 				break;
 		}
 
-		return apply_filters( 'morning/wc/order_invoice_params', $doc, $order, $payment_method, $installments );
+		return apply_filters( 'morning/wc/order_invoice_params', $doc, $order, $payment_method, $flow );
 	}
 
 	/**

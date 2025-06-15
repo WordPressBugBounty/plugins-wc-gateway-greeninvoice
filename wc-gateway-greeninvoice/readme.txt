@@ -3,7 +3,7 @@ Contributors: greeninvoice, dorzki
 Tags: greeninvoice, invoices, invoice, business management, credit cards
 Requires at least: 6.6
 Tested up to: 6.7.2
-Stable tag: 2.0.3
+Stable tag: 2.0.4
 Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -60,6 +60,10 @@ To install this add-on go to [the add-ons section](https://app.greeninvoice.co.i
 
 == Changelog ==
 
+= 2.0.4 | 15.06.2025 =
+[IMPROVE] Improved integration with PayPlus payment gateway.
+[IMPROVE] Added compatibility for WooCommerce v9.9.3
+
 = 2.0.3 | 16.04.2025 =
 [FEATURE] Added refund documents creation for invoicing mode.
 [IMPROVE] Added compatibility for WooCommerce v9.8.1
@@ -71,15 +75,15 @@ To install this add-on go to [the add-ons section](https://app.greeninvoice.co.i
 [BUGFIX] Fixed plugin activation error due to migration error.
 
 = 2.0.0 | 06.04.2025 =
-[BUGFIX] Remove payment gateway box if description field is empty.
+[BUGFIX] Remove the payment gateway box if the description field is empty.
 [FEATURE] Added payment gateway icon filter.
 [FEATURE] Added invoicing only mode.
 [IMPROVE] Rewritten the plugin to add support for future features.
-[IMPROVE] Bumped minimum required WordPress version to 6.6
+[IMPROVE] Bumped the minimum required WordPress version to 6.6
 
 = 1.6.5 | 19.03.2025 =
 [IMPROVE] Added compatibility for WooCommerce v9.7.1
-[IMPROVE] Bumped minimum required WooCommerce version to 8.0
+[IMPROVE] Bumped the minimum required WooCommerce version to 8.0
 
 = 1.6.4 | 25.02.2025 =
 [BUGFIX] Hide document metabox for subscription order with trial.
@@ -112,14 +116,14 @@ To install this add-on go to [the add-ons section](https://app.greeninvoice.co.i
 [IMPROVE] Added tax settings in site info export.
 
 = 1.4.2 | 13.05.2024 =
-[BUGFIX] Fixed plugin crash for incompatible WooCommerce version.
+[BUGFIX] Fixed plugin crash for an incompatible WooCommerce version.
 
 = 1.4.1 | 13.05.2024 =
 [BUGFIX] Fixed missing order screen metabox.
 [FEATURE] Added links to view Document and Transaction to order screen.
-[IMPROVE] Bumped minimum required WordPress version to 6.4
-[IMPROVE] Bumped minimum required PHP version to 7.4
-[IMPROVE] Bumped minimum required WooCommerce version to 6.9
+[IMPROVE] Bumped the minimum required WordPress version to 6.4
+[IMPROVE] Bumped the minimum required PHP version to 7.4
+[IMPROVE] Bumped the minimum required WooCommerce version to 6.9
 
 = 1.4.0 | 29.05.2024 =
 [BUGFIX] Fixed issue with installments form and Polylang.
