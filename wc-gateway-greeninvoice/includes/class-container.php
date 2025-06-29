@@ -68,7 +68,7 @@ class Container {
 		$this->add( Settings::class );
 
 		// UI
-		$this->add( Admin::class );
+		$this->add( Admin::class, [ Settings::class ] );
 		$this->add( Frontend::class );
 
 		// HTTP

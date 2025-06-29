@@ -20,6 +20,7 @@ use Morning\WC\Integrations\Integration_Manager;
 use Morning\WC\Utilities\Api;
 use Morning\WC\Utilities\Auth;
 use Morning\WC\Utilities\Logger;
+use WC_Order;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -101,6 +102,10 @@ final class Plugin {
 		if ( $options->is_invoicing_mode() ) {
 			add_action( 'woocommerce_order_status_changed', [ $this, 'maybe_create_document' ], PHP_INT_MAX );
 			add_action( 'woocommerce_order_refunded', [ $this, 'maybe_create_refund_document' ], PHP_INT_MAX, 2 );
+			add_action(
+				'woocommerce_order_action_' . MRN_WC_SLUG . '_recreate_invoice',
+				[ $this, 'maybe_create_document' ]
+			);
 		}
 
 		// Load crucial classes.
@@ -142,14 +147,16 @@ final class Plugin {
 	}
 
 	/**
-	 * @param int $order_id Order id.
+	 * @param int|WC_Order $order Order object or id.
 	 *
 	 * @return void
 	 *
 	 * @since 2.0.0
 	 */
-	public function maybe_create_document( int $order_id ): void {
+	public function maybe_create_document( $order ): void {
 		$options = $this->settings->get_options();
+
+		$order_id = $order instanceof WC_Order ? $order->get_id() : $order;
 
 		if ( ! $options->is_invoicing_mode() ) {
 			Logger::info( "Skipping document creation for order #{$order_id} because invoicing mode is disabled." );

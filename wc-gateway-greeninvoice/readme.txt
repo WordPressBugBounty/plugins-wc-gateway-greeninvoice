@@ -3,7 +3,7 @@ Contributors: greeninvoice, dorzki
 Tags: greeninvoice, invoices, invoice, business management, credit cards
 Requires at least: 6.6
 Tested up to: 6.7.2
-Stable tag: 2.0.4
+Stable tag: 2.0.5
 Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -59,6 +59,10 @@ To install this add-on go to [the add-ons section](https://app.greeninvoice.co.i
 1. Go to WooCommerce &gt; Settings &gt; Payments; use the Toggle buttons to activate the payment methods (Credit Card | PayPal | bit) that will be offered to clients during checkout.
 
 == Changelog ==
+
+= 2.0.5 | 29.06.2025 =
+[IMPROVE] Added invoice creation button for invoice-only mode.
+[IMPROVE] Added compatibility for WooCommerce v9.9.5
 
 = 2.0.4 | 15.06.2025 =
 [IMPROVE] Improved integration with PayPlus payment gateway.

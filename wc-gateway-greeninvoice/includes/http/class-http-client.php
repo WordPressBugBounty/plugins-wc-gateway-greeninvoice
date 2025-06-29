@@ -6,7 +6,7 @@
  * @subpackage HTTP_Client
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.0.5
  * @since      2.0.0
  */
 
@@ -142,7 +142,7 @@ final class HTTP_Client {
 
 	/**
 	 * @param Http_Request $request Http request.
-	 * @param WP_Error|array $response Response from client.
+	 * @param WP_Error|array $response Response from the client.
 	 *
 	 * @return Http_Response
 	 *
@@ -152,6 +152,11 @@ final class HTTP_Client {
 		return new Http_Response( $request, $response );
 	}
 
+	/**
+	 * @return string
+	 *
+	 * @since 2.0.0
+	 */
 	private function build_user_agent(): string {
 		return 'Morning_WC/' . MRN_WC_VERSION . ' (WooCommerce ' . WC()->version . '; WordPress ' . get_bloginfo( 'version' ) . ')';
 	}

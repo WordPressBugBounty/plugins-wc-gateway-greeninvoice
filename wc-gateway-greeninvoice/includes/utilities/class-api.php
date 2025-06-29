@@ -6,7 +6,7 @@
  * @subpackage API
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.4
+ * @version    2.0.5
  * @since      1.0.0
  */
 
@@ -69,7 +69,7 @@ class Api {
 	/**
 	 * @param int $payment_method Desired payment method.
 	 * @param WC_Order $order Current order.
-	 * @param int $installments Amount of split payments.
+	 * @param int $installments Number of split payments.
 	 *
 	 * @return string|WP_Error
 	 *
@@ -148,7 +148,7 @@ class Api {
 		$response = $this->client->post( $request );
 
 		if ( ! $response->is_ok() ) {
-			return new WP_Error( 'morning-api', $this->get_api_error_message( $response ) );
+			return new WP_Error( 'morning-api', $this->get_api_error_message( $response, false ) );
 		}
 
 		return $response->json_body();
@@ -176,7 +176,7 @@ class Api {
 		$response = $this->client->post( $request );
 
 		if ( ! $response->is_ok() ) {
-			return new WP_Error( 'morning-api', $this->get_api_error_message( $response ) );
+			return new WP_Error( 'morning-api', $this->get_api_error_message( $response, false ) );
 		}
 
 		return $response->json_body()['url'];
@@ -202,7 +202,7 @@ class Api {
 		$response = $this->client->post( $request );
 
 		if ( ! $response->is_ok() ) {
-			return new WP_Error( 'morning-api', $this->get_api_error_message( $response ) );
+			return new WP_Error( 'morning-api', $this->get_api_error_message( $response, false ) );
 		}
 
 		return $response->json_body();
@@ -229,7 +229,7 @@ class Api {
 		$response = $this->client->post( $request );
 
 		if ( ! $response->is_ok() ) {
-			return new WP_Error( 'morning-api', $this->get_api_error_message( $response ) );
+			return new WP_Error( 'morning-api', $this->get_api_error_message( $response, false ) );
 		}
 
 		return $response->json_body();
@@ -278,7 +278,7 @@ class Api {
 	 * @param WC_Order $order Current order.
 	 * @param int $flow Request flow.
 	 * @param int|null $payment_method Desired payment method.
-	 * @param int $installments Amount of split payments.
+	 * @param int $installments Number of split payments.
 	 *
 	 * @return array
 	 *
@@ -426,14 +426,19 @@ class Api {
 
 	/**
 	 * @param Http_Response $response Http response.
+	 * @param bool $mask Should error response be masked?
 	 *
 	 * @return string
 	 *
 	 * @since 1.6.1
 	 */
-	public function get_api_error_message( Http_Response $response ): string {
+	public function get_api_error_message( Http_Response $response, bool $mask = true ): string {
 		$error_code    = $response->get_error_code() ?? 3000;
 		$error_message = $response->get_error_message() ?? __( 'General Error', 'wc-gateway-greeninvoice' );
+
+		if ( ! $mask ) {
+			return $error_message;
+		}
 
 		switch ( $error_code ) {
 			case 1006:

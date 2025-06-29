@@ -6,7 +6,7 @@
  * @subpackage Admin
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.0.5
  * @since      1.2.0
  */
 
@@ -27,11 +27,23 @@ defined( 'ABSPATH' ) || exit;
  */
 class Admin {
 	/**
+	 * @var Settings
+	 *
+	 * @since 2.0.5
+	 */
+	private Settings $settings;
+
+
+	/**
 	 * Admin constructor.
+	 *
+	 * @param Settings $settings
 	 *
 	 * @since 1.2.0
 	 */
-	public function __construct() {
+	public function __construct( Settings $settings ) {
+		$this->settings = $settings;
+
 		$this->register_hooks();
 	}
 
@@ -48,6 +60,8 @@ class Admin {
 		add_action( 'add_meta_boxes', [ $this, 'register_meta_boxes' ], 10, 2 );
 
 		add_filter( 'plugin_action_links_' . plugin_basename( MRN_WC_FILE ), [ $this, 'register_plugin_links' ] );
+
+		add_filter( 'woocommerce_order_actions', [ $this, 'inject_order_actions' ], 10, 2 );
 	}
 
 
@@ -163,6 +177,34 @@ class Admin {
 		$custom_actions = [ "<a href='{$settings_page_link}'>{$settings_link_text}</a>" ];
 
 		return array_merge( $custom_actions, $actions );
+	}
+
+	/**
+	 * @param string[] $actions Order actions list.
+	 * @param WC_Order $order Current order.
+	 *
+	 * @return array
+	 *
+	 * @since 2.0.5
+	 */
+	public function inject_order_actions( array $actions, WC_Order $order ): array {
+		$options = $this->settings->get_options();
+
+		if ( ! $options->is_invoicing_mode() ) {
+			return $actions;
+		}
+
+		if ( ! $order->is_paid() ) {
+			return $actions;
+		}
+
+		if ( ! empty( $order->get_meta( MRN_WC_SLUG . '_data' ) ) ) {
+			return $actions;
+		}
+
+		$actions[ MRN_WC_SLUG . '_recreate_invoice' ] = __( 'Morning: Recreate Invoice', 'wc-gateway-greeninvoice' );
+
+		return $actions;
 	}
 
 
