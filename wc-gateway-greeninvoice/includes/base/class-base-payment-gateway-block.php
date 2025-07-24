@@ -6,7 +6,7 @@
  * @subpackage Base_Payment_Gateway_Block
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.1.0
  * @since      1.3.0
  */
 
@@ -130,10 +130,11 @@ abstract class Base_Payment_Gateway_Block extends AbstractPaymentMethodType {
 	 */
 	public function get_payment_method_data(): array {
 		return [
-			'title'       => $this->gateway->title,
-			'description' => $this->gateway->description,
-			'supports'    => $this->get_supported_features(),
-			'is_active'   => $this->is_active(),
+			'title'        => $this->gateway->title,
+			'description'  => $this->gateway->description,
+			'supports'     => $this->get_supported_features(),
+			'is_active'    => $this->is_active(),
+			'installments' => $this->gateway->get_installments(),
 		];
 	}
 
@@ -149,7 +150,7 @@ abstract class Base_Payment_Gateway_Block extends AbstractPaymentMethodType {
 
 
 	/**
-	 * @param string $dependencies_file Path to block dependencies file.
+	 * @param string $dependencies_file Path to block dependencies' file.
 	 *
 	 * @return array|null
 	 *

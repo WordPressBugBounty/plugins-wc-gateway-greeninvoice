@@ -6,7 +6,7 @@
  * @subpackage Base_Payment_Gateway
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.1.0
  * @since      1.0.0
  */
 
@@ -106,8 +106,6 @@ abstract class Base_Payment_Gateway extends WC_Payment_Gateway {
 		$this->api     = $api;
 		$this->options = $settings->get_options();
 
-		$this->has_fields = false;
-
 		$this->supports[] = 'refunds';
 
 		$this->init_form_fields();
@@ -126,6 +124,10 @@ abstract class Base_Payment_Gateway extends WC_Payment_Gateway {
 		}
 
 		if ( $this->is_capable_of( Capability::INSTALLMENTS ) ) {
+			if ( $this->get_installments() > 1 ) {
+				$this->has_fields = true;
+			}
+
 			$this->form_fields['installments'] = [
 				'title'       => __( 'Max Number of Installments ', 'wc-gateway-greeninvoice' ),
 				'type'        => 'select',
@@ -258,6 +260,29 @@ abstract class Base_Payment_Gateway extends WC_Payment_Gateway {
 		return add_query_arg( $params, $site_url );
 	}
 
+	/**
+	 * @return int
+	 *
+	 * @since 2.1.0
+	 */
+	public function get_installments(): int {
+		return $this->settings['installments'] ?? 1;
+	}
+
+
+	/**
+	 * @return void
+	 *
+	 * @since 2.1.0
+	 */
+	public function payment_fields(): void {
+		parent::payment_fields();
+
+		if ( $this->get_installments() > 1 ) {
+			include MRN_WC_PATH . '/templates/frontend/installments-form.php';
+		}
+	}
+
 
 	/**
 	 * @param int $order_id Current order id.
@@ -269,6 +294,15 @@ abstract class Base_Payment_Gateway extends WC_Payment_Gateway {
 	public function process_payment( $order_id ): array {
 		$order = wc_get_order( $order_id );
 
+		$installments = ( empty( $_POST[ "{$this->id}_installments" ] ) ) ? 1 : absint( $_POST[ "{$this->id}_installments" ] );
+
+		if ( ! empty( $_POST[ "{$this->id}_installments" ] ) ) {
+			$installments = absint( $_POST[ "{$this->id}_installments" ] );
+		}
+
+		$order->update_meta_data( MRN_WC_SLUG . '_installments', (string) $installments );
+		$order->save();
+
 		if ( $this->is_capable_of( Capability::IFRAME_FORM ) ) {
 			return [
 				'result'   => 'success',
@@ -276,7 +310,7 @@ abstract class Base_Payment_Gateway extends WC_Payment_Gateway {
 			];
 		}
 
-		$payment_url = $this->api->request_payment_form_url( $this->type, $order );
+		$payment_url = $this->api->request_payment_form_url( $this->type, $order, $installments );
 
 		if ( is_wp_error( $payment_url ) ) {
 			return [
@@ -376,36 +410,29 @@ abstract class Base_Payment_Gateway extends WC_Payment_Gateway {
 	 * @since 1.0.0
 	 */
 	public function receipt_page( int $order_id ): void {
-		$order        = wc_get_order( $order_id );
-		$installments = empty( $this->settings['installments'] ) ? 1 : intval( $this->settings['installments'] );
-
+		$order           = wc_get_order( $order_id );
 		$is_subscription = function_exists( 'wcs_order_contains_subscription' ) && wcs_order_contains_subscription( $order_id );
+		$installments    = $order->get_meta( MRN_WC_SLUG . '_installments' ) ?? 1;
 
-		if ( 1 === $installments || ! empty( $_POST[ MRN_WC_SLUG . '_installments' ] ) || $is_subscription ) {
-			$installments = ( empty( $_POST[ MRN_WC_SLUG . '_installments' ] ) ) ? 1 : intval( $_POST[ MRN_WC_SLUG . '_installments' ] );
-
-			if ( $is_subscription ) {
-				$payment_url = $this->api->request_payment_token_url( $this->type, $order );
-			} else {
-				$payment_url = $this->api->request_payment_form_url( $this->type, $order, $installments );
-			}
-
-			if ( is_wp_error( $payment_url ) ) {
-				echo esc_html( $payment_url->get_error_message() );
-
-				return;
-			}
-
-			$additional_atts = apply_filters( "morning/wc/{$this->id}_payment_form_atts", '' );
-
-			// @phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo '<div id="gi_wrapper mrn_wrapper" class="greeninvoice-payment-wrapper morning-payment-wrapper">';
-			echo "	<iframe src='{$payment_url}' class='greeninvoice-payment-iframe morning-payment-iframe'{$additional_atts}></iframe>";
-			echo '</div>';
-			// @phpcs:enable
+		if ( $is_subscription ) {
+			$payment_url = $this->api->request_payment_token_url( $this->type, $order );
 		} else {
-			include_once MRN_WC_PATH . '/templates/frontend/installments-form.php';
+			$payment_url = $this->api->request_payment_form_url( $this->type, $order, $installments );
 		}
+
+		if ( is_wp_error( $payment_url ) ) {
+			echo esc_html( $payment_url->get_error_message() );
+
+			return;
+		}
+
+		$additional_atts = apply_filters( "morning/wc/{$this->id}_payment_form_atts", '' );
+
+		// @phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<div id="gi_wrapper mrn_wrapper" class="greeninvoice-payment-wrapper morning-payment-wrapper">';
+		echo "	<iframe src='{$payment_url}' class='greeninvoice-payment-iframe morning-payment-iframe'{$additional_atts}></iframe>";
+		echo '</div>';
+		// @phpcs:enable
 	}
 
 	/**
@@ -416,9 +443,9 @@ abstract class Base_Payment_Gateway extends WC_Payment_Gateway {
 	public function check_ipn_response(): void {
 		/* phpcs:ignore */
 		if ( ! empty( $_REQUEST ) ) {
-			$order_id  = wc_clean( $_REQUEST['order-id'] ); /* phpcs:ignore */
-			$order_key = wc_clean( $_REQUEST['order-key'] ); /* phpcs:ignore */
-			$action    = wc_clean( $_REQUEST['gi-type'] ); /* phpcs:ignore */
+			$order_id  = wc_clean( $_REQUEST[ 'order-id' ] ); /* phpcs:ignore */
+			$order_key = wc_clean( $_REQUEST[ 'order-key' ] ); /* phpcs:ignore */
+			$action    = wc_clean( $_REQUEST[ 'gi-type' ] ); /* phpcs:ignore */
 
 			$order = wc_get_order( $order_id );
 
