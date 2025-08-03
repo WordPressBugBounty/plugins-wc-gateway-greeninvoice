@@ -6,7 +6,7 @@
  * @subpackage Plugin
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.3
+ * @version    2.1.1
  * @since      1.0.0
  */
 
@@ -289,6 +289,10 @@ final class Plugin {
 	 */
 	public function change_ipn_order_status( string $order_status ): string {
 		$options = $this->settings->get_options();
+
+		if ( $options->is_invoicing_mode() ) {
+			return $order_status;
+		}
 
 		if ( in_array( $options->get_order_status(), [ 'processing', 'completed' ], true ) ) {
 			return $options->get_order_status();
