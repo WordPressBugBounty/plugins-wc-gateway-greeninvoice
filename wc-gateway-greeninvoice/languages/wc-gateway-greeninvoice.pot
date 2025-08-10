@@ -1,177 +1,184 @@
-#, fuzzy
+# Copyright (C) 2025 Morning
+# This file is distributed under the GPL v3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Morning for WooCommerce\n"
-"POT-Creation-Date: 2025-04-06 13:59+0300\n"
-"PO-Revision-Date: 2025-04-06 13:59+0300\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"Project-Id-Version: Morning for WooCommerce 2.2.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wc-gateway-greeninvoice\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Poedit 3.6\n"
-"X-Poedit-Basepath: .\n"
-"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-WPHeader: wc-gateway-greeninvoice.php\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: "
-"__;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.min.js\n"
-"X-Poedit-SearchPathExcluded-1: node_modules\n"
-"X-Poedit-SearchPathExcluded-2: vendor\n"
+"POT-Creation-Date: 2025-08-10T06:26:27+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: wc-gateway-greeninvoice\n"
 
-#: includes/base/class-base-payment-gateway.php:130
-msgid "Max Number of Installments "
+#. Plugin Name of the plugin
+#. translators: %s Plugin Name
+#: wc-gateway-greeninvoice.php
+#: includes/utilities/class-auth.php:150
+msgid "Morning for WooCommerce"
+msgstr ""
+
+#. Description of the plugin
+#: wc-gateway-greeninvoice.php
+msgid "Accept payments from clients with automated invoice production."
+msgstr ""
+
+#. Author of the plugin
+#: wc-gateway-greeninvoice.php
+#: includes/base/class-base-payment-gateway.php:360
+#: includes/base/class-base-payment-gateway.php:492
+#: includes/base/class-base-payment-gateway.php:515
+#: includes/base/class-base-payment-gateway.php:547
+#: includes/class-invoicing.php:132
+#: includes/class-invoicing.php:143
+#: includes/class-invoicing.php:193
+#: includes/class-invoicing.php:213
+msgid "Morning"
+msgstr ""
+
+#. Author URI of the plugin
+#: wc-gateway-greeninvoice.php
+msgid "https://www.greeninvoice.co.il"
 msgstr ""
 
 #: includes/base/class-base-payment-gateway.php:132
-msgid ""
-"Maximum number of installments available for the customer (leave 1 for no "
-"installments)."
+msgid "Max Number of Installments "
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:169
+#: includes/base/class-base-payment-gateway.php:134
+msgid "Maximum number of installments available for the customer (leave 1 for no installments)."
+msgstr ""
+
+#: includes/base/class-base-payment-gateway.php:171
 msgid "Enable/Disable"
 msgstr ""
 
 #. translators: %s Gateway Name
-#: includes/base/class-base-payment-gateway.php:172
-#, php-format
+#: includes/base/class-base-payment-gateway.php:174
 msgid "Enable %s"
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:176
+#: includes/base/class-base-payment-gateway.php:178
 msgid "Title"
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:178
+#: includes/base/class-base-payment-gateway.php:180
 msgid "The title the customers will see at the checkout page."
 msgstr ""
 
 #. translators: %s Gateway Name
-#: includes/base/class-base-payment-gateway.php:180
-#, php-format
+#: includes/base/class-base-payment-gateway.php:182
 msgid "Pay with %s"
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:184
+#: includes/base/class-base-payment-gateway.php:186
 msgid "Description (optional)"
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:186
-msgid ""
-"The description will appear when selecting the payment method at the "
-"checkout page."
+#: includes/base/class-base-payment-gateway.php:188
+msgid "The description will appear when selecting the payment method at the checkout page."
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:308
+#: includes/base/class-base-payment-gateway.php:342
 msgctxt "Refund Order Errors"
 msgid "Unable to refund an unpaid order."
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:312
+#: includes/base/class-base-payment-gateway.php:346
 msgctxt "Refund Order Errors"
-msgid ""
-"Unable to partially refund an order that was made today, please issue a full "
-"refund"
+msgid "Unable to partially refund an order that was made today, please issue a full refund"
 msgstr ""
 
 #. translators: %1$s Morning Brand, %2$s Refund Amount
-#: includes/base/class-base-payment-gateway.php:325
-#, php-format
+#: includes/base/class-base-payment-gateway.php:359
 msgid "%1$s: A refund of %2$s was made via payment gateway."
 msgstr ""
 
-#. Author of the plugin/theme
-#: includes/base/class-base-payment-gateway.php:326
-#: includes/base/class-base-payment-gateway.php:465
-#: includes/base/class-base-payment-gateway.php:488
-#: includes/base/class-base-payment-gateway.php:520
-#: includes/class-plugin.php:180 includes/class-plugin.php:200
-msgid "Morning"
-msgstr ""
-
-#: includes/base/class-base-payment-gateway.php:459
+#: includes/base/class-base-payment-gateway.php:486
 msgid "Payment received but awaiting confirmation."
 msgstr ""
 
 #. translators: %s Morning Brand
-#: includes/base/class-base-payment-gateway.php:464
-#, php-format
+#: includes/base/class-base-payment-gateway.php:491
 msgid "%s: Payment received."
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:483
+#: includes/base/class-base-payment-gateway.php:510
 msgid "Payment failed."
 msgstr ""
 
 #. translators: %s Morning Brand
-#: includes/base/class-base-payment-gateway.php:487
-#, php-format
+#: includes/base/class-base-payment-gateway.php:514
 msgid "%s: Payment failed."
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:495
+#: includes/base/class-base-payment-gateway.php:522
 msgid "Payment failed, please try again."
 msgstr ""
 
 #. translators: %s Morning Brand
-#: includes/base/class-base-payment-gateway.php:519
-#, php-format
+#: includes/base/class-base-payment-gateway.php:546
 msgid "%s: IPN received."
 msgstr ""
 
-#: includes/class-admin.php:80
+#: includes/class-admin.php:94
 msgctxt "Settings Page Title"
 msgid "Morning Settings"
 msgstr ""
 
-#: includes/class-admin.php:81
+#: includes/class-admin.php:95
 msgctxt "Settings Page Menu Title"
 msgid "Morning"
 msgstr ""
 
-#: includes/class-admin.php:112
+#: includes/class-admin.php:126
 msgctxt "Admin Meta Box"
 msgid "Morning Document Info"
 msgstr ""
 
-#: includes/class-admin.php:141
+#: includes/class-admin.php:155
 msgid "Document Number"
 msgstr ""
 
-#: includes/class-admin.php:142
+#: includes/class-admin.php:156
 msgid "Document Type"
 msgstr ""
 
-#: includes/class-admin.php:143
+#: includes/class-admin.php:157
 msgid "Document ID"
 msgstr ""
 
-#: includes/class-admin.php:161
+#: includes/class-admin.php:175
 msgctxt "Plugins Links"
 msgid "Settings"
 msgstr ""
 
-#: includes/class-admin.php:193
+#: includes/class-admin.php:205
+msgid "Morning: Recreate Invoice"
+msgstr ""
+
+#: includes/class-admin.php:235
 msgid "Syncing"
 msgstr ""
 
-#: includes/class-admin.php:194
+#: includes/class-admin.php:236
 msgid "Synced"
 msgstr ""
 
-#: includes/class-admin.php:195
+#: includes/class-admin.php:237
 msgid "Unable to Sync"
 msgstr ""
 
-#: includes/class-admin.php:196 includes/config/class-settings.php:132
+#: includes/class-admin.php:238
+#: includes/config/class-settings.php:133
 msgid "Active"
 msgstr ""
 
-#: includes/class-admin.php:197 includes/config/class-settings.php:133
+#: includes/class-admin.php:239
+#: includes/config/class-settings.php:134
 msgid "Activation Error"
 msgstr ""
 
@@ -179,36 +186,23 @@ msgstr ""
 msgid "Tax ID number is invalid."
 msgstr ""
 
-#: includes/class-checkout.php:116
-msgid "Tax ID"
-msgstr ""
-
 #. translators: %s PHP Version
 #: includes/class-compatibility.php:128
-#, php-format
-msgid ""
-"Morning for WooCommerce requires PHP version %s or higher to run properly."
+msgid "Morning for WooCommerce requires PHP version %s or higher to run properly."
 msgstr ""
 
 #. translators: %s WordPress Version
 #: includes/class-compatibility.php:138
-#, php-format
-msgid ""
-"Morning for WooCommerce requires WordPress version %s or higher to run "
-"properly."
+msgid "Morning for WooCommerce requires WordPress version %s or higher to run properly."
 msgstr ""
 
 #: includes/class-compatibility.php:147
-msgid ""
-"Morning for WooCommerce requires WooCommerce to be installed and active."
+msgid "Morning for WooCommerce requires WooCommerce to be installed and active."
 msgstr ""
 
 #. translators: %s WooCommerce Version
 #: includes/class-compatibility.php:159
-#, php-format
-msgid ""
-"Morning for WooCommerce requires WooCommerce version %s or higher to run "
-"properly."
+msgid "Morning for WooCommerce requires WooCommerce version %s or higher to run properly."
 msgstr ""
 
 #: includes/class-frontend.php:92
@@ -217,129 +211,148 @@ msgid "Download Invoice"
 msgstr ""
 
 #. translators: %1$s Morning Brand, %2$s Error Message
-#: includes/class-plugin.php:179
-#, php-format
+#: includes/class-invoicing.php:131
+msgid "%1$s: Failed to create a refund document with error: `%2$s`"
+msgstr ""
+
+#. translators: %s Morning Brand
+#: includes/class-invoicing.php:142
+msgid "%s: Refund document created successfully."
+msgstr ""
+
+#. translators: %1$s Morning Brand, %2$s Error Message
+#: includes/class-invoicing.php:192
 msgid "%1$s: Failed to create a document with error: `%2$s`"
 msgstr ""
 
 #. translators: %s Morning Brand
-#: includes/class-plugin.php:199
-#, php-format
+#: includes/class-invoicing.php:212
 msgid "%s: Document created successfully."
 msgstr ""
 
 #. translators: %s Settings Page
-#: includes/class-plugin.php:215
-#, php-format
-msgid ""
-"Attention! Sandbox mode is enabled for Morning for WooCommerce. You can "
-"disable it from the %s."
+#: includes/class-plugin.php:141
+msgid "Attention! Sandbox mode is enabled for Morning for WooCommerce. You can disable it from the %s."
 msgstr ""
 
-#: includes/class-plugin.php:215
+#. translators: %s Settings Page
+#: includes/class-plugin.php:141
 msgid "settings page"
 msgstr ""
 
-#: includes/config/class-settings.php:82
+#: includes/config/class-settings.php:83
 msgid "Plugin Plan"
 msgstr ""
 
-#: includes/config/class-settings.php:93
+#: includes/config/class-settings.php:94
 msgid "Tax ID Number"
 msgstr ""
 
-#: includes/config/class-settings.php:97
+#: includes/config/class-settings.php:98
 msgid "Enable Tax ID number field in checkout"
 msgstr ""
 
-#: includes/config/class-settings.php:114
+#: includes/config/class-settings.php:115
 msgid "Licensing"
 msgstr ""
 
-#: includes/config/class-settings.php:118
+#: includes/config/class-settings.php:119
 msgid "License Key"
 msgstr ""
 
-#: includes/config/class-settings.php:126
+#: includes/config/class-settings.php:127
 msgid "License Status"
 msgstr ""
 
-#: includes/config/class-settings.php:131
+#: includes/config/class-settings.php:132
 msgid "Inactive"
 msgstr ""
 
-#: includes/config/class-settings.php:150
-#: includes/config/class-settings.php:188
+#: includes/config/class-settings.php:151
+#: includes/config/class-settings.php:189
 msgid "General Settings"
 msgstr ""
 
-#: includes/config/class-settings.php:154
+#: includes/config/class-settings.php:155
+#: includes/config/class-settings.php:193
 msgid "Allowed Gateways"
 msgstr ""
 
-#: includes/config/class-settings.php:158
-msgid ""
-"If you changed your settings in WooCommerce on morning, you need to sync the "
-"changes."
+#: includes/config/class-settings.php:159
+msgid "If you changed your settings in WooCommerce on morning, you need to sync the changes."
 msgstr ""
 
-#: includes/config/class-settings.php:164
-#: includes/config/class-settings.php:192
+#: includes/config/class-settings.php:165
+#: includes/config/class-settings.php:203
 msgid "Order Status"
 msgstr ""
 
-#: includes/config/class-settings.php:168
+#: includes/config/class-settings.php:169
 msgid "Set order status after a notification of successful payment received."
 msgstr ""
 
-#: includes/config/class-settings.php:170
-#: includes/config/class-settings.php:198
+#: includes/config/class-settings.php:171
+#: includes/config/class-settings.php:209
 msgid "Processing"
 msgstr ""
 
-#: includes/config/class-settings.php:171
-#: includes/config/class-settings.php:199
+#: includes/config/class-settings.php:172
+#: includes/config/class-settings.php:210
 msgid "Completed"
 msgstr ""
 
-#: includes/config/class-settings.php:196
+#: includes/config/class-settings.php:197
+msgid "Select which gateway to automatically issue an invoice upon payment."
+msgstr ""
+
+#: includes/config/class-settings.php:207
 msgid "Set order status to issue an invoice creation."
 msgstr ""
 
-#: includes/config/class-settings.php:217
+#: includes/config/class-settings.php:228
 msgid "Advanced Options"
 msgstr ""
 
-#: includes/config/class-settings.php:221
+#: includes/config/class-settings.php:232
 msgid "Sandbox Mode"
 msgstr ""
 
-#: includes/config/class-settings.php:225
+#: includes/config/class-settings.php:236
 msgid "Enable sandbox"
 msgstr ""
 
 #. translators: %s Sandbox account
-#: includes/config/class-settings.php:227
-#, php-format
+#: includes/config/class-settings.php:238
 msgid "Check this to enable test mode. %s and license key are required."
 msgstr ""
 
-#: includes/config/class-settings.php:227
+#. translators: %s Sandbox account
+#: includes/config/class-settings.php:238
 msgid "Sandbox account"
 msgstr ""
 
-#: includes/config/class-settings.php:233
+#: includes/config/class-settings.php:244
 msgid "Site Info Report"
 msgstr ""
 
-#: includes/config/class-settings.php:237
+#: includes/config/class-settings.php:248
 msgid "Generate File"
 msgstr ""
 
-#: includes/config/class-settings.php:238
-msgid ""
-"Generate a debug file which includes logs and WordPress environment "
-"information."
+#: includes/config/class-settings.php:249
+msgid "Generate a debug file which includes logs and WordPress environment information."
+msgstr ""
+
+#: includes/config/class-settings.php:256
+msgid "Logs"
+msgstr ""
+
+#: includes/config/class-settings.php:260
+msgid "View Logs"
+msgstr ""
+
+#: includes/config/class-settings.php:261
+msgid "View the logs of the plugin."
 msgstr ""
 
 #: includes/enum/class-document-type.php:127
@@ -453,89 +466,70 @@ msgstr ""
 msgid "Sync with Account"
 msgstr ""
 
-#: includes/gateways/class-apple-pay-gateway.php:41
-#: src/js/blocks/apple-pay.js:12
+#: includes/gateways/class-apple-pay-gateway.php:42
+#: assets/js/blocks/apple-pay.js:1
 msgid "Morning - Apple Pay"
 msgstr ""
 
-#: includes/gateways/class-apple-pay-gateway.php:42
-msgid ""
-"Accept Apple Pay payments with Morning-Meshulam plugin. In order to complete "
-"the process, go to your WooCommerce plugin settings in Morning, and choose "
-"Apple Pay in the \"payment options\" section."
+#: includes/gateways/class-apple-pay-gateway.php:43
+msgid "Accept Apple Pay payments with Morning-Meshulam plugin. In order to complete the process, go to your WooCommerce plugin settings in Morning, and choose Apple Pay in the \"payment options\" section."
 msgstr ""
 
-#: includes/gateways/class-bit-gateway.php:42 src/js/blocks/bit.js:12
+#: includes/gateways/class-bit-gateway.php:42
+#: assets/js/blocks/bit.js:1
 msgid "Morning - Bit"
 msgstr ""
 
 #: includes/gateways/class-bit-gateway.php:43
-msgid ""
-"Accept bit payments with Morning-Meshulam plugin. In order to complete the "
-"process, go to your WooCommerce plugin settings in Morning, and choose bit "
-"in the \"payment options\" section."
+msgid "Accept bit payments with Morning-Meshulam plugin. In order to complete the process, go to your WooCommerce plugin settings in Morning, and choose bit in the \"payment options\" section."
 msgstr ""
 
 #: includes/gateways/class-credit-card-gateway.php:42
-#: src/js/blocks/credit-card.js:12
+#: assets/js/blocks/credit-card.js:1
 msgid "Morning - Credit Cards"
 msgstr ""
 
 #: includes/gateways/class-credit-card-gateway.php:43
-msgid ""
-"Accept credit cards with Morning plugin. In order to complete the process, "
-"go to your WooCommerce plugin settings in Morning, and choose the clearing "
-"provider in the \"payment options\" section."
+msgid "Accept credit cards with Morning plugin. In order to complete the process, go to your WooCommerce plugin settings in Morning, and choose the clearing provider in the \"payment options\" section."
 msgstr ""
 
 #: includes/gateways/class-google-pay-gateway.php:42
-#: src/js/blocks/google-pay.js:12
+#: assets/js/blocks/google-pay.js:1
 msgid "Morning - Google Pay"
 msgstr ""
 
 #: includes/gateways/class-google-pay-gateway.php:43
-msgid ""
-"Accept Google Pay payments with Morning-Meshulam plugin. In order to "
-"complete the process, go to your WooCommerce plugin settings in Morning, and "
-"choose Google Pay in the \"payment options\" section."
+msgid "Accept Google Pay payments with Morning-Meshulam plugin. In order to complete the process, go to your WooCommerce plugin settings in Morning, and choose Google Pay in the \"payment options\" section."
 msgstr ""
 
-#: includes/gateways/class-paypal-gateway.php:40 src/js/blocks/paypal.js:12
+#: includes/gateways/class-paypal-gateway.php:40
+#: assets/js/blocks/paypal.js:1
 msgid "Morning - PayPal"
 msgstr ""
 
 #: includes/gateways/class-paypal-gateway.php:41
-msgid ""
-"Accept credit cards with Morning PayPal integration. In order to complete "
-"the process, go to your WooCommerce plugin settings in Greeninvoice, and "
-"choose paypal in the \"payment options\" section."
+msgid "Accept credit cards with Morning PayPal integration. In order to complete the process, go to your WooCommerce plugin settings in Greeninvoice, and choose paypal in the \"payment options\" section."
 msgstr ""
 
 #. translators: %s Gift Card Number
 #: includes/integrations/class-pw-gift-cards-integration.php:71
-#, php-format
 msgid "Gift Card: %s"
 msgstr ""
 
 #. translators: %s Order Number
-#: includes/utilities/class-api.php:253
-#, php-format
+#: includes/utilities/class-api.php:296
+#: includes/utilities/class-api.php:350
 msgid "Order #%s"
 msgstr ""
 
-#: includes/utilities/class-api.php:367 includes/utilities/class-api.php:378
+#: includes/utilities/class-api.php:437
+#: includes/utilities/class-api.php:452
 msgid "General Error"
 msgstr ""
 
 #. translators: %s Plugin Name
 #: includes/utilities/class-auth.php:150
-#, php-format
 msgid "Please activate the plugin by entering your license key for %s."
-msgstr ""
-
-#. Plugin Name of the plugin/theme
-#: includes/utilities/class-auth.php:150
-msgid "Morning for WooCommerce"
 msgstr ""
 
 #: templates/admin/order-metabox.php:43
@@ -552,29 +546,7 @@ msgstr ""
 msgid "Changes were saved."
 msgstr ""
 
-#: templates/admin/settings-page.php:41
-msgid "Save Settings"
-msgstr ""
-
-#: templates/frontend/installments-form.php:17
-msgctxt "Installments Form"
-msgid "Select Number of Installments"
-msgstr ""
-
-#: templates/frontend/installments-form.php:20
+#: templates/frontend/installments-form.php:18
 msgctxt "Installments Form"
 msgid "Installments"
-msgstr ""
-
-#: templates/frontend/installments-form.php:31
-msgctxt "Installments Form"
-msgid "Proceed to Payment"
-msgstr ""
-
-#. Description of the plugin/theme
-msgid "Accept payments from clients, with automated invoice production."
-msgstr ""
-
-#. Author URI of the plugin/theme
-msgid "https://www.greeninvoice.co.il"
 msgstr ""

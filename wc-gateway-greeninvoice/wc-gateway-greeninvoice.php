@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Morning for WooCommerce
  * Description: Accept payments from clients with automated invoice production.
- * Version: 2.1.1
+ * Version: 2.2.0
  * Requires at least: 6.7
  * Requires PHP: 7.4
  * Requires Plugins: woocommerce
@@ -16,7 +16,7 @@
  *
  * @package Morning\WC
  * @author  Dor Zuberi <admin@dorzki.io>
- * @version 2.1.1
+ * @version 2.2.0
  * @since   1.0.0
  */
 
@@ -27,7 +27,7 @@ defined( 'ABSPATH' ) || exit;
 
 
 // Declare constants.
-const MRN_WC_VERSION = '2.1.1';
+const MRN_WC_VERSION = '2.2.0';
 const MRN_WC_SLUG    = 'greeninvoice';
 const MRN_WC_FILE    = __FILE__;
 

@@ -6,7 +6,7 @@
  * @subpackage Updater
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.1
+ * @version    2.2.0
  * @since      1.2.0
  */
 
@@ -68,7 +68,7 @@ class Updater {
 	 * @since 2.0.0
 	 */
 	private function register_hooks(): void {
-		add_action( 'plugins_loaded', [ $this, 'maybe_run_updates' ] );
+		add_action( 'init', [ $this, 'maybe_run_updates' ], PHP_INT_MAX );
 	}
 
 
@@ -96,13 +96,17 @@ class Updater {
 			$this->v2_0_0_migration();
 		}
 
+		if ( $this->before( '2.2.0' ) ) {
+			$this->v2_2_0_migration();
+		}
+
 		$this->update_version();
 	}
 
 
 	/**
 	 * v1.2.0 Migration:
-	 * - Run store connect in order to support dynamic gateways.
+	 * - Run store connect to support dynamic gateways.
 	 *
 	 * @return void
 	 *
@@ -183,6 +187,32 @@ class Updater {
 		$new_options->save();
 
 		$this->settings->set_options( $new_options );
+	}
+
+	/**
+	 * v2.2.0 Migration:
+	 * - Populate allowed gateways for invoicing mode.
+	 *
+	 * @return void
+	 *
+	 * @since 2.2.0
+	 */
+	private function v2_2_0_migration(): void {
+		$options = $this->settings->get_options();
+
+		if ( ! $options->is_invoicing_mode() ) {
+			return;
+		}
+
+		$payment_gateways = WC()->payment_gateways()->get_available_payment_gateways();
+		$allowed_gateways = [];
+
+		foreach ( $payment_gateways as $gateway ) {
+			$allowed_gateways[ $gateway->id ] = 'yes';
+		}
+
+		$options->set_invoicing_allowed_gateways( $allowed_gateways );
+		$options->save();
 	}
 
 

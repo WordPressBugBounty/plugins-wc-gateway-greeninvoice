@@ -6,7 +6,7 @@
  * @subpackage Options
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.2.0
  * @since      2.0.0
  */
 
@@ -66,6 +66,12 @@ class Options {
 	 */
 	private string $invoicing_order_status = 'processing';
 	/**
+	 * @var string[]
+	 *
+	 * @since 2.2.0
+	 */
+	private array $invoicing_allowed_gateways = [];
+	/**
 	 * @var bool
 	 *
 	 * @since 2.0.0
@@ -118,14 +124,15 @@ class Options {
 		return update_option(
 			self::OPTIONS_KEY,
 			[
-				'activated'              => $this->get_activated(),
-				'license_key'            => $this->get_license_key(),
-				'gateways'               => $this->get_gateways(),
-				'show_tax_id_field'      => $this->is_show_tax_id_field(),
-				'order_status'           => $this->get_order_status(),
-				'plan'                   => $this->get_plan(),
-				'invoicing_order_status' => $this->get_invoicing_order_status(),
-				'sandbox_mode'           => $this->is_sandbox_mode() ? 'yes' : 'no',
+				'activated'                  => $this->get_activated(),
+				'license_key'                => $this->get_license_key(),
+				'gateways'                   => $this->get_gateways(),
+				'show_tax_id_field'          => $this->is_show_tax_id_field(),
+				'order_status'               => $this->get_order_status(),
+				'plan'                       => $this->get_plan(),
+				'invoicing_order_status'     => $this->get_invoicing_order_status(),
+				'invoicing_allowed_gateways' => $this->get_invoicing_allowed_gateways(),
+				'sandbox_mode'               => $this->is_sandbox_mode() ? 'yes' : 'no',
 			]
 		);
 	}
@@ -148,6 +155,19 @@ class Options {
 	 */
 	public function is_payment_gateway_enabled( int $gateway_id ): bool {
 		$gateways = $this->get_gateways();
+
+		return 'yes' === ( $gateways[ $gateway_id ] ?? 'no' );
+	}
+
+	/**
+	 * @param string $gateway_id Payment gateway id.
+	 *
+	 * @return bool
+	 *
+	 * @since 2.2.0
+	 */
+	public function is_payment_gateway_allowed( string $gateway_id ): bool {
+		$gateways = $this->get_invoicing_allowed_gateways();
 
 		return 'yes' === ( $gateways[ $gateway_id ] ?? 'no' );
 	}
@@ -214,6 +234,10 @@ class Options {
 
 		if ( isset( $options['invoicing_order_status'] ) ) {
 			$this->set_invoicing_order_status( $options['invoicing_order_status'] );
+		}
+
+		if ( isset( $options['invoicing_allowed_gateways'] ) ) {
+			$this->set_invoicing_allowed_gateways( $options['invoicing_allowed_gateways'] );
 		}
 
 		if ( isset( $options['sandbox_mode'] ) ) {
@@ -346,6 +370,24 @@ class Options {
 	 */
 	public function set_invoicing_order_status( string $invoicing_order_status ): void {
 		$this->invoicing_order_status = $invoicing_order_status;
+	}
+
+	/**
+	 * @return string[]
+	 *
+	 * @since 2.2.0
+	 */
+	public function get_invoicing_allowed_gateways(): array {
+		return $this->invoicing_allowed_gateways;
+	}
+
+	/**
+	 * @param string[] $invoicing_allowed_gateways
+	 *
+	 * @since 2.2.0
+	 */
+	public function set_invoicing_allowed_gateways( array $invoicing_allowed_gateways ): void {
+		$this->invoicing_allowed_gateways = $invoicing_allowed_gateways;
 	}
 
 	/**

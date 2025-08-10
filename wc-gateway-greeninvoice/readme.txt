@@ -3,7 +3,7 @@ Contributors: greeninvoice, dorzki
 Tags: greeninvoice, invoices, invoice, business management, credit cards
 Requires at least: 6.7
 Tested up to: 6.8.2
-Stable tag: 2.1.1
+Stable tag: 2.2.0
 Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -12,11 +12,11 @@ Morning (Green Invoice) add-on for WooCommerce enables an easy and convenient co
 
 == Description ==
 
-Morning add-on (Green Invoice) for WooCommerce enables a quick, easy, and convenient connection between morning's business management system and your digital store. The connection delivers two highly important actions in one add-on: acquiring and receiving payment by credit, and automatic invoicing for each transaction.
+Morning add-on (Green Invoice) for WooCommerce enables a quick, easy and convenient connection between morning's business management system and your digital store. The connection delivers two highly important actions in one add-on: acquiring and receiving payment by credit, and automatic invoicing for each transaction.
 
 = About Us =
 Morning (Green Invoice) is Israel's leading business management platform. Our system offers diverse convenient, user-friendly digital tools that help you better understand your business, turning administrative tasks that feel complex into fun, simple ones.
-For example: production of invoices, documents and financial reports, smart expense management, credit acquiring, E-commerce, automation vis-à-vis the CPA, interface with add-ons and external systems, and more. In addition, morning offers rich, diverse content including a magazine, guides, a podcast, and a supportive community, that together create a comprehensive, rich ecosystem for freelancers.
+For example: production of invoices, documents and financial reports, smart expense management, credit acquiring, E-commerce, automation vis-à-vis the CPA, interface with add-ons and external systems and more. In addition, morning offers rich, diverse content including a magazine, guides, a podcast and a supportive community, that together create a comprehensive, rich ecosystem for freelancers.
 
 = Important to Know =
 
@@ -59,6 +59,10 @@ To install this add-on go to [the add-ons section](https://app.greeninvoice.co.i
 1. Go to WooCommerce &gt; Settings &gt; Payments; use the Toggle buttons to activate the payment methods (Credit Card | PayPal | bit) that will be offered to clients during checkout.
 
 == Changelog ==
+
+= 2.2.0 | 10.08.2025 =
+[FEATURE] New plugin setting for allowed payment gateways in invoicing mode.
+[FEATURE] Add a `View Logs` button to the plugin settings page.
 
 = 2.1.1 | 03.08.2025 =
 [BUGFIX] Fix order status changed to processing for virtual products.

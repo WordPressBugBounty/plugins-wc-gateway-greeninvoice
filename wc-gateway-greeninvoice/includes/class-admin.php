@@ -6,7 +6,7 @@
  * @subpackage Admin
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.5
+ * @version    2.2.0
  * @since      1.2.0
  */
 
@@ -252,6 +252,7 @@ class Admin {
 			MRN_WC_SLUG . '_vars',
 			[
 				'ajax_url'                  => admin_url( 'admin-ajax.php' ),
+				'logs_url'                  => admin_url( 'admin.php?page=wc-status&tab=logs&source=' . MRN_WC_SLUG ),
 				'sync_nonce'                => wp_create_nonce( 'morning-sync-gateways' ),
 				'download_debug_file_nonce' => wp_create_nonce( 'morning-download-debug-file' ),
 			]

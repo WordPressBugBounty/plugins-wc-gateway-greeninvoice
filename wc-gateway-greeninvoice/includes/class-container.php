@@ -6,7 +6,7 @@
  * @subpackage Container
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.4
+ * @version    2.2.0
  * @since      2.0.0
  */
 
@@ -84,6 +84,7 @@ class Container {
 		$this->add( Exporter::class );
 		$this->add( Ajax::class, [ Auth::class, Exporter::class ] );
 		$this->add( Checkout::class, [ Settings::class ] );
+		$this->add( Invoicing::class, [ Settings::class, Api::class ] );
 
 		// Payment Gateways
 		$this->add( Credit_Card_Gateway::class, [ Api::class, Settings::class ] );
@@ -109,7 +110,7 @@ class Container {
 		$this->add( Integration_Manager::class );
 
 		// Plugin
-		$this->add( Plugin::class, [ Compatibility::class, Admin::class, Settings::class, Api::class ] );
+		$this->add( Plugin::class, [ Compatibility::class, Admin::class, Settings::class ] );
 	}
 
 

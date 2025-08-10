@@ -6,7 +6,7 @@
  * @subpackage Settings
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.4
+ * @version    2.2.0
  * @since      1.0.0
  */
 
@@ -15,6 +15,7 @@ namespace Morning\WC\Config;
 use Morning\WC\Base\Base_Settings_Field;
 use Morning\WC\Fields\Button;
 use Morning\WC\Fields\Checkbox;
+use Morning\WC\Fields\Gateway_Selection;
 use Morning\WC\Fields\Gateways_Sync;
 use Morning\WC\Fields\Plan_Indicator;
 use Morning\WC\Fields\Section;
@@ -186,6 +187,16 @@ class Settings {
 			$this->settings,
 			[
 				new Section( MRN_WC_SLUG . '_general', esc_html__( 'General Settings', 'wc-gateway-greeninvoice' ) ),
+				new Gateway_Selection(
+					MRN_WC_SLUG . '_general',
+					'invoicing_allowed_gateways',
+					esc_html__( 'Allowed Gateways', 'wc-gateway-greeninvoice' ),
+					$this->options->get_invoicing_allowed_gateways(),
+					'invoicing_allowed_gateways',
+					[
+						'description' => __( 'Select which gateway to automatically issue an invoice upon payment.', 'wc-gateway-greeninvoice' ),
+					]
+				),
 				new Select(
 					MRN_WC_SLUG . '_general',
 					'invoicing_order_status',
@@ -237,6 +248,18 @@ class Settings {
 						'label'       => __( 'Generate File', 'wc-gateway-greeninvoice' ),
 						'description' => __( 'Generate a debug file which includes logs and WordPress environment information.', 'wc-gateway-greeninvoice' ),
 						'action'      => MRN_WC_SLUG . '_generate_debug_file',
+					]
+				),
+				new Button(
+					MRN_WC_SLUG . '_advanced',
+					'view_logs',
+					esc_html__( 'Logs', 'wc-gateway-greeninvoice' ),
+					null,
+					'view_logs',
+					[
+						'label'       => __( 'View Logs', 'wc-gateway-greeninvoice' ),
+						'description' => __( 'View the logs of the plugin.', 'wc-gateway-greeninvoice' ),
+						'action'      => MRN_WC_SLUG . '_view_logs',
 					]
 				),
 			]
