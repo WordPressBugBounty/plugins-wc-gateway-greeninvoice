@@ -6,7 +6,7 @@
  * @subpackage Compatibility
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.6
+ * @version    2.2.1
  * @since      1.0.0
  */
 
@@ -45,7 +45,7 @@ class Compatibility {
 	 *
 	 * @since 2.0.0
 	 */
-	const MIN_WC = '8.0';
+	const MIN_WC = '8.9';
 
 
 	/**
@@ -86,7 +86,7 @@ class Compatibility {
 
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
-		$wc_version = get_plugins()['woocommerce/woocommerce.php']['Version'] ?? null;
+		$wc_version = get_plugins()['woocommerce/woocommerce.php']['Version'] ?? '';
 
 		if ( ! $this->is_version_compatible( $wc_version, self::MIN_WC ) ) {
 			add_action( 'admin_notices', [ $this, 'incompatible_woocommerce_version' ] );

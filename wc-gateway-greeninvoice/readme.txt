@@ -3,7 +3,7 @@ Contributors: greeninvoice, dorzki
 Tags: greeninvoice, invoices, invoice, business management, credit cards
 Requires at least: 6.7
 Tested up to: 6.8.2
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -59,6 +59,11 @@ To install this add-on go to [the add-ons section](https://app.greeninvoice.co.i
 1. Go to WooCommerce &gt; Settings &gt; Payments; use the Toggle buttons to activate the payment methods (Credit Card | PayPal | bit) that will be offered to clients during checkout.
 
 == Changelog ==
+
+= 2.2.1 | 09.09.2025 =
+[FEATURE] Added support for Tax ID field in WooCommerce Checkout Blocks.
+[IMPROVE] Bumped the minimum required WooCommerce version to 8.9
+[IMPROVE] Added compatibility for WooCommerce v10.1.2
 
 = 2.2.0 | 10.08.2025 =
 [FEATURE] New plugin setting for allowed payment gateways in invoicing mode.
