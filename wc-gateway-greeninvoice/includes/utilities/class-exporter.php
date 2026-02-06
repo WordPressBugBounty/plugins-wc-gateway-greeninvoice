@@ -6,7 +6,7 @@
  * @subpackage Exporter
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.3.2
  * @since      1.4.0
  */
 
@@ -16,6 +16,7 @@ use Morning\WC\Enum\Report_Format;
 use Morning\WC\Exceptions\Container_Exception;
 use Morning\WC\Exceptions\FileSystem_Exception;
 use Morning\WC\Site_Info;
+use PclZip;
 use WP_Filesystem_Base;
 use ZipArchive;
 
@@ -82,8 +83,10 @@ final class Exporter {
 		wc_set_time_limit();
 		wc_nocache_headers();
 
-		header( 'Content-Type: text/plain; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename=' . basename( $file ) );
+		header( 'Content-Description: File Transfer' );
+		header( 'Content-Type: application/zip' );
+		header( 'Content-Disposition: attachment; filename="' . basename( $file ) . '"' );
+		header( 'Content-Transfer-Encoding: binary' );
 		header( 'Pragma: no-cache' );
 		header( 'Expires: 0' );
 	}
@@ -142,6 +145,7 @@ final class Exporter {
 	/**
 	 * @return string
 	 *
+	 * @throws FileSystem_Exception
 	 * @since 1.4.0
 	 */
 	private function create_archive_file(): string {
@@ -150,24 +154,39 @@ final class Exporter {
 			"{$this->get_working_directory()}/site-report.json",
 		];
 
+		$archive_file = "{$this->get_working_directory()}/site-data.zip";
+
 		$logs = $this->filesystem->dirlist( "{$this->get_working_directory()}/logs" );
 
 		foreach ( $logs as $log_file => $file ) {
 			$files[] = "{$this->get_working_directory()}/logs/{$log_file}";
 		}
 
-		$zip = new ZipArchive();
-		$zip->open( "{$this->get_working_directory()}/site-data.zip", ZipArchive::CREATE );
+		if ( class_exists( 'ZipArchive', false ) && apply_filters( 'unzip_file_use_ziparchive', true ) ) {
+			$zip = new ZipArchive();
+			$zip->open( $archive_file, ZipArchive::CREATE );
 
-		foreach ( $files as $file ) {
-			$filename = ( strpos( $file, '/logs/' ) !== false ) ?
-				basename( dirname( $file ) ) . '/' . basename( $file ) :
-				basename( $file );
+			foreach ( $files as $file ) {
+				$filename = ( strpos( $file, '/logs/' ) !== false ) ?
+					basename( dirname( $file ) ) . '/' . basename( $file ) :
+					basename( $file );
 
-			$zip->addFile( $file, $filename );
+				$zip->addFile( $file, $filename );
+			}
+
+			$zip->close();
+		} else {
+			if ( ! class_exists( 'PclZip', false ) ) {
+				require_once ABSPATH . 'wp-admin/includes/class-pclzip.php';
+			}
+
+			$zip      = new PclZip( $archive_file );
+			$response = $zip->create( $files, PCLZIP_OPT_REMOVE_PATH, $this->get_working_directory() );
+
+			if ( empty( $response ) ) {
+				throw new FileSystem_Exception( 'Could not create archive file' );
+			}
 		}
-
-		$zip->close();
 
 		return "{$this->get_working_directory()}/site-data.zip";
 	}

@@ -6,12 +6,13 @@
  * @subpackage Frontend
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.3.2
  * @since      1.2.0
  */
 
 namespace Morning\WC;
 
+use Morning\WC\Config\Settings;
 use WC_Order;
 
 defined( 'ABSPATH' ) || exit;
@@ -24,11 +25,23 @@ defined( 'ABSPATH' ) || exit;
  */
 class Frontend {
 	/**
+	 * @var Settings
+	 *
+	 * @since 2.0.5
+	 */
+	private Settings $settings;
+
+
+	/**
 	 * Frontend constructor.
+	 *
+	 * @param Settings $settings
 	 *
 	 * @since 1.2.0
 	 */
-	public function __construct() {
+	public function __construct( Settings $settings ) {
+		$this->settings = $settings;
+
 		$this->register_hooks();
 	}
 
@@ -44,6 +57,7 @@ class Frontend {
 
 		add_filter( 'woocommerce_my_account_my_orders_actions', [ $this, 'inject_download_invoice_action' ], 10, 2 );
 		add_filter( 'render_block_woocommerce/cart', [ $this, 'maybe_print_error_block' ] );
+		add_filter( 'woocommerce_update_order_review_fragments', [ $this, 'inject_plugin_fragments' ] );
 	}
 
 
@@ -56,6 +70,15 @@ class Frontend {
 		wp_register_style( MRN_WC_SLUG . '-frontend', MRN_WC_URL . 'assets/css/frontend.css', [], MRN_WC_VERSION );
 
 		wp_register_script( MRN_WC_SLUG . '-frontend', MRN_WC_URL . 'assets/js/frontend.js', [ 'jquery' ], MRN_WC_VERSION, [ 'in_footer' => true ] );
+
+		wp_localize_script(
+			MRN_WC_SLUG . '-frontend',
+			MRN_WC_SLUG . '_vars',
+			[
+				'installments_data'  => $this->settings->get_options()->get_installments(),
+				'apply_pay_disabled' => __( 'Payment with Apple Pay is available on Safari browser only', 'wc-gateway-greeninvoice' ),
+			]
+		);
 
 		if ( is_checkout() || is_cart() ) {
 			wp_enqueue_style( MRN_WC_SLUG . '-frontend' );
@@ -111,5 +134,20 @@ class Frontend {
 		}
 
 		return $output . $block_content;
+	}
+
+	/**
+	 * @param array $fragments Fragments.
+	 *
+	 * @return array
+	 *
+	 * @since 2.3.0
+	 */
+	public function inject_plugin_fragments( array $fragments ): array {
+		$fragments[ MRN_WC_SLUG . '_fragments' ] = [
+			'cart_total' => floatval( WC()->cart->get_total( 'raw' ) ),
+		];
+
+		return $fragments;
 	}
 }

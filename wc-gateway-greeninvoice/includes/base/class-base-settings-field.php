@@ -6,7 +6,7 @@
  * @subpackage Base_Settings_Field
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.3.0
  * @since      1.2.0
  */
 
@@ -83,6 +83,12 @@ abstract class Base_Settings_Field {
 	 * @since 2.0.0
 	 */
 	protected ?string $description = null;
+	/**
+	 * @var array|null
+	 *
+	 * @since 2.3.0
+	 */
+	protected ?array $options = null;
 
 
 	/**
@@ -105,6 +111,7 @@ abstract class Base_Settings_Field {
 		$this->name       = true === ( $options['override_name'] ?? false ) ? $name : Options::OPTIONS_KEY . "[{$name}]";
 		$this->disabled   = true === ( $options['disabled'] ?? false );
 		$this->readonly   = true === ( $options['readonly'] ?? false );
+		$this->options    = $options;
 
 		if ( ! empty( $options['description'] ) ) {
 			$this->description = $options['description'];

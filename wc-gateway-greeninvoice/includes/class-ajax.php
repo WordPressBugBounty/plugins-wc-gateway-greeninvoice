@@ -6,15 +6,16 @@
  * @subpackage Ajax
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.3.2
  * @since      1.2.0
  */
 
 namespace Morning\WC;
 
-use Morning\WC\Exceptions\Container_Exception;
+use Morning\WC\Http\Http_Code;
 use Morning\WC\Utilities\Auth;
 use Morning\WC\Utilities\Exporter;
+use Throwable;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -88,8 +89,6 @@ class Ajax {
 	/**
 	 * @return void
 	 *
-	 * @throws Container_Exception
-	 *
 	 * @since 1.4.0
 	 */
 	public function generate_debug_file(): void {
@@ -97,6 +96,16 @@ class Ajax {
 			wp_die( 'Invalid nonce' );
 		}
 
-		$this->exporter->stream();
+		try {
+			$this->exporter->stream();
+		} catch ( Throwable $ex ) {
+			wp_send_json_error(
+				[
+					'error' => $ex->getMessage(),
+					'trace' => $ex->getTraceAsString(),
+				],
+				Http_Code::BAD_REQUEST
+			);
+		}
 	}
 }

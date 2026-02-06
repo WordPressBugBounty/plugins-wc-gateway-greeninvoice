@@ -6,7 +6,7 @@
  * @subpackage Select
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.3.0
  * @since      1.2.2
  */
 
@@ -24,16 +24,6 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Select extends Base_Settings_Field {
 	/**
-	 * Field value options list.
-	 *
-	 * @var string[]
-	 *
-	 * @since 1.2.2
-	 */
-	private $options = [];
-
-
-	/**
 	 * Text_Input constructor.
 	 *
 	 * @param string $section_id Section id.
@@ -46,8 +36,7 @@ final class Select extends Base_Settings_Field {
 	 * @since 1.2.0
 	 */
 	public function __construct( string $section_id, string $id, string $label, ?string $value = null, ?string $name = null, array $options = [] ) {
-		$this->type    = 'select';
-		$this->options = $options['values'];
+		$this->type = 'select';
 
 		parent::__construct( $section_id, $id, $label, $value, $name, $options );
 	}
@@ -63,7 +52,7 @@ final class Select extends Base_Settings_Field {
 			$this->normalize_name( $this->name ),
 			$this->normalize_id( $this->id ),
 			$this->normalize_css_classes( $this->css_classes ),
-			$this->build_field_options_html( $this->options, $this->value ),
+			$this->build_field_options_html( $this->options['values'], $this->value ),
 			$this->is_disabled()
 		);
 		// @phpcs:enable

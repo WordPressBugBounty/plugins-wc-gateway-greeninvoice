@@ -6,7 +6,7 @@
  * @subpackage Admin
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.2.0
+ * @version    2.3.0
  * @since      1.2.0
  */
 
@@ -73,7 +73,7 @@ class Admin {
 	public function register_assets( string $screen ): void {
 		wp_register_style( MRN_WC_SLUG . '-backend', MRN_WC_URL . 'assets/css/backend.css', [], MRN_WC_VERSION );
 
-		wp_register_script( MRN_WC_SLUG . '-backend', MRN_WC_URL . 'assets/js/backend.js', [ 'jquery' ], MRN_WC_VERSION, true );
+		wp_register_script( MRN_WC_SLUG . '-backend', MRN_WC_URL . 'assets/js/backend.js', [ 'jquery', 'jquery-ui-sortable' ], MRN_WC_VERSION, true );
 
 		$this->localize_strings();
 		$this->print_variables();

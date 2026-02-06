@@ -6,7 +6,7 @@
  * @subpackage API
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.5
+ * @version    2.3.1
  * @since      1.0.0
  */
 
@@ -308,6 +308,11 @@ class Api {
 				unset( $doc['amount'] );
 
 				$doc['initialAmount'] = $order->get_total();
+
+				$existing_token = $order->get_meta( MRN_WC_SLUG . '_subscription_token_id' );
+				if ( ! empty( $existing_token ) ) {
+					$doc['tokenId'] = $existing_token;
+				}
 				break;
 
 			case Request_Flow::CREATE_DOCUMENT:
@@ -370,6 +375,10 @@ class Api {
 
 		$gateways        = WC()->payment_gateways()->payment_gateways();
 		$payment_gateway = $gateways[ $order->get_payment_method() ] ?? null;
+
+		if ( empty( $order->get_payment_method() ) ) {
+			return Payment_Method::OTHER;
+		}
 
 		switch ( $order->get_payment_method() ) {
 			case 'cod':

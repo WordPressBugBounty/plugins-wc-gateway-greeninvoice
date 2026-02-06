@@ -6,7 +6,7 @@
  * @subpackage Container
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.2.0
+ * @version    2.3.6
  * @since      2.0.0
  */
 
@@ -34,6 +34,7 @@ use Morning\WC\Integrations\Woo_Subscriptions_Integration;
 use Morning\WC\Utilities\Api;
 use Morning\WC\Utilities\Auth;
 use Morning\WC\Utilities\Exporter;
+use Morning\WC\Utilities\IPN_Handler;
 use WP_Http;
 
 defined( 'ABSPATH' ) || exit;
@@ -69,7 +70,7 @@ class Container {
 
 		// UI
 		$this->add( Admin::class, [ Settings::class ] );
-		$this->add( Frontend::class );
+		$this->add( Frontend::class, [ Settings::class ] );
 
 		// HTTP
 		$this->add( WP_Http::class );
@@ -85,6 +86,7 @@ class Container {
 		$this->add( Ajax::class, [ Auth::class, Exporter::class ] );
 		$this->add( Checkout::class, [ Settings::class ] );
 		$this->add( Invoicing::class, [ Settings::class, Api::class ] );
+		$this->add( IPN_Handler::class );
 
 		// Payment Gateways
 		$this->add( Credit_Card_Gateway::class, [ Api::class, Settings::class ] );

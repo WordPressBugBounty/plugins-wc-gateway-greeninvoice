@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Morning for WooCommerce 2.2.1\n"
+"Project-Id-Version: Morning for WooCommerce 2.3.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wc-gateway-greeninvoice\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-09-09T06:29:33+00:00\n"
+"POT-Creation-Date: 2025-12-31T08:03:15+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: wc-gateway-greeninvoice\n"
@@ -28,14 +28,16 @@ msgstr ""
 
 #. Author of the plugin
 #: wc-gateway-greeninvoice.php
-#: includes/base/class-base-payment-gateway.php:360
-#: includes/base/class-base-payment-gateway.php:492
-#: includes/base/class-base-payment-gateway.php:515
-#: includes/base/class-base-payment-gateway.php:547
+#: includes/base/class-base-payment-gateway.php:359
+#: includes/base/class-base-payment-gateway.php:432
 #: includes/class-invoicing.php:132
 #: includes/class-invoicing.php:143
 #: includes/class-invoicing.php:193
 #: includes/class-invoicing.php:213
+#: includes/integrations/class-woo-subscriptions-integration.php:103
+#: includes/utilities/class-ipn-handler.php:98
+#: includes/utilities/class-ipn-handler.php:120
+#: includes/utilities/class-ipn-handler.php:149
 msgid "Morning"
 msgstr ""
 
@@ -44,84 +46,63 @@ msgstr ""
 msgid "https://www.greeninvoice.co.il"
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:132
+#: includes/base/class-base-payment-gateway.php:131
 msgid "Max Number of Installments "
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:134
+#: includes/base/class-base-payment-gateway.php:133
 msgid "Maximum number of installments available for the customer (leave 1 for no installments)."
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:171
+#: includes/base/class-base-payment-gateway.php:170
 msgid "Enable/Disable"
 msgstr ""
 
 #. translators: %s Gateway Name
-#: includes/base/class-base-payment-gateway.php:174
+#: includes/base/class-base-payment-gateway.php:173
 msgid "Enable %s"
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:178
+#: includes/base/class-base-payment-gateway.php:177
 msgid "Title"
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:180
+#: includes/base/class-base-payment-gateway.php:179
 msgid "The title the customers will see at the checkout page."
 msgstr ""
 
 #. translators: %s Gateway Name
-#: includes/base/class-base-payment-gateway.php:182
+#: includes/base/class-base-payment-gateway.php:181
 msgid "Pay with %s"
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:186
+#: includes/base/class-base-payment-gateway.php:185
 msgid "Description (optional)"
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:188
+#: includes/base/class-base-payment-gateway.php:187
 msgid "The description will appear when selecting the payment method at the checkout page."
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:342
+#: includes/base/class-base-payment-gateway.php:341
 msgctxt "Refund Order Errors"
 msgid "Unable to refund an unpaid order."
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:346
+#: includes/base/class-base-payment-gateway.php:345
 msgctxt "Refund Order Errors"
 msgid "Unable to partially refund an order that was made today, please issue a full refund"
 msgstr ""
 
 #. translators: %1$s Morning Brand, %2$s Refund Amount
-#: includes/base/class-base-payment-gateway.php:359
+#: includes/base/class-base-payment-gateway.php:358
 msgid "%1$s: A refund of %2$s was made via payment gateway."
 msgstr ""
 
-#: includes/base/class-base-payment-gateway.php:486
-msgid "Payment received but awaiting confirmation."
-msgstr ""
-
 #. translators: %s Morning Brand
-#: includes/base/class-base-payment-gateway.php:491
-msgid "%s: Payment received."
-msgstr ""
-
-#: includes/base/class-base-payment-gateway.php:510
-msgid "Payment failed."
-msgstr ""
-
-#. translators: %s Morning Brand
-#: includes/base/class-base-payment-gateway.php:514
-msgid "%s: Payment failed."
-msgstr ""
-
-#: includes/base/class-base-payment-gateway.php:522
-msgid "Payment failed, please try again."
-msgstr ""
-
-#. translators: %s Morning Brand
-#: includes/base/class-base-payment-gateway.php:546
-msgid "%s: IPN received."
+#: includes/base/class-base-payment-gateway.php:431
+#: includes/integrations/class-woo-subscriptions-integration.php:102
+msgid "%s: Credit card token replaced."
 msgstr ""
 
 #: includes/class-admin.php:94
@@ -173,12 +154,12 @@ msgid "Unable to Sync"
 msgstr ""
 
 #: includes/class-admin.php:238
-#: includes/config/class-settings.php:133
+#: includes/config/class-settings.php:137
 msgid "Active"
 msgstr ""
 
 #: includes/class-admin.php:239
-#: includes/config/class-settings.php:134
+#: includes/config/class-settings.php:138
 msgid "Activation Error"
 msgstr ""
 
@@ -210,7 +191,11 @@ msgstr ""
 msgid "Morning for WooCommerce requires WooCommerce version %s or higher to run properly."
 msgstr ""
 
-#: includes/class-frontend.php:92
+#: includes/class-frontend.php:79
+msgid "Payment with Apple Pay is available on Safari browser only"
+msgstr ""
+
+#: includes/class-frontend.php:115
 msgctxt "My Account Orders"
 msgid "Download Invoice"
 msgstr ""
@@ -245,118 +230,123 @@ msgstr ""
 msgid "settings page"
 msgstr ""
 
-#: includes/config/class-settings.php:83
+#: includes/config/class-settings.php:84
 msgid "Plugin Plan"
 msgstr ""
 
-#: includes/config/class-settings.php:94
+#: includes/config/class-settings.php:95
 msgid "Tax ID Number"
 msgstr ""
 
-#: includes/config/class-settings.php:98
+#: includes/config/class-settings.php:99
 msgid "Enable Tax ID number field in checkout"
 msgstr ""
 
-#: includes/config/class-settings.php:115
+#: includes/config/class-settings.php:116
 msgid "Licensing"
 msgstr ""
 
-#: includes/config/class-settings.php:119
+#: includes/config/class-settings.php:120
 msgid "License Key"
 msgstr ""
 
-#: includes/config/class-settings.php:127
+#: includes/config/class-settings.php:131
 msgid "License Status"
 msgstr ""
 
-#: includes/config/class-settings.php:132
+#: includes/config/class-settings.php:136
 msgid "Inactive"
 msgstr ""
 
-#: includes/config/class-settings.php:151
-#: includes/config/class-settings.php:189
+#: includes/config/class-settings.php:155
+#: includes/config/class-settings.php:200
 msgid "General Settings"
 msgstr ""
 
-#: includes/config/class-settings.php:155
-#: includes/config/class-settings.php:193
+#: includes/config/class-settings.php:159
+#: includes/config/class-settings.php:204
 msgid "Allowed Gateways"
 msgstr ""
 
-#: includes/config/class-settings.php:159
+#: includes/config/class-settings.php:163
 msgid "If you changed your settings in WooCommerce on morning, you need to sync the changes."
 msgstr ""
 
-#: includes/config/class-settings.php:165
-#: includes/config/class-settings.php:203
+#: includes/config/class-settings.php:169
+#: includes/config/class-settings.php:214
 msgid "Order Status"
 msgstr ""
 
-#: includes/config/class-settings.php:169
+#: includes/config/class-settings.php:173
 msgid "Set order status after a notification of successful payment received."
 msgstr ""
 
-#: includes/config/class-settings.php:171
-#: includes/config/class-settings.php:209
+#: includes/config/class-settings.php:175
+#: includes/config/class-settings.php:220
 msgid "Processing"
 msgstr ""
 
-#: includes/config/class-settings.php:172
-#: includes/config/class-settings.php:210
+#: includes/config/class-settings.php:176
+#: includes/config/class-settings.php:221
 msgid "Completed"
 msgstr ""
 
-#: includes/config/class-settings.php:197
+#: includes/config/class-settings.php:183
+#: includes/fields/class-installments-table.php:70
+msgid "Installments"
+msgstr ""
+
+#: includes/config/class-settings.php:208
 msgid "Select which gateway to automatically issue an invoice upon payment."
 msgstr ""
 
-#: includes/config/class-settings.php:207
+#: includes/config/class-settings.php:218
 msgid "Set order status to issue an invoice creation."
 msgstr ""
 
-#: includes/config/class-settings.php:228
+#: includes/config/class-settings.php:239
 msgid "Advanced Options"
 msgstr ""
 
-#: includes/config/class-settings.php:232
+#: includes/config/class-settings.php:243
 msgid "Sandbox Mode"
 msgstr ""
 
-#: includes/config/class-settings.php:236
+#: includes/config/class-settings.php:247
 msgid "Enable sandbox"
 msgstr ""
 
 #. translators: %s Sandbox account
-#: includes/config/class-settings.php:238
+#: includes/config/class-settings.php:249
 msgid "Check this to enable test mode. %s and license key are required."
 msgstr ""
 
 #. translators: %s Sandbox account
-#: includes/config/class-settings.php:238
+#: includes/config/class-settings.php:249
 msgid "Sandbox account"
 msgstr ""
 
-#: includes/config/class-settings.php:244
+#: includes/config/class-settings.php:255
 msgid "Site Info Report"
 msgstr ""
 
-#: includes/config/class-settings.php:248
+#: includes/config/class-settings.php:259
 msgid "Generate File"
 msgstr ""
 
-#: includes/config/class-settings.php:249
+#: includes/config/class-settings.php:260
 msgid "Generate a debug file which includes logs and WordPress environment information."
 msgstr ""
 
-#: includes/config/class-settings.php:256
+#: includes/config/class-settings.php:267
 msgid "Logs"
 msgstr ""
 
-#: includes/config/class-settings.php:260
+#: includes/config/class-settings.php:271
 msgid "View Logs"
 msgstr ""
 
-#: includes/config/class-settings.php:261
+#: includes/config/class-settings.php:272
 msgid "View the logs of the plugin."
 msgstr ""
 
@@ -471,6 +461,30 @@ msgstr ""
 msgid "Sync with Account"
 msgstr ""
 
+#: includes/fields/class-installments-table.php:56
+msgid "Enable advanced installments management"
+msgstr ""
+
+#: includes/fields/class-installments-table.php:68
+msgid "Min Amount"
+msgstr ""
+
+#: includes/fields/class-installments-table.php:69
+msgid "Max Amount"
+msgstr ""
+
+#: includes/fields/class-installments-table.php:71
+msgid "Actions"
+msgstr ""
+
+#: includes/fields/class-installments-table.php:87
+msgid "Add Row"
+msgstr ""
+
+#: includes/fields/class-installments-table.php:174
+msgid "Delete"
+msgstr ""
+
 #: includes/gateways/class-apple-pay-gateway.php:42
 #: assets/js/blocks/apple-pay.js:1
 msgid "Morning - Apple Pay"
@@ -523,18 +537,45 @@ msgstr ""
 
 #. translators: %s Order Number
 #: includes/utilities/class-api.php:296
-#: includes/utilities/class-api.php:350
+#: includes/utilities/class-api.php:355
 msgid "Order #%s"
 msgstr ""
 
-#: includes/utilities/class-api.php:437
-#: includes/utilities/class-api.php:452
+#: includes/utilities/class-api.php:446
+#: includes/utilities/class-api.php:461
 msgid "General Error"
 msgstr ""
 
 #. translators: %s Plugin Name
 #: includes/utilities/class-auth.php:150
 msgid "Please activate the plugin by entering your license key for %s."
+msgstr ""
+
+#: includes/utilities/class-ipn-handler.php:91
+msgid "Payment received but awaiting confirmation."
+msgstr ""
+
+#. translators: %s Morning Brand
+#: includes/utilities/class-ipn-handler.php:97
+msgid "%s: Payment received."
+msgstr ""
+
+#: includes/utilities/class-ipn-handler.php:115
+msgid "Payment failed."
+msgstr ""
+
+#. translators: %s Morning Brand
+#: includes/utilities/class-ipn-handler.php:119
+msgid "%s: Payment failed."
+msgstr ""
+
+#: includes/utilities/class-ipn-handler.php:127
+msgid "Payment failed, please try again."
+msgstr ""
+
+#. translators: %s Morning Brand
+#: includes/utilities/class-ipn-handler.php:148
+msgid "%s: IPN received."
 msgstr ""
 
 #: templates/admin/order-metabox.php:43

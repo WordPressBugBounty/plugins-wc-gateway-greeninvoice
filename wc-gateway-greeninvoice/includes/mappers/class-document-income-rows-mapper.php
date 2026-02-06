@@ -6,7 +6,7 @@
  * @subpackage Document_Income_Rows_Mapper
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.3.7
  * @since      1.6.0
  */
 
@@ -36,18 +36,20 @@ class Document_Income_Rows_Mapper implements Base_Mapper {
 	public static function map( WC_Order $order ): array {
 		$rows = [];
 
+		$has_discount = count( $order->get_items( 'coupon' ) ) > 0;
+
 		foreach ( $order->get_items() as $item ) {
 			if ( ! $item instanceof WC_Order_Item_Product ) {
 				continue;
 			}
 
 			$product = $item->get_product();
-			$tax     = floatval( $item->get_subtotal_tax() ) / $item->get_quantity();
+			$tax     = self::get_item_tax( $item, $has_discount ) / $item->get_quantity();
 
 			$rows[] = [
 				'description' => $item->get_name(),
 				'quantity'    => $item->get_quantity(),
-				'price'       => $order->get_item_subtotal( $item, true, false ),
+				'price'       => self::get_item_price( $order, $item, $has_discount ),
 				'sku'         => $product->get_sku(),
 				'taxable'     => $product->is_taxable(),
 				'tax'         => $tax,
@@ -71,5 +73,31 @@ class Document_Income_Rows_Mapper implements Base_Mapper {
 		}
 
 		return $rows;
+	}
+
+
+	/**
+	 * @param WC_Order_Item_Product $item Order product item
+	 * @param bool $has_discount Does the order have a discount?
+	 *
+	 * @return float
+	 *
+	 * @since 2.3.7
+	 */
+	private static function get_item_tax( WC_Order_Item_Product $item, bool $has_discount ): float {
+		return floatval( $has_discount ? $item->get_subtotal_tax() : $item->get_total_tax() );
+	}
+
+	/**
+	 * @param WC_Order $order Order details
+	 * @param WC_Order_Item_Product $item Order product item
+	 * @param bool $has_discount Does the order have a discount?
+	 *
+	 * @return float
+	 *
+	 * @since 2.3.7
+	 */
+	private static function get_item_price( WC_Order $order, WC_Order_Item_Product $item, bool $has_discount ): float {
+		return $has_discount ? $order->get_item_subtotal( $item, true, false ) : $order->get_item_total( $item, true, false );
 	}
 }

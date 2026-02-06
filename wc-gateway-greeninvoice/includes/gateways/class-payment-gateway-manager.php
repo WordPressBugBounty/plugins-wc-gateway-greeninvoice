@@ -6,7 +6,7 @@
  * @subpackage Payment_Gateway_Manager
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.3.6
  * @since      2.0.0
  */
 
@@ -21,6 +21,7 @@ use Morning\WC\Gateways\Blocks\Bit_Gateway_Block;
 use Morning\WC\Gateways\Blocks\Credit_Card_Gateway_Block;
 use Morning\WC\Gateways\Blocks\Google_Pay_Gateway_Block;
 use Morning\WC\Gateways\Blocks\PayPal_Gateway_Block;
+use Morning\WC\Utilities\IPN_Handler;
 use WC_Payment_Gateway;
 
 defined( 'ABSPATH' ) || exit;
@@ -102,7 +103,7 @@ class Payment_Gateway_Manager {
 
 
 	/**
-	 * @param WC_Payment_Gateway[] $gateways Registered payment gateways.
+	 * @param WC_Payment_Gateway[] $registered_gateways Registered payment gateways.
 	 *
 	 * @return WC_Payment_Gateway[]
 	 *
@@ -110,9 +111,10 @@ class Payment_Gateway_Manager {
 	 *
 	 * @since 1.0.0
 	 */
-	public function register_payment_gateways( array $gateways ): array {
+	public function register_payment_gateways( array $registered_gateways ): array {
 		$options   = $this->settings->get_options();
 		$container = mrn_get_container();
+		$gateways  = [];
 
 		if ( $options->is_payment_gateway_enabled( Payment_Type::CREDIT_CARD ) ) {
 			$gateways[] = $container->get( Credit_Card_Gateway::class );
@@ -134,6 +136,10 @@ class Payment_Gateway_Manager {
 			$gateways[] = $container->get( Apple_Pay_Gateway::class );
 		}
 
-		return $gateways;
+		if ( ! empty( $gateways ) ) {
+			$container->get( IPN_Handler::class );
+		}
+
+		return array_merge( $registered_gateways, $gateways );
 	}
 }

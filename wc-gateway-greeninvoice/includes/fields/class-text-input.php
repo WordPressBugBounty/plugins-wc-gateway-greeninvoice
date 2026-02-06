@@ -6,7 +6,7 @@
  * @subpackage Text_Input
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.3.0
  * @since      1.2.0
  */
 
@@ -41,8 +41,6 @@ final class Text_Input extends Base_Settings_Field {
 			$this->type = $type;
 		}
 
-		$this->css_classes[] = 'regular-text';
-
 		parent::__construct( $section_id, $id, $label, $value, $name, $options );
 	}
 
@@ -53,12 +51,13 @@ final class Text_Input extends Base_Settings_Field {
 	public function html(): void {
 		// @phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 		printf(
-			'<input type="%1$s" name="%2$s" id="%3$s" value="%4$s" class="%5$s">',
+			'<input type="%1$s" name="%2$s" id="%3$s" value="%4$s" class="%5$s"%6$s>',
 			$this->normalize_type( $this->type ),
 			$this->normalize_name( $this->name ),
 			$this->normalize_id( $this->id ),
 			$this->sanitize_value( $this->value ),
-			$this->normalize_css_classes( $this->css_classes )
+			$this->normalize_css_classes( $this->css_classes ),
+			$this->additional_atts()
 		);
 		// @phpcs:enable
 	}
@@ -72,6 +71,48 @@ final class Text_Input extends Base_Settings_Field {
 	 * @since 1.2.0
 	 */
 	private function is_valid_type( string $type ): bool {
-		return in_array( $type, [ 'text', 'password', 'email', 'tel', 'url', 'search', 'date', 'color' ], true );
+		return in_array(
+			$type,
+			[
+				'text',
+				'password',
+				'email',
+				'tel',
+				'url',
+				'search',
+				'date',
+				'color',
+				'number',
+			],
+			true
+		);
+	}
+
+	/**
+	 * @return string
+	 *
+	 * @since 2.3.0
+	 */
+	private function additional_atts(): string {
+		switch ( $this->type ) {
+			case 'number':
+				$atts = '';
+
+				if ( isset( $this->options['min'] ) ) {
+					$atts .= sprintf( ' min="%s"', $this->options['min'] );
+				}
+
+				if ( isset( $this->options['max'] ) ) {
+					$atts .= sprintf( ' max="%s"', $this->options['max'] );
+				}
+
+				if ( isset( $this->options['step'] ) ) {
+					$atts .= sprintf( ' step="%s"', $this->options['step'] );
+				}
+
+				return $atts;
+			default:
+				return '';
+		}
 	}
 }

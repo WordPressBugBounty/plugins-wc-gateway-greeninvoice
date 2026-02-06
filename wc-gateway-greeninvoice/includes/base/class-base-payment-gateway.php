@@ -6,7 +6,7 @@
  * @subpackage Base_Payment_Gateway
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.1.0
+ * @version    2.3.6
  * @since      1.0.0
  */
 
@@ -17,8 +17,6 @@ use Morning\WC\Config\Settings;
 use Morning\WC\Enum\Capability;
 use Morning\WC\Enum\Currency;
 use Morning\WC\Utilities\Api;
-use Morning\WC\Utilities\Logger;
-use Throwable;
 use WC_Order;
 use WC_Payment_Gateway;
 use WP_Error;
@@ -124,18 +122,20 @@ abstract class Base_Payment_Gateway extends WC_Payment_Gateway {
 		}
 
 		if ( $this->is_capable_of( Capability::INSTALLMENTS ) ) {
-			if ( $this->get_installments() > 1 ) {
+			if ( $this->get_installments() > 1 || $this->options->is_advanced_installments_on() ) {
 				$this->has_fields = true;
 			}
 
-			$this->form_fields['installments'] = [
-				'title'       => __( 'Max Number of Installments ', 'wc-gateway-greeninvoice' ),
-				'type'        => 'select',
-				'description' => __( 'Maximum number of installments available for the customer (leave 1 for no installments).', 'wc-gateway-greeninvoice' ),
-				'default'     => 1,
-				'desc_tip'    => true,
-				'options'     => array_combine( range( 1, 12 ), range( 1, 12 ) ),
-			];
+			if ( ! $this->options->is_advanced_installments_on() ) {
+				$this->form_fields['installments'] = [
+					'title'       => __( 'Max Number of Installments ', 'wc-gateway-greeninvoice' ),
+					'type'        => 'select',
+					'description' => __( 'Maximum number of installments available for the customer (leave 1 for no installments).', 'wc-gateway-greeninvoice' ),
+					'default'     => 1,
+					'desc_tip'    => true,
+					'options'     => array_combine( range( 1, 12 ), range( 1, 12 ) ),
+				];
+			}
 		}
 
 		$this->register_hooks();
@@ -156,7 +156,6 @@ abstract class Base_Payment_Gateway extends WC_Payment_Gateway {
 
 		// @phpstan-ignore-next-line
 		add_action( "woocommerce_update_options_payment_gateways_{$this->id}", [ $this, 'process_admin_options' ] );
-		add_action( 'woocommerce_api_wc_gateway_' . MRN_WC_SLUG, [ $this, 'check_ipn_response' ] );
 	}
 
 
@@ -278,7 +277,7 @@ abstract class Base_Payment_Gateway extends WC_Payment_Gateway {
 	public function payment_fields(): void {
 		parent::payment_fields();
 
-		if ( $this->get_installments() > 1 ) {
+		if ( $this->get_installments() > 1 || $this->options->is_advanced_installments_on() ) {
 			include MRN_WC_PATH . '/templates/frontend/installments-form.php';
 		}
 	}
@@ -378,7 +377,7 @@ abstract class Base_Payment_Gateway extends WC_Payment_Gateway {
 		$subscriptions = wcs_get_subscriptions_for_renewal_order( $order );
 
 		if ( empty( $subscriptions ) ) {
-			$order->set_status( 'failed', 'Unable to process subscription.' );
+			$order->set_status( 'failed', 'Unable to process order - no subscriptions found.' );
 			$order->save();
 
 			return;
@@ -386,7 +385,23 @@ abstract class Base_Payment_Gateway extends WC_Payment_Gateway {
 
 		/** @var WC_Order $subscription */
 		$subscription = array_pop( $subscriptions );
-		$token_id     = $subscription->get_meta( MRN_WC_SLUG . '_subscription_token_id' );
+
+		$token_id = $subscription->get_meta( MRN_WC_SLUG . '_subscription_token_id' );
+
+		if ( ! $token_id ) {
+			$parent_order = $subscription->get_parent_id() ? wc_get_order( $subscription->get_parent_id() ) : null;
+
+			if ( $parent_order ) {
+				$token_id = $parent_order->get_meta( MRN_WC_SLUG . '_subscription_token_id' );
+			}
+		}
+
+		if ( ! $token_id ) {
+			$order->set_status( 'failed', 'Unable to process order - missing token.' );
+			$order->save();
+
+			return;
+		}
 
 		$response = $this->api->charge_token( $token_id, $this->type, $order );
 
@@ -401,6 +416,27 @@ abstract class Base_Payment_Gateway extends WC_Payment_Gateway {
 		$order->save();
 	}
 
+	/**
+	 * @param WC_Order $original_order Original order object.
+	 * @param WC_Order $renewal_order Renewal order object.
+	 *
+	 * @return void
+	 *
+	 * @since 2.3.6
+	 */
+	public function process_payment_method_updated( WC_Order $original_order, WC_Order $renewal_order ): void {
+		$original_order->add_order_note(
+			sprintf(
+			/* translators: %s Morning Brand */
+				__( '%s: Credit card token replaced.', 'wc-gateway-greeninvoice' ),
+				'<strong>' . __( 'Morning', 'wc-gateway-greeninvoice' ) . '</strong>'
+			)
+		);
+
+		$original_order->add_meta_data( MRN_WC_SLUG . '_subscription_token_id', $renewal_order->get_meta( MRN_WC_SLUG . '_subscription_token_id' ), true );
+		$original_order->save();
+	}
+
 
 	/**
 	 * @param int $order_id Current order id.
@@ -410,11 +446,12 @@ abstract class Base_Payment_Gateway extends WC_Payment_Gateway {
 	 * @since 1.0.0
 	 */
 	public function receipt_page( int $order_id ): void {
-		$order           = wc_get_order( $order_id );
-		$is_subscription = function_exists( 'wcs_order_contains_subscription' ) && wcs_order_contains_subscription( $order_id );
-		$installments    = $order->get_meta( MRN_WC_SLUG . '_installments' ) ?? 1;
+		$order        = wc_get_order( $order_id );
+		$installments = $order->get_meta( MRN_WC_SLUG . '_installments' ) ?? 1;
 
-		if ( $is_subscription ) {
+		$requires_token = apply_filters( 'morning/wc/order_requires_token', false, $order );
+
+		if ( $requires_token ) {
 			$payment_url = $this->api->request_payment_token_url( $this->type, $order );
 		} else {
 			$payment_url = $this->api->request_payment_form_url( $this->type, $order, $installments );
@@ -433,143 +470,5 @@ abstract class Base_Payment_Gateway extends WC_Payment_Gateway {
 		echo "	<iframe src='{$payment_url}' class='greeninvoice-payment-iframe morning-payment-iframe'{$additional_atts}></iframe>";
 		echo '</div>';
 		// @phpcs:enable
-	}
-
-	/**
-	 * @return void
-	 *
-	 * @since 1.0.0
-	 */
-	public function check_ipn_response(): void {
-		/* phpcs:ignore */
-		if ( ! empty( $_REQUEST ) ) {
-			$order_id  = wc_clean( $_REQUEST[ 'order-id' ] ); /* phpcs:ignore */
-			$order_key = wc_clean( $_REQUEST[ 'order-key' ] ); /* phpcs:ignore */
-			$action    = wc_clean( $_REQUEST[ 'gi-type' ] ); /* phpcs:ignore */
-
-			$order = wc_get_order( $order_id );
-
-			if ( ! empty( $order->get_meta( MRN_WC_SLUG . '_data' ) ) || $order->is_paid() ) {
-				Logger::info( "Skipping update for Order #{$order->get_id()}." );
-
-				return;
-			}
-
-			if ( $order->key_is_valid( $order_key ) ) {
-				switch ( $action ) {
-					case 'success':
-						$this->handle_success_response( $order );
-						break;
-
-					case 'failure':
-						$this->handle_failure_response( $order );
-						break;
-
-					case 'ipn':
-						$this->handle_ipn_response( $order );
-						break;
-				}
-			}
-		}
-
-		exit;
-	}
-
-	/**
-	 * @param WC_Order $order Order object.
-	 *
-	 * @return void
-	 *
-	 * @since 1.2.0
-	 */
-	public function handle_success_response( WC_Order $order ): void {
-		$order->update_status( 'on-hold', esc_html__( 'Payment received but awaiting confirmation.', 'wc-gateway-greeninvoice' ) );
-
-		$order->add_order_note(
-			sprintf(
-			/* translators: %s Morning Brand */
-				__( '%s: Payment received.', 'wc-gateway-greeninvoice' ),
-				'<strong>' . __( 'Morning', 'wc-gateway-greeninvoice' ) . '</strong>'
-			)
-		);
-
-		Logger::info( "Order #{$order->get_id()} processed successfully." );
-
-		/* phpcs:ignore */
-		echo "<script type='text/javascript'>window.top.location.href = '" . $order->get_checkout_order_received_url() . "';</script>";
-	}
-
-	/**
-	 * @param WC_Order $order Order object.
-	 *
-	 * @return void
-	 *
-	 * @since 1.2.0
-	 */
-	public function handle_failure_response( WC_Order $order ): void {
-		$order->update_status( 'failed', esc_html__( 'Payment failed.', 'wc-gateway-greeninvoice' ) );
-		$order->add_order_note(
-			sprintf(
-			/* translators: %s Morning Brand */
-				__( '%s: Payment failed.', 'wc-gateway-greeninvoice' ),
-				'<strong>' . __( 'Morning', 'wc-gateway-greeninvoice' ) . '</strong>'
-			)
-		);
-
-		if ( ! empty( $_REQUEST['message'] ) ) {
-			$message = esc_html( $_REQUEST['message'] );
-		} else {
-			$message = esc_html__( 'Payment failed, please try again.', 'wc-gateway-greeninvoice' );
-		}
-
-		Logger::info( "Order #{$order->get_id()} failed with error: {$message}" );
-
-		$failure_url = add_query_arg( 'mrn-wc-error', $message, $order->get_cancel_order_url() );
-
-		/* phpcs:ignore */
-		echo "<script type='text/javascript'>window.top.location.href = '" . $failure_url . "';</script>";
-	}
-
-	/**
-	 * @param WC_Order $order Order object.
-	 *
-	 * @return void
-	 *
-	 * @since 1.2.0
-	 */
-	public function handle_ipn_response( WC_Order $order ): void {
-		Logger::info( "Order #{$order->get_id()} received an IPN." );
-
-		$order->add_order_note(
-			sprintf(
-			/* translators: %s Morning Brand */
-				__( '%s: IPN received.', 'wc-gateway-greeninvoice' ),
-				'<strong>' . __( 'Morning', 'wc-gateway-greeninvoice' ) . '</strong>'
-			)
-		);
-		$order->payment_complete();
-
-		parse_str( file_get_contents( 'php://input' ), $ipn_data );
-
-		Logger::debug( 'Received IPN', $ipn_data );
-
-		try {
-			$order->set_transaction_id( $ipn_data['transaction_id'] );
-		} catch ( Throwable $ex ) {
-		}
-
-		$order->add_meta_data( MRN_WC_SLUG . '_data', $ipn_data, true );
-
-		if ( ! empty( $ipn_data['token_id'] ) ) {
-			$order->add_meta_data( MRN_WC_SLUG . '_subscription_token_id', $ipn_data['token_id'], true );
-
-			$subscriptions = wcs_get_subscriptions_for_order( $order );
-			foreach ( $subscriptions as $subscription ) {
-				$subscription->add_meta_data( MRN_WC_SLUG . '_subscription_token_id', $ipn_data['token_id'], true );
-				$subscription->save();
-			}
-		}
-
-		$order->save();
 	}
 }

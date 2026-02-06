@@ -6,7 +6,7 @@
  * @subpackage Settings
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.2.0
+ * @version    2.3.0
  * @since      1.0.0
  */
 
@@ -17,6 +17,7 @@ use Morning\WC\Fields\Button;
 use Morning\WC\Fields\Checkbox;
 use Morning\WC\Fields\Gateway_Selection;
 use Morning\WC\Fields\Gateways_Sync;
+use Morning\WC\Fields\Installments_Table;
 use Morning\WC\Fields\Plan_Indicator;
 use Morning\WC\Fields\Section;
 use Morning\WC\Fields\Select;
@@ -119,7 +120,10 @@ class Settings {
 					esc_html__( 'License Key', 'wc-gateway-greeninvoice' ),
 					'text',
 					$this->options->get_license_key(),
-					'license_key'
+					'license_key',
+					[
+						'css_classes' => [ 'regular-text' ],
+					]
 				),
 				new Status_Indicator(
 					MRN_WC_SLUG . '_licensing',
@@ -172,6 +176,13 @@ class Settings {
 							'completed'  => __( 'Completed', 'wc-gateway-greeninvoice' ),
 						],
 					]
+				),
+				new Installments_Table(
+					MRN_WC_SLUG . '_general',
+					'installments',
+					esc_html__( 'Installments', 'wc-gateway-greeninvoice' ),
+					$this->options->get_installments(),
+					'installments',
 				),
 			]
 		);

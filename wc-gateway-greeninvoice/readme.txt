@@ -1,9 +1,9 @@
 === Morning for WooCommerce ===
 Contributors: greeninvoice, dorzki
 Tags: greeninvoice, invoices, invoice, business management, credit cards
-Requires at least: 6.7
-Tested up to: 6.8.2
-Stable tag: 2.2.1
+Requires at least: 6.8
+Tested up to: 6.9
+Stable tag: 2.3.7
 Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -59,6 +59,36 @@ To install this add-on go to [the add-ons section](https://app.greeninvoice.co.i
 1. Go to WooCommerce &gt; Settings &gt; Payments; use the Toggle buttons to activate the payment methods (Credit Card | PayPal | bit) that will be offered to clients during checkout.
 
 == Changelog ==
+
+= 2.3.7 | 31.12.2025 =
+[BUGFIX] Fixed the issue where the discounted item was calculated wrong.
+
+= 2.3.6 | 28.12.2025 =
+[IMPROVE] Added support for replacing a token for existing subscriptions.
+[IMPROVE] Added compatibility for WooCommerce v10.4.3
+
+= 2.3.5 | 02.12.2025 =
+[IMPROVE] Improved WooCommerce Subscriptions integration.
+
+= 2.3.4 | 19.11.2025 =
+[IMPROVE] Added compatibility for WooCommerce v10.3.5
+[BUGFIX] Fixed unidentified array key error.
+
+= 2.3.3 | 27.10.2025 =
+[IMPROVE] Added compatibility for WooCommerce v10.3.3
+[BUGFIX] Reverted fix for discounted item calculation.
+
+= 2.3.2 | 23.10.2025 =
+[IMPROVE] Restrict Apple Pay availability to Safari on Apple devices.
+[BUGFIX] Fix site info report generation.
+[BUGFIX] Fixed the issue where the discounted item was calculated wrong.
+
+= 2.3.1 | 20.10.2025 =
+[IMPROVE] Allow issuance of proforma invoices for orders with zero amount.
+
+= 2.3.0 | 09.10.2025 =
+[FEATURE] Add the ability to set installments' amount according to order total.
+[IMPROVE] Added compatibility for WooCommerce v10.2.2
 
 = 2.2.1 | 09.09.2025 =
 [FEATURE] Added support for Tax ID field in WooCommerce Checkout Blocks.

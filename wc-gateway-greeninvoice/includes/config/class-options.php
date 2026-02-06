@@ -6,7 +6,7 @@
  * @subpackage Options
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.2.0
+ * @version    2.3.4
  * @since      2.0.0
  */
 
@@ -77,6 +77,12 @@ class Options {
 	 * @since 2.0.0
 	 */
 	private bool $sandbox_mode = false;
+	/**
+	 * @var array
+	 *
+	 * @since 2.3.0
+	 */
+	private array $installments = [];
 
 	/**
 	 * @var string
@@ -133,6 +139,7 @@ class Options {
 				'invoicing_order_status'     => $this->get_invoicing_order_status(),
 				'invoicing_allowed_gateways' => $this->get_invoicing_allowed_gateways(),
 				'sandbox_mode'               => $this->is_sandbox_mode() ? 'yes' : 'no',
+				'installments'               => $this->get_installments(),
 			]
 		);
 	}
@@ -167,6 +174,10 @@ class Options {
 	 * @since 2.2.0
 	 */
 	public function is_payment_gateway_allowed( string $gateway_id ): bool {
+		if ( ! $gateway_id ) {
+			return true;
+		}
+
 		$gateways = $this->get_invoicing_allowed_gateways();
 
 		return 'yes' === ( $gateways[ $gateway_id ] ?? 'no' );
@@ -197,6 +208,17 @@ class Options {
 	 */
 	public function is_invoicing_mode(): bool {
 		return Plan_Type::INVOICING === $this->plan;
+	}
+
+	/**
+	 * @return bool
+	 *
+	 * @since 2.3.0
+	 */
+	public function is_advanced_installments_on(): bool {
+		$installments = $this->get_installments();
+
+		return 'yes' === ( $installments['enabled'] ?? 'no' );
 	}
 
 
@@ -243,6 +265,49 @@ class Options {
 		if ( isset( $options['sandbox_mode'] ) ) {
 			$this->set_sandbox_mode( 'yes' === $options['sandbox_mode'] );
 		}
+
+		if ( isset( $options['installments'] ) ) {
+			$this->set_installments( $this->parse_installments( $options['installments'] ) );
+		}
+	}
+
+	/**
+	 * @param array $value Installments options.
+	 *
+	 * @return array
+	 *
+	 * @since 2.3.0
+	 */
+	private function parse_installments( array $value ): array {
+		$parsed = [
+			'enabled' => 'no',
+			'rows'    => [
+				[
+					'min'    => '',
+					'max'    => '',
+					'amount' => '',
+				],
+			],
+		];
+
+		if ( isset( $value['enabled'] ) ) {
+			$parsed['enabled'] = $value['enabled'] ? 'yes' : 'no';
+		}
+
+		if ( ! empty( $value['rows']['min'] ) ) {
+			$count          = count( $value['rows']['min'] );
+			$parsed['rows'] = [];
+
+			for ( $i = 0; $i < $count; $i ++ ) {
+				$parsed['rows'][] = [
+					'min'    => $value['rows']['min'][ $i ],
+					'max'    => $value['rows']['max'][ $i ],
+					'amount' => $value['rows']['amount'][ $i ],
+				];
+			}
+		}
+
+		return $parsed;
 	}
 
 
@@ -406,5 +471,43 @@ class Options {
 	 */
 	public function set_sandbox_mode( bool $sandbox_mode ): void {
 		$this->sandbox_mode = $sandbox_mode;
+	}
+
+	/**
+	 * @return array
+	 *
+	 * @since 2.3.0
+	 */
+	public function get_installments(): array {
+		$defaults = [
+			'enabled' => 'no',
+			'rows'    => [
+				[
+					'min'    => '',
+					'max'    => '',
+					'amount' => '',
+				],
+			],
+		];
+
+		if ( empty( $this->installments ) ) {
+			return $defaults;
+		}
+
+		$installments = array_merge( $defaults, $this->installments );
+		if ( ! isset( $installments['rows'] ) || ! is_array( $installments['rows'] ) ) {
+			$installments['rows'] = $defaults['rows'];
+		}
+
+		return $installments;
+	}
+
+	/**
+	 * @param array $installments
+	 *
+	 * @since 2.3.0
+	 */
+	public function set_installments( array $installments ): void {
+		$this->installments = $installments;
 	}
 }
