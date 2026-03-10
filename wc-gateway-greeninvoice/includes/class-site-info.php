@@ -6,7 +6,7 @@
  * @subpackage Site_Info
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.3.8
  * @since      1.4.0
  */
 
@@ -37,7 +37,7 @@ final class Site_Info {
 	 *
 	 * @since 1.4.0
 	 */
-	const VERSION = '1.1';
+	const VERSION = '1.1.1';
 
 	/**
 	 * @var Settings
@@ -466,7 +466,7 @@ final class Site_Info {
 			],
 			[
 				'label' => 'Allowed Gateways',
-				'value' => $this->parse_gateways( $options->get_gateways() ),
+				'value' => $options->is_invoicing_mode() ? $this->parse_invoicing_gateways( $options->get_invoicing_allowed_gateways() ) : $this->parse_gateways( $options->get_gateways() ),
 			],
 			[
 				'label' => 'Order Status',
@@ -562,6 +562,30 @@ final class Site_Info {
 			default:
 				return 'Not Set';
 		}
+	}
+
+	/**
+	 * @param array|null $gateways List of gateways.
+	 *
+	 * @return array
+	 *
+	 * @since 2.3.8
+	 */
+	private function parse_invoicing_gateways( ?array $gateways ): array {
+		if ( empty( $gateways ) || ! is_array( $gateways ) ) {
+			return [];
+		}
+
+		$output = [];
+		foreach ( WC()->payment_gateways()->get_available_payment_gateways() as $gateway ) {
+			$output[] = sprintf(
+				'%s: %s',
+				$gateway->get_title(),
+				( $gateways[ $gateway->id ] ?? null ) === 'yes' ? 'Allowed' : 'Not Allowed'
+			);
+		}
+
+		return $output;
 	}
 
 	/**

@@ -447,7 +447,7 @@ abstract class Base_Payment_Gateway extends WC_Payment_Gateway {
 	 */
 	public function receipt_page( int $order_id ): void {
 		$order        = wc_get_order( $order_id );
-		$installments = $order->get_meta( MRN_WC_SLUG . '_installments' ) ?? 1;
+		$installments = (int) ( $order->get_meta( MRN_WC_SLUG . '_installments' ) ?: 1 );
 
 		$requires_token = apply_filters( 'morning/wc/order_requires_token', false, $order );
 

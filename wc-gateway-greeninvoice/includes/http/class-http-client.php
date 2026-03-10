@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @package Morning\WC\Http
  */
-final class HTTP_Client {
+class HTTP_Client {
 	/**
 	 * @var WP_Http
 	 *

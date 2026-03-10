@@ -147,9 +147,7 @@ abstract class Base_Settings_Field {
 	 *
 	 * @since 1.2.0
 	 */
-	protected function html(): void {
-		// Field HTML tag format.
-	}
+	abstract protected function html(): void;
 
 
 	/**

@@ -346,4 +346,13 @@ class Settings {
 	public function set_options( Options $options ): void {
 		$this->options = $options;
 	}
+
+	/**
+	 * @return Base_Settings_Field[]
+	 *
+	 * @since 2.3.8
+	 */
+	public function get_settings(): array {
+		return $this->settings;
+	}
 }

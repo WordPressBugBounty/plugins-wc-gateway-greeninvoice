@@ -36,4 +36,10 @@ final class Section extends Base_Settings_Field {
 
 		parent::__construct( $id, $id, $label );
 	}
+
+	/**
+	 * @inheritDoc
+	 */
+	protected function html(): void {
+	}
 }

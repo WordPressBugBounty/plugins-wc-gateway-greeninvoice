@@ -6,7 +6,7 @@
  * @subpackage Exporter
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.3.2
+ * @version    2.3.8
  * @since      1.4.0
  */
 
@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @package Morning\WC\Utilities
  */
-final class Exporter {
+class Exporter {
 	/**
 	 * WordPress filesystem class instance.
 	 *
@@ -40,27 +40,18 @@ final class Exporter {
 
 
 	/**
-	 * Exporter constructor.
+	 * @return void
 	 *
+	 * @throws Container_Exception
 	 * @throws FileSystem_Exception
 	 *
 	 * @since 1.4.0
 	 */
-	public function __construct() {
+	public function stream(): void {
 		$this->maybe_initialize_filesystem();
 		$this->maybe_create_working_directory();
 		$this->clear_files();
-	}
 
-
-	/**
-	 * @return void
-	 *
-	 * @throws Container_Exception
-	 *
-	 * @since 1.4.0
-	 */
-	public function stream(): void {
 		$this->copy_log_files();
 		$this->generate_site_info();
 
