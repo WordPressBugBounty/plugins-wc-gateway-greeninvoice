@@ -6,7 +6,7 @@
  * @subpackage Checkout
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.2.1
+ * @version    2.4.0
  * @since      1.4.0
  */
 
@@ -84,7 +84,7 @@ class Checkout {
 			$fields['billing']['billing_tax_id'] = [
 				'label'    => esc_html__( 'Tax ID', 'wc_gateway_greeninvoice' ),
 				'priority' => 29,
-				'required' => false,
+				'required' => $options->is_tax_id_field_required(),
 				'class'    => 'form-row-wide',
 				'validate' => [ 'israel_tax_id' ],
 			];
@@ -117,7 +117,7 @@ class Checkout {
 				'label'    => esc_html__( 'Tax ID', 'wc-gateway-greeninvoice' ),
 				'location' => 'address',
 				'type'     => 'text',
-				'required' => false,
+				'required' => $options->is_tax_id_field_required(),
 			]
 		);
 	}

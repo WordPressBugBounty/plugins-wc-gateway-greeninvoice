@@ -6,13 +6,12 @@
  * @subpackage Auth
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.4.0
  * @since      2.0.0
  */
 
 namespace Morning\WC\Utilities;
 
-use Morning\WC\Admin;
 use Morning\WC\Config\Options;
 use Morning\WC\Config\Settings;
 use Morning\WC\Exceptions\Container_Exception;
@@ -42,12 +41,6 @@ class Auth {
 	 * @since 2.0.0
 	 */
 	private Settings $settings;
-	/**
-	 * @var Admin
-	 *
-	 * @since 2.0.0
-	 */
-	private Admin $admin;
 
 
 	/**
@@ -55,14 +48,12 @@ class Auth {
 	 *
 	 * @param HTTP_Client $client
 	 * @param Settings $settings
-	 * @param Admin $admin
 	 *
 	 * @since 2.0.0
 	 */
-	public function __construct( HTTP_Client $client, Settings $settings, Admin $admin ) {
+	public function __construct( HTTP_Client $client, Settings $settings ) {
 		$this->client   = $client;
 		$this->settings = $settings;
-		$this->admin    = $admin;
 
 		$this->register_hooks();
 	}
@@ -76,8 +67,6 @@ class Auth {
 	private function register_hooks(): void {
 		add_action( 'add_option_' . Options::OPTIONS_KEY, [ $this, 'maybe_check_license' ], 10, 2 );
 		add_action( 'update_option_' . Options::OPTIONS_KEY, [ $this, 'maybe_update_license_status' ], 10, 2 );
-
-		add_action( 'init', [ $this, 'maybe_display_activation_notice' ] );
 	}
 
 	/**
@@ -126,32 +115,6 @@ class Auth {
 			$this->authorize_store();
 		}
 	}
-
-	/**
-	 * @return void
-	 *
-	 * @since 2.0.0
-	 */
-	public function maybe_display_activation_notice(): void {
-		$options = $this->settings->get_options();
-
-		if ( 'yes' !== $options->get_activated() ) {
-			add_action( 'admin_notices', [ $this, 'plugin_license_notice' ] );
-		}
-	}
-
-	/**
-	 * @return void
-	 *
-	 * @since 2.0.0
-	 */
-	public function plugin_license_notice(): void {
-		/* translators: %s Plugin Name */
-		$notice = sprintf( __( 'Please activate the plugin by entering your license key for %s.', 'wc-gateway-greeninvoice' ), '<a href="admin.php?page=greeninvoice">' . __( 'Morning for WooCommerce', 'wc-gateway-greeninvoice' ) . '</a>' );
-
-		$this->admin->print_notice( $notice );
-	}
-
 
 	/**
 	 * @return Http_Response

@@ -6,7 +6,7 @@
  * @subpackage Settings
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.3.0
+ * @version    2.4.0
  * @since      1.0.0
  */
 
@@ -97,6 +97,18 @@ class Settings {
 				'show_tax_id_field',
 				[
 					'checkbox_text' => esc_html__( 'Enable Tax ID number field in checkout', 'wc-gateway-greeninvoice' ),
+				]
+			);
+
+			$this->settings[] = new Checkbox(
+				MRN_WC_SLUG . '_general',
+				'tax_id_field_required',
+				esc_html__( 'Tax ID Required', 'wc-gateway-greeninvoice' ),
+				$this->options->is_tax_id_field_required() ? 'yes' : 'no',
+				'tax_id_field_required',
+				[
+					'checkbox_text' => esc_html__( 'Make the Tax ID number field required at checkout', 'wc-gateway-greeninvoice' ),
+					'description'   => esc_html__( 'Only takes effect when the Tax ID number field is enabled above.', 'wc-gateway-greeninvoice' ),
 				]
 			);
 		}

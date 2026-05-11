@@ -6,7 +6,7 @@
  * @subpackage Container
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.3.6
+ * @version    2.4.0
  * @since      2.0.0
  */
 
@@ -31,6 +31,10 @@ use Morning\WC\Integrations\PayPlus_Integration;
 use Morning\WC\Integrations\Polylang_Integration;
 use Morning\WC\Integrations\PW_Gift_Cards_Integration;
 use Morning\WC\Integrations\Woo_Subscriptions_Integration;
+use Morning\WC\Notices\License_Notice;
+use Morning\WC\Notices\Notices_Manager;
+use Morning\WC\Notices\Sandbox_Notice;
+use Morning\WC\Notices\Tax_Authority_Notice;
 use Morning\WC\Utilities\Api;
 use Morning\WC\Utilities\Auth;
 use Morning\WC\Utilities\Exporter;
@@ -75,7 +79,7 @@ class Container {
 		// HTTP
 		$this->add( WP_Http::class );
 		$this->add( Http_Client::class, [ Wp_Http::class ] );
-		$this->add( Auth::class, [ HTTP_Client::class, Settings::class, Admin::class ] );
+		$this->add( Auth::class, [ HTTP_Client::class, Settings::class ] );
 		$this->add( Api::class, [ HTTP_Client::class, Auth::class ] );
 
 		// Core
@@ -111,8 +115,15 @@ class Container {
 
 		$this->add( Integration_Manager::class );
 
+		// Notices
+		$this->add( License_Notice::class, [ Settings::class ] );
+		$this->add( Sandbox_Notice::class, [ Settings::class ] );
+		$this->add( Tax_Authority_Notice::class, [ Settings::class ] );
+
+		$this->add( Notices_Manager::class, [ Settings::class ] );
+
 		// Plugin
-		$this->add( Plugin::class, [ Compatibility::class, Admin::class, Settings::class ] );
+		$this->add( Plugin::class, [ Compatibility::class, Settings::class ] );
 	}
 
 

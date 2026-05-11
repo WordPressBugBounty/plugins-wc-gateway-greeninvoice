@@ -6,7 +6,7 @@
  * @subpackage Admin
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.3.0
+ * @version    2.4.0
  * @since      1.2.0
  */
 
@@ -14,6 +14,7 @@ namespace Morning\WC;
 
 use Morning\WC\Config\Settings;
 use Morning\WC\Enum\Document_Type;
+use Morning\WC\Notices\Notices_Manager;
 use WC_Order;
 use WP_Post;
 
@@ -255,6 +256,7 @@ class Admin {
 				'logs_url'                  => admin_url( 'admin.php?page=wc-status&tab=logs&source=' . MRN_WC_SLUG ),
 				'sync_nonce'                => wp_create_nonce( 'morning-sync-gateways' ),
 				'download_debug_file_nonce' => wp_create_nonce( 'morning-download-debug-file' ),
+				'dismiss_notice_nonce'      => Notices_Manager::get_dismiss_nonce(),
 			]
 		);
 	}

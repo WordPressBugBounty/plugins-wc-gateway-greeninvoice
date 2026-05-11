@@ -1,23 +1,21 @@
-# Copyright (C) 2025 Morning
+# Copyright (C) 2026 Morning
 # This file is distributed under the GPL v3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Morning for WooCommerce 2.3.7\n"
+"Project-Id-Version: Morning for WooCommerce 2.4.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wc-gateway-greeninvoice\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-12-31T08:03:15+00:00\n"
+"POT-Creation-Date: 2026-05-11T10:05:25+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.11.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: wc-gateway-greeninvoice\n"
 
 #. Plugin Name of the plugin
-#. translators: %s Plugin Name
 #: wc-gateway-greeninvoice.php
-#: includes/utilities/class-auth.php:150
 msgid "Morning for WooCommerce"
 msgstr ""
 
@@ -60,6 +58,7 @@ msgstr ""
 
 #. translators: %s Gateway Name
 #: includes/base/class-base-payment-gateway.php:173
+#, php-format
 msgid "Enable %s"
 msgstr ""
 
@@ -73,6 +72,7 @@ msgstr ""
 
 #. translators: %s Gateway Name
 #: includes/base/class-base-payment-gateway.php:181
+#, php-format
 msgid "Pay with %s"
 msgstr ""
 
@@ -96,70 +96,72 @@ msgstr ""
 
 #. translators: %1$s Morning Brand, %2$s Refund Amount
 #: includes/base/class-base-payment-gateway.php:358
+#, php-format
 msgid "%1$s: A refund of %2$s was made via payment gateway."
 msgstr ""
 
 #. translators: %s Morning Brand
 #: includes/base/class-base-payment-gateway.php:431
 #: includes/integrations/class-woo-subscriptions-integration.php:102
+#, php-format
 msgid "%s: Credit card token replaced."
 msgstr ""
 
-#: includes/class-admin.php:94
+#: includes/class-admin.php:95
 msgctxt "Settings Page Title"
 msgid "Morning Settings"
 msgstr ""
 
-#: includes/class-admin.php:95
+#: includes/class-admin.php:96
 msgctxt "Settings Page Menu Title"
 msgid "Morning"
 msgstr ""
 
-#: includes/class-admin.php:126
+#: includes/class-admin.php:127
 msgctxt "Admin Meta Box"
 msgid "Morning Document Info"
 msgstr ""
 
-#: includes/class-admin.php:155
+#: includes/class-admin.php:156
 msgid "Document Number"
 msgstr ""
 
-#: includes/class-admin.php:156
+#: includes/class-admin.php:157
 msgid "Document Type"
 msgstr ""
 
-#: includes/class-admin.php:157
+#: includes/class-admin.php:158
 msgid "Document ID"
 msgstr ""
 
-#: includes/class-admin.php:175
+#: includes/class-admin.php:176
 msgctxt "Plugins Links"
 msgid "Settings"
 msgstr ""
 
-#: includes/class-admin.php:205
+#: includes/class-admin.php:206
 msgid "Morning: Recreate Invoice"
 msgstr ""
 
-#: includes/class-admin.php:235
+#: includes/class-admin.php:236
 msgid "Syncing"
 msgstr ""
 
-#: includes/class-admin.php:236
+#: includes/class-admin.php:237
 msgid "Synced"
 msgstr ""
 
-#: includes/class-admin.php:237
+#: includes/class-admin.php:238
 msgid "Unable to Sync"
 msgstr ""
 
-#: includes/class-admin.php:238
-#: includes/config/class-settings.php:137
+#: includes/class-admin.php:239
+#: includes/config/class-settings.php:149
 msgid "Active"
 msgstr ""
 
-#: includes/class-admin.php:239
-#: includes/config/class-settings.php:138
+#: includes/class-admin.php:240
+#: includes/config/class-settings.php:150
 msgid "Activation Error"
 msgstr ""
 
@@ -174,11 +176,13 @@ msgstr ""
 
 #. translators: %s PHP Version
 #: includes/class-compatibility.php:128
+#, php-format
 msgid "Morning for WooCommerce requires PHP version %s or higher to run properly."
 msgstr ""
 
 #. translators: %s WordPress Version
 #: includes/class-compatibility.php:138
+#, php-format
 msgid "Morning for WooCommerce requires WordPress version %s or higher to run properly."
 msgstr ""
 
@@ -188,6 +192,7 @@ msgstr ""
 
 #. translators: %s WooCommerce Version
 #: includes/class-compatibility.php:159
+#, php-format
 msgid "Morning for WooCommerce requires WooCommerce version %s or higher to run properly."
 msgstr ""
 
@@ -202,32 +207,26 @@ msgstr ""
 
 #. translators: %1$s Morning Brand, %2$s Error Message
 #: includes/class-invoicing.php:131
+#, php-format
 msgid "%1$s: Failed to create a refund document with error: `%2$s`"
 msgstr ""
 
 #. translators: %s Morning Brand
 #: includes/class-invoicing.php:142
+#, php-format
 msgid "%s: Refund document created successfully."
 msgstr ""
 
 #. translators: %1$s Morning Brand, %2$s Error Message
 #: includes/class-invoicing.php:192
+#, php-format
 msgid "%1$s: Failed to create a document with error: `%2$s`"
 msgstr ""
 
 #. translators: %s Morning Brand
 #: includes/class-invoicing.php:212
+#, php-format
 msgid "%s: Document created successfully."
-msgstr ""
-
-#. translators: %s Settings Page
-#: includes/class-plugin.php:141
-msgid "Attention! Sandbox mode is enabled for Morning for WooCommerce. You can disable it from the %s."
-msgstr ""
-
-#. translators: %s Settings Page
-#: includes/class-plugin.php:141
-msgid "settings page"
 msgstr ""
 
 #: includes/config/class-settings.php:84
@@ -242,111 +241,124 @@ msgstr ""
 msgid "Enable Tax ID number field in checkout"
 msgstr ""
 
-#: includes/config/class-settings.php:116
+#: includes/config/class-settings.php:106
+msgid "Tax ID Required"
+msgstr ""
+
+#: includes/config/class-settings.php:110
+msgid "Make the Tax ID number field required at checkout"
+msgstr ""
+
+#: includes/config/class-settings.php:111
+msgid "Only takes effect when the Tax ID number field is enabled above."
+msgstr ""
+
+#: includes/config/class-settings.php:128
 msgid "Licensing"
 msgstr ""
 
-#: includes/config/class-settings.php:120
+#: includes/config/class-settings.php:132
 msgid "License Key"
 msgstr ""
 
-#: includes/config/class-settings.php:131
+#: includes/config/class-settings.php:143
 msgid "License Status"
 msgstr ""
 
-#: includes/config/class-settings.php:136
+#: includes/config/class-settings.php:148
 msgid "Inactive"
 msgstr ""
 
-#: includes/config/class-settings.php:155
-#: includes/config/class-settings.php:200
+#: includes/config/class-settings.php:167
+#: includes/config/class-settings.php:212
 msgid "General Settings"
 msgstr ""
 
-#: includes/config/class-settings.php:159
-#: includes/config/class-settings.php:204
+#: includes/config/class-settings.php:171
+#: includes/config/class-settings.php:216
 msgid "Allowed Gateways"
 msgstr ""
 
-#: includes/config/class-settings.php:163
+#: includes/config/class-settings.php:175
 msgid "If you changed your settings in WooCommerce on morning, you need to sync the changes."
 msgstr ""
 
-#: includes/config/class-settings.php:169
-#: includes/config/class-settings.php:214
+#: includes/config/class-settings.php:181
+#: includes/config/class-settings.php:226
 msgid "Order Status"
 msgstr ""
 
-#: includes/config/class-settings.php:173
+#: includes/config/class-settings.php:185
 msgid "Set order status after a notification of successful payment received."
 msgstr ""
 
-#: includes/config/class-settings.php:175
-#: includes/config/class-settings.php:220
+#: includes/config/class-settings.php:187
+#: includes/config/class-settings.php:232
 msgid "Processing"
 msgstr ""
 
-#: includes/config/class-settings.php:176
-#: includes/config/class-settings.php:221
+#: includes/config/class-settings.php:188
+#: includes/config/class-settings.php:233
 msgid "Completed"
 msgstr ""
 
-#: includes/config/class-settings.php:183
+#: includes/config/class-settings.php:195
 #: includes/fields/class-installments-table.php:70
 msgid "Installments"
 msgstr ""
 
-#: includes/config/class-settings.php:208
+#: includes/config/class-settings.php:220
 msgid "Select which gateway to automatically issue an invoice upon payment."
 msgstr ""
 
-#: includes/config/class-settings.php:218
+#: includes/config/class-settings.php:230
 msgid "Set order status to issue an invoice creation."
 msgstr ""
 
-#: includes/config/class-settings.php:239
+#: includes/config/class-settings.php:251
 msgid "Advanced Options"
 msgstr ""
 
-#: includes/config/class-settings.php:243
+#: includes/config/class-settings.php:255
 msgid "Sandbox Mode"
 msgstr ""
 
-#: includes/config/class-settings.php:247
+#: includes/config/class-settings.php:259
 msgid "Enable sandbox"
 msgstr ""
 
 #. translators: %s Sandbox account
-#: includes/config/class-settings.php:249
+#: includes/config/class-settings.php:261
+#, php-format
 msgid "Check this to enable test mode. %s and license key are required."
 msgstr ""
 
 #. translators: %s Sandbox account
-#: includes/config/class-settings.php:249
+#: includes/config/class-settings.php:261
 msgid "Sandbox account"
 msgstr ""
 
-#: includes/config/class-settings.php:255
+#: includes/config/class-settings.php:267
 msgid "Site Info Report"
 msgstr ""
 
-#: includes/config/class-settings.php:259
+#: includes/config/class-settings.php:271
 msgid "Generate File"
 msgstr ""
 
-#: includes/config/class-settings.php:260
+#: includes/config/class-settings.php:272
 msgid "Generate a debug file which includes logs and WordPress environment information."
 msgstr ""
 
-#: includes/config/class-settings.php:267
+#: includes/config/class-settings.php:279
 msgid "Logs"
 msgstr ""
 
-#: includes/config/class-settings.php:271
+#: includes/config/class-settings.php:283
 msgid "View Logs"
 msgstr ""
 
-#: includes/config/class-settings.php:272
+#: includes/config/class-settings.php:284
 msgid "View the logs of the plugin."
 msgstr ""
 
@@ -532,12 +544,58 @@ msgstr ""
 
 #. translators: %s Gift Card Number
 #: includes/integrations/class-pw-gift-cards-integration.php:71
+#, php-format
 msgid "Gift Card: %s"
+msgstr ""
+
+#: includes/notices/class-license-notice.php:55
+msgid "Please activate the plugin by entering your license key for \"Morning for WooCommerce\"."
+msgstr ""
+
+#: includes/notices/class-notices-manager.php:116
+msgid "Invalid nonce."
+msgstr ""
+
+#: includes/notices/class-notices-manager.php:120
+msgid "You are not allowed to perform this action."
+msgstr ""
+
+#: includes/notices/class-notices-manager.php:126
+msgid "Missing notice id."
+msgstr ""
+
+#: includes/notices/class-notices-manager.php:188
+msgid "Dismiss this notice"
+msgstr ""
+
+#: includes/notices/class-sandbox-notice.php:55
+msgid "Attention! Sandbox mode is enabled for \"Morning for WooCommerce\". You can disable it from the advanced options below."
+msgstr ""
+
+#: includes/notices/class-tax-authority-notice.php:65
+msgid "Important to know:"
+msgstr ""
+
+#: includes/notices/class-tax-authority-notice.php:66
+msgid "Starting June 1, 2026, you must obtain an allocation number from the Tax Authority for every invoice over ₪5,000 so that your customer can deduct VAT for it."
+msgstr ""
+
+#: includes/notices/class-tax-authority-notice.php:71
+msgid "Allocation numbers are received only for invoices that include the customer's business number / Tax ID,"
+msgstr ""
+
+#: includes/notices/class-tax-authority-notice.php:72
+msgid "so make sure to enable the fields in the Tax ID setting later on this page."
+msgstr ""
+
+#: includes/notices/class-tax-authority-notice.php:78
+msgid "Read the full guide"
 msgstr ""
 
 #. translators: %s Order Number
 #: includes/utilities/class-api.php:296
 #: includes/utilities/class-api.php:355
+#, php-format
 msgid "Order #%s"
 msgstr ""
 
@@ -546,17 +604,13 @@ msgstr ""
 msgid "General Error"
 msgstr ""
 
-#. translators: %s Plugin Name
-#: includes/utilities/class-auth.php:150
-msgid "Please activate the plugin by entering your license key for %s."
-msgstr ""
-
 #: includes/utilities/class-ipn-handler.php:91
 msgid "Payment received but awaiting confirmation."
 msgstr ""
 
 #. translators: %s Morning Brand
 #: includes/utilities/class-ipn-handler.php:97
+#, php-format
 msgid "%s: Payment received."
 msgstr ""
 
@@ -566,6 +620,7 @@ msgstr ""
 
 #. translators: %s Morning Brand
 #: includes/utilities/class-ipn-handler.php:119
+#, php-format
 msgid "%s: Payment failed."
 msgstr ""
 
@@ -575,6 +630,7 @@ msgstr ""
 
 #. translators: %s Morning Brand
 #: includes/utilities/class-ipn-handler.php:148
+#, php-format
 msgid "%s: IPN received."
 msgstr ""
 

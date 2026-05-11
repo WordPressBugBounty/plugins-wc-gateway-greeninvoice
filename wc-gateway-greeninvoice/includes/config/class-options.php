@@ -6,7 +6,7 @@
  * @subpackage Options
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.3.4
+ * @version    2.4.0
  * @since      2.0.0
  */
 
@@ -48,6 +48,12 @@ class Options {
 	 */
 	private bool $show_tax_id_field = false;
 	/**
+	 * @var bool
+	 *
+	 * @since 2.4.0
+	 */
+	private bool $tax_id_field_required = false;
+	/**
 	 * @var string
 	 *
 	 * @since 2.0.0
@@ -83,6 +89,12 @@ class Options {
 	 * @since 2.3.0
 	 */
 	private array $installments = [];
+	/**
+	 * @var string[]
+	 *
+	 * @since 2.4.0
+	 */
+	private array $dismissed_notices = [];
 
 	/**
 	 * @var string
@@ -134,12 +146,14 @@ class Options {
 				'license_key'                => $this->get_license_key(),
 				'gateways'                   => $this->get_gateways(),
 				'show_tax_id_field'          => $this->is_show_tax_id_field(),
+				'tax_id_field_required'      => $this->is_tax_id_field_required(),
 				'order_status'               => $this->get_order_status(),
 				'plan'                       => $this->get_plan(),
 				'invoicing_order_status'     => $this->get_invoicing_order_status(),
 				'invoicing_allowed_gateways' => $this->get_invoicing_allowed_gateways(),
 				'sandbox_mode'               => $this->is_sandbox_mode() ? 'yes' : 'no',
 				'installments'               => $this->get_installments(),
+				'dismissed_notices'          => $this->get_dismissed_notices(),
 			]
 		);
 	}
@@ -246,6 +260,10 @@ class Options {
 			$this->set_show_tax_id_field( 'yes' === $options['show_tax_id_field'] );
 		}
 
+		if ( isset( $options['tax_id_field_required'] ) ) {
+			$this->set_tax_id_field_required( 'yes' === $options['tax_id_field_required'] );
+		}
+
 		if ( isset( $options['order_status'] ) ) {
 			$this->set_order_status( $options['order_status'] );
 		}
@@ -268,6 +286,10 @@ class Options {
 
 		if ( isset( $options['installments'] ) ) {
 			$this->set_installments( $this->parse_installments( $options['installments'] ) );
+		}
+
+		if ( isset( $options['dismissed_notices'] ) && is_array( $options['dismissed_notices'] ) ) {
+			$this->set_dismissed_notices( array_values( array_filter( array_map( 'strval', $options['dismissed_notices'] ) ) ) );
 		}
 	}
 
@@ -381,6 +403,24 @@ class Options {
 	 */
 	public function set_show_tax_id_field( bool $show_tax_id_field ): void {
 		$this->show_tax_id_field = $show_tax_id_field;
+	}
+
+	/**
+	 * @return bool
+	 *
+	 * @since 2.4.0
+	 */
+	public function is_tax_id_field_required(): bool {
+		return $this->tax_id_field_required;
+	}
+
+	/**
+	 * @param bool $tax_id_field_required
+	 *
+	 * @since 2.4.0
+	 */
+	public function set_tax_id_field_required( bool $tax_id_field_required ): void {
+		$this->tax_id_field_required = $tax_id_field_required;
 	}
 
 	/**
@@ -509,5 +549,47 @@ class Options {
 	 */
 	public function set_installments( array $installments ): void {
 		$this->installments = $installments;
+	}
+
+	/**
+	 * @return string[]
+	 *
+	 * @since 2.4.0
+	 */
+	public function get_dismissed_notices(): array {
+		return $this->dismissed_notices;
+	}
+
+	/**
+	 * @param string[] $dismissed_notices
+	 *
+	 * @since 2.4.0
+	 */
+	public function set_dismissed_notices( array $dismissed_notices ): void {
+		$this->dismissed_notices = $dismissed_notices;
+	}
+
+	/**
+	 * @param string $notice_id
+	 *
+	 * @return bool
+	 *
+	 * @since 2.4.0
+	 */
+	public function is_notice_dismissed( string $notice_id ): bool {
+		return in_array( $notice_id, $this->dismissed_notices, true );
+	}
+
+	/**
+	 * @param string $notice_id
+	 *
+	 * @return void
+	 *
+	 * @since 2.4.0
+	 */
+	public function add_dismissed_notice( string $notice_id ): void {
+		if ( ! $this->is_notice_dismissed( $notice_id ) ) {
+			$this->dismissed_notices[] = $notice_id;
+		}
 	}
 }

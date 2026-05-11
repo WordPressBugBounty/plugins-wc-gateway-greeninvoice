@@ -6,7 +6,7 @@
  * @subpackage Plugin
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.2.0
+ * @version    2.4.0
  * @since      1.0.0
  */
 
@@ -17,6 +17,7 @@ use Morning\WC\Config\Settings;
 use Morning\WC\Exceptions\Container_Exception;
 use Morning\WC\Gateways\Payment_Gateway_Manager;
 use Morning\WC\Integrations\Integration_Manager;
+use Morning\WC\Notices\Notices_Manager;
 use Morning\WC\Utilities\Auth;
 
 defined( 'ABSPATH' ) || exit;
@@ -35,12 +36,6 @@ final class Plugin {
 	 */
 	private Compatibility $compatibility;
 	/**
-	 * @var Admin
-	 *
-	 * @since 2.0.0
-	 */
-	private Admin $admin;
-	/**
 	 * @var Settings
 	 *
 	 * @since 2.0.0
@@ -52,16 +47,14 @@ final class Plugin {
 	 * Plugin constructor.
 	 *
 	 * @param Compatibility $compatibility
-	 * @param Admin $admin
 	 * @param Settings $settings
 	 *
 	 * @throws Container_Exception
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct( Compatibility $compatibility, Admin $admin, Settings $settings ) {
+	public function __construct( Compatibility $compatibility, Settings $settings ) {
 		$this->compatibility = $compatibility;
-		$this->admin         = $admin;
 		$this->settings      = $settings;
 
 		if ( $this->compatibility->is_compatible() ) {
@@ -84,9 +77,6 @@ final class Plugin {
 		add_filter( 'woocommerce_payment_complete_order_status', [ $this, 'change_ipn_order_status' ] );
 
 		$options = $this->settings->get_options();
-		if ( $options->is_sandbox_mode() ) {
-			add_action( 'admin_notices', [ $this, 'sandbox_mode_enabled' ] );
-		}
 
 		// Load crucial classes.
 		$container = mrn_get_container();
@@ -96,6 +86,7 @@ final class Plugin {
 		$container->get( Ajax::class );
 		$container->get( Checkout::class );
 		$container->get( Integration_Manager::class );
+		$container->get( Notices_Manager::class );
 
 		if ( $options->is_invoicing_mode() ) {
 			$container->get( Invoicing::class );
@@ -128,19 +119,6 @@ final class Plugin {
 	public function declare_compatibilities(): void {
 		FeaturesUtil::declare_compatibility( 'custom_order_tables', MRN_WC_FILE );
 		FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', MRN_WC_FILE );
-	}
-
-
-	/**
-	 * @return void
-	 *
-	 * @since 2.0.0
-	 */
-	public function sandbox_mode_enabled(): void {
-		/* translators: %s Settings Page */
-		$notice = sprintf( __( 'Attention! Sandbox mode is enabled for Morning for WooCommerce. You can disable it from the %s.', 'wc-gateway-greeninvoice' ), '<a href="admin.php?page=greeninvoice">' . __( 'settings page', 'wc-gateway-greeninvoice' ) . '</a>' );
-
-		$this->admin->print_notice( $notice );
 	}
 
 

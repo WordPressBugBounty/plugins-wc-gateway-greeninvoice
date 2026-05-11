@@ -5,7 +5,7 @@
  * @package    Morning\WC
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.4.0
  * @since      1.0.0
  */
 
@@ -31,6 +31,9 @@ settings_errors( MRN_WC_SLUG . '_options' );
 ?>
 <div class="wrap">
 	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+
+	<?php do_action( 'morning/wc/settings_page/before_form' ); ?>
+
 	<form action="options.php" method="post">
 
 		<?php
@@ -42,4 +45,6 @@ settings_errors( MRN_WC_SLUG . '_options' );
 		?>
 
 	</form>
+
+	<?php do_action( 'morning/wc/settings_page/after_form' ); ?>
 </div>
