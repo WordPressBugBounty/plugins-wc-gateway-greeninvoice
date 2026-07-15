@@ -112,6 +112,14 @@ class IPN_Handler {
 	 * @since 2.3.6
 	 */
 	public function handle_failure_response( WC_Order $order ): void {
+		if ( $order->is_paid() ) {
+			Logger::info( "Order #{$order->get_id()} received a failure return but is already paid; keeping status." );
+
+			$this->print_iframe_redirect( $order->get_checkout_order_received_url() );
+
+			return;
+		}
+
 		$order->update_status( 'failed', esc_html__( 'Payment failed.', 'wc-gateway-greeninvoice' ) );
 		$order->add_order_note(
 			sprintf(
