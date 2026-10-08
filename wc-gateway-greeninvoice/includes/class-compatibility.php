@@ -6,7 +6,7 @@
  * @subpackage Compatibility
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.3.7
+ * @version    2.4.2
  * @since      1.0.0
  */
 
@@ -39,7 +39,7 @@ class Compatibility {
 	 *
 	 * @since 2.0.0
 	 */
-	const MIN_WP = '6.8';
+	const MIN_WP = '7.0';
 	/**
 	 * @var string
 	 *

@@ -6,7 +6,7 @@
  * @subpackage Base_Payment_Gateway
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.3.6
+ * @version    2.4.2
  * @since      1.0.0
  */
 
@@ -17,6 +17,7 @@ use Morning\WC\Config\Settings;
 use Morning\WC\Enum\Capability;
 use Morning\WC\Enum\Currency;
 use Morning\WC\Utilities\Api;
+use Morning\WC\Utilities\IPN_Handler;
 use WC_Order;
 use WC_Payment_Gateway;
 use WP_Error;
@@ -253,6 +254,10 @@ abstract class Base_Payment_Gateway extends WC_Payment_Gateway {
 				'order-key' => $order->get_order_key(),
 			]
 		);
+
+		if ( 'ipn' === $type ) {
+			$params['gi-signature'] = IPN_Handler::get_signature( $order );
+		}
 
 		$site_url = ! is_null( MRN_WEBHOOK_URI ) ? trailingslashit( MRN_WEBHOOK_URI ) : home_url( '/' );
 

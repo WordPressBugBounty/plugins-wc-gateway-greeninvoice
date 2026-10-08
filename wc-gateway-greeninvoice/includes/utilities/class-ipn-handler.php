@@ -6,7 +6,7 @@
  * @subpackage IPN_Handler
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.3.6
+ * @version    2.4.2
  * @since      2.3.6
  */
 
@@ -51,31 +51,70 @@ class IPN_Handler {
 	 */
 	public function check_response(): void {
 		/* phpcs:ignore */
-		if ( ! empty( $_REQUEST ) ) {
-			$order_id  = wc_clean( $_REQUEST[ 'order-id' ] ); /* phpcs:ignore */
-			$order_key = wc_clean( $_REQUEST[ 'order-key' ] ); /* phpcs:ignore */
-			$action    = wc_clean( $_REQUEST[ 'gi-type' ] ); /* phpcs:ignore */
-
-			$order = wc_get_order( $order_id );
-
-			if ( $order->key_is_valid( $order_key ) ) {
-				switch ( $action ) {
-					case 'success':
-						$this->handle_success_response( $order );
-						break;
-
-					case 'failure':
-						$this->handle_failure_response( $order );
-						break;
-
-					case 'ipn':
-						$this->handle_ipn_response( $order );
-						break;
-				}
-			}
-		}
+		$this->dispatch( wc_clean( wp_unslash( $_REQUEST ) ) );
 
 		exit;
+	}
+
+	/**
+	 * @param array $request Sanitized request parameters.
+	 *
+	 * @return void
+	 *
+	 * @since 2.4.2
+	 */
+	public function dispatch( array $request ): void {
+		if ( empty( $request ) ) {
+			return;
+		}
+
+		$order = wc_get_order( absint( $request['order-id'] ?? 0 ) );
+
+		if ( ! $order instanceof WC_Order || ! $order->key_is_valid( (string) ( $request['order-key'] ?? '' ) ) ) {
+			return;
+		}
+
+		switch ( $request['gi-type'] ?? '' ) {
+			case 'success':
+				$this->handle_success_response( $order );
+				break;
+
+			case 'failure':
+				$this->handle_failure_response( $order );
+				break;
+
+			case 'ipn':
+				if ( ! self::is_valid_signature( $order, (string) ( $request['gi-signature'] ?? '' ) ) ) {
+					Logger::error( "Order #{$order->get_id()} received an IPN with an invalid signature." );
+					break;
+				}
+
+				$this->handle_ipn_response( $order );
+				break;
+		}
+	}
+
+	/**
+	 * @param WC_Order $order Order object.
+	 *
+	 * @return string
+	 *
+	 * @since 2.4.2
+	 */
+	public static function get_signature( WC_Order $order ): string {
+		return hash_hmac( 'sha256', "{$order->get_id()}|{$order->get_order_key()}", wp_salt( 'auth' ) );
+	}
+
+	/**
+	 * @param WC_Order $order Order object.
+	 * @param string $signature Received signature.
+	 *
+	 * @return bool
+	 *
+	 * @since 2.4.2
+	 */
+	public static function is_valid_signature( WC_Order $order, string $signature ): bool {
+		return '' !== $signature && hash_equals( self::get_signature( $order ), $signature );
 	}
 
 
