@@ -3,7 +3,7 @@ Contributors: greeninvoice, dorzki
 Tags: greeninvoice, invoices, invoice, business management, credit cards
 Requires at least: 7.0
 Tested up to: 7.1.3
-Stable tag: 2.4.2
+Stable tag: 2.4.3
 Requires PHP: 7.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -59,6 +59,9 @@ To install this add-on go to [the add-ons section](https://app.greeninvoice.co.i
 1. Go to WooCommerce &gt; Settings &gt; Payments; use the Toggle buttons to activate the payment methods (Credit Card | PayPal | bit) that will be offered to clients during checkout.
 
 == Changelog ==
+
+= 2.4.3 | 18.10.2026 =
+[SECURITY] The store's API key is no longer written to the WooCommerce debug logs.
 
 = 2.4.2 | 08.10.2026 =
 [SECURITY] Payment notifications (IPN) are now signed and verified, so an order can no longer be marked as paid without a genuine notification from Morning (CVE-2026-39723).

@@ -6,7 +6,7 @@
  * @subpackage Logger
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.0.0
+ * @version    2.4.3
  * @since      1.0.0
  */
 
@@ -23,6 +23,12 @@ defined( 'ABSPATH' ) || exit;
  * @package Morning\WC\Utilities
  */
 final class Logger {
+	/**
+	 * @since 2.4.3
+	 */
+	private const REDACTED_KEYS = [ 'authorization', 'license_key' ];
+
+
 	/**
 	 * @param string $message Message to log.
 	 * @param array $context Log extra data.
@@ -71,9 +77,28 @@ final class Logger {
 		$log = $message;
 
 		if ( ! empty( $context ) ) {
-			$log .= ' with context:' . PHP_EOL . '---------------[START]---------------' . PHP_EOL . wc_print_r( $context, true ) . '----------------[END]----------------';
+			$log .= ' with context:' . PHP_EOL . '---------------[START]---------------' . PHP_EOL . wc_print_r( self::redact( $context ), true ) . '----------------[END]----------------';
 		}
 
 		( wc_get_logger() )->log( $level, $log, [ 'source' => MRN_WC_SLUG ] );
+	}
+
+	/**
+	 * @param array $data Log context.
+	 *
+	 * @return array
+	 *
+	 * @since 2.4.3
+	 */
+	private static function redact( array $data ): array {
+		foreach ( $data as $key => $value ) {
+			if ( is_string( $key ) && in_array( strtolower( $key ), self::REDACTED_KEYS, true ) ) {
+				$data[ $key ] = '[REDACTED]';
+			} elseif ( is_array( $value ) ) {
+				$data[ $key ] = self::redact( $value );
+			}
+		}
+
+		return $data;
 	}
 }
