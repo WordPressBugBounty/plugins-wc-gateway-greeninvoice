@@ -6,7 +6,7 @@
  * @subpackage Document_Income_Rows_Mapper
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.3.7
+ * @version    2.4.4
  * @since      1.6.0
  */
 
@@ -64,7 +64,7 @@ class Document_Income_Rows_Mapper implements Base_Mapper {
 				$rows[] = [
 					'description' => $fee->get_name(),
 					'quantity'    => $fee->get_quantity(),
-					'price'       => floatval( $fee->get_amount() ),
+					'price'       => ( floatval( $fee->get_total() ) + floatval( $fee->get_total_tax() ) ) / $fee->get_quantity(),
 					'sku'         => '',
 					'taxable'     => 'taxable' === $fee->get_tax_status(),
 					'tax'         => $tax,
