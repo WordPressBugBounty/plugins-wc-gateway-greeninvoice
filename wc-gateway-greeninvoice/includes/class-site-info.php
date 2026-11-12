@@ -6,7 +6,7 @@
  * @subpackage Site_Info
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.3.8
+ * @version    2.4.5
  * @since      1.4.0
  */
 
@@ -577,7 +577,11 @@ final class Site_Info {
 		}
 
 		$output = [];
-		foreach ( WC()->payment_gateways()->get_available_payment_gateways() as $gateway ) {
+		foreach ( WC()->payment_gateways()->payment_gateways() as $gateway ) {
+			if ( 'yes' !== $gateway->enabled ) {
+				continue;
+			}
+
 			$output[] = sprintf(
 				'%s: %s',
 				$gateway->get_title(),

@@ -6,7 +6,7 @@
  * @subpackage Gateway_Selection
  * @author     Dor Zuberi <admin@dorzki.io>
  * @link       https://www.dorzki.io
- * @version    2.2.0
+ * @version    2.4.5
  * @since      2.2.0
  */
 
@@ -48,7 +48,12 @@ class Gateway_Selection extends Base_Settings_Field {
 	 * @since 2.0.0
 	 */
 	private function get_gateways(): array {
-		return WC()->payment_gateways()->get_available_payment_gateways();
+		return array_filter(
+			WC()->payment_gateways()->payment_gateways(),
+			function ( $gateway ) {
+				return 'yes' === $gateway->enabled;
+			}
+		);
 	}
 
 
